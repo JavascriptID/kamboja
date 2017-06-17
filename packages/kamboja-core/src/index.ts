@@ -187,9 +187,9 @@ export interface HttpRequest {
     body: any
     referrer: string
     url: Url.Url
-    getHeader(key: string): string
-    getCookie(key: string): string
-    getParam(key: string): string
+    getHeader(key: string): string|undefined
+    getCookie(key: string): string|undefined
+    getParam(key: string): string|undefined
     getAccepts(key: string | string[]): string | boolean
     //isAccept(mime: string): boolean
     isAuthenticated(): boolean
