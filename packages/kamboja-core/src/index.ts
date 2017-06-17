@@ -1,6 +1,7 @@
 import { MetaData, ParentMetaData, MetadataType, MethodMetaData, ClassMetaData } from "kecubung";
 import * as Kecubung from "kecubung"
 import * as Url from "url"
+import "reflect-metadata"
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
 export type TransformStatus = "ExitWithResult" | "Next" | "Exit"
