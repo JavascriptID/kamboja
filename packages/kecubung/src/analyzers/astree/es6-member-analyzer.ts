@@ -3,7 +3,7 @@ import { ClassAnalyzer } from "./class-analyzer"
 
 export class Es6MemberAnalyzer {
 
-    constructor(private node) { }
+    constructor(private node:any) { }
 
     getParameters() {
         return this.node.params;

@@ -2,7 +2,7 @@ import * as Core from "../../core"
 
 
 export class ConstructorAnalyzer {
-    constructor(private node) { }
+    constructor(private node:any) { }
 
     isConstructor(className: string) {
         return this.node.type == Core.SyntaxKind.FunctionDeclaration

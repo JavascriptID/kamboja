@@ -1,7 +1,7 @@
 import {ParserType, AnalyzerType} from "./baseclasses"
 import * as AsTree from "./astree"
 
-export function get(parser:ParserType, type:AnalyzerType, node):any{
+export function get(parser:ParserType, type:AnalyzerType, node:boolean):any{
     return AsTree.get(type, node);
     /*switch(parser){
         case "ASTree":

@@ -10,7 +10,7 @@ export enum AnalysisType {
     ConnectedWithChildren = 64
 }
 
-export function flag(property, enumeration) {
+export function flag(property:any, enumeration:any) {
     return (property & enumeration) == enumeration;
 }
 
@@ -62,18 +62,18 @@ export interface DecoratorMetaData extends MetaData {
 
 export interface ParameterMetaData extends MetaData {
     type: "Parameter"
-    decorators: DecoratorMetaData[]
+    decorators?: DecoratorMetaData[]
 }
 
 export interface MethodMetaData extends MetaData {
     type: "Method"
-    decorators: DecoratorMetaData[]
+    decorators?: DecoratorMetaData[]
     parameters: ParameterMetaData[]
 }
 
 export interface PropertyMetaData extends MetaData {
     type: "Property"
-    decorators: DecoratorMetaData[]
+    decorators?: DecoratorMetaData[]
 }
 
 export interface ConstructorMetaData extends MetaData {
@@ -83,10 +83,10 @@ export interface ConstructorMetaData extends MetaData {
 
 export interface ClassMetaData extends MetaData {
     type: "Class"
-    decorators: DecoratorMetaData[]
+    decorators?: DecoratorMetaData[]
     methods: MethodMetaData[]
-    properties: PropertyMetaData[]
-    baseClass: string
+    properties?: PropertyMetaData[]
+    baseClass?: string
     constructor: ConstructorMetaData
 }
 
@@ -127,12 +127,12 @@ export namespace SyntaxKind {
 export module Call {
     const META_DATA_KEY = "kamboja:Call.when";
     export function when(kind: string) {
-        return function (target, method, descriptor) {
+        return function (target:any, method:string, descriptor:PropertyDescriptor) {
             Reflect.defineMetadata(META_DATA_KEY, kind, target, method);
         }
     }
 
-    export function getWhen(target, methodName: string) {
+    export function getWhen(target:any, methodName: string) {
         let result = <string>Reflect.getMetadata(META_DATA_KEY, target, methodName);
         if (typeof result == "undefined") throw new Error("Unable to get metadata identifier, try to re-install refrect-metadata module")
         return result;
@@ -140,7 +140,7 @@ export module Call {
 }
 
 export abstract class TransformerBase {
-    abstract transform(node, parent: MetaData)
+    abstract transform(node:any, parent: MetaData):void
 
     protected traverse(children: any[], metaData: MetaData, transformers: TransformerBase[]) {
         let calls = this.getCalls(transformers)

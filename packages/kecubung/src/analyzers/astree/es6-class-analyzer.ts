@@ -6,7 +6,7 @@ export class Es6ClassAnalyzer extends ClassAnalyzer {
     /**
      * expect VariableDeclaration, ExpressionStatement
      */
-    constructor(node) { super(node) }
+    constructor(node:any) { super(node) }
 
     //constructors & methods
     getMember() {

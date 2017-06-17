@@ -35,7 +35,6 @@ describe("Es6ClassTransformer", () => {
                 analysis: 1,
                 location: { start: 83, end: 97 },
                 parameters: [],
-                decorators: undefined
             }],
             constructor:
             {
@@ -50,7 +49,6 @@ describe("Es6ClassTransformer", () => {
                     analysis: 1,
                     location: { start: 57, end: 61 }
                 }],
-                decorators: undefined
             }
         })
     })
@@ -83,7 +81,6 @@ describe("Es6ClassTransformer", () => {
                 analysis: 1,
                 location: { start: 97, end: 111 },
                 parameters: [],
-                decorators: undefined
             }],
             constructor:
             {
@@ -98,7 +95,6 @@ describe("Es6ClassTransformer", () => {
                     analysis: 1,
                     location: { start: 71, end: 75 }
                 }],
-                decorators: undefined
             }
         })
     })
@@ -152,7 +148,6 @@ describe("Es6ClassTransformer", () => {
                     analysis: 1,
                     location: { start: 57, end: 61 }
                 }],
-                decorators: undefined
             }
         })
     })

@@ -38,7 +38,7 @@ describe("TsDecorator", () => {
         }
         dummy.transform(ast, parent);
         let clazz = <Core.ClassMetaData>parent.children[0];
-        Chai.expect(clazz.methods[0].decorators[0]).deep.eq(<Core.DecoratorMetaData>{
+        Chai.expect((<any>clazz.methods[0]).decorators[0]).deep.eq(<Core.DecoratorMetaData>{
             type: "Decorator",
             name: "decoOne",
             analysis: Core.AnalysisType.Valid,
@@ -75,8 +75,8 @@ describe("TsDecorator", () => {
         }
         dummy.transform(ast, parent);
         let clazz = <Core.ClassMetaData>parent.children[0];
-        Chai.expect(clazz.properties[0].name).eq("myProperty")
-        Chai.expect(clazz.properties[0].decorators[0]).deep.eq(<Core.DecoratorMetaData>{
+        Chai.expect((<any>clazz).properties[0].name).eq("myProperty")
+        Chai.expect((<any>clazz).properties[0].decorators[0]).deep.eq(<Core.DecoratorMetaData>{
             type: "Decorator",
             name: "decoOne",
             analysis: Core.AnalysisType.Valid,
@@ -106,12 +106,12 @@ describe("TsDecorator", () => {
                 type: "Class",
                 name: "MyClass",
                 analysis: Core.AnalysisType.Valid,
-                methods: []
+                methods: <Core.MethodMetaData[]>[]
             }]
         }
         dummy.transform(ast, parent);
         let clazz = <Core.ClassMetaData>parent.children[0];
-        Chai.expect(clazz.decorators[0]).deep.eq(<Core.DecoratorMetaData>{
+        Chai.expect((<any>clazz).decorators[0]).deep.eq(<Core.DecoratorMetaData>{
             type: "Decorator",
             name: "decoOne",
             analysis: Core.AnalysisType.Valid,
@@ -145,7 +145,7 @@ describe("TsDecorator", () => {
                 type: "Class",
                 name: "MyClass",
                 analysis: Core.AnalysisType.Valid,
-                methods: []
+                methods: <Core.MethodMetaData[]>[]
             }]
         }
         dummy.transform(ast, parent);
@@ -224,8 +224,8 @@ describe("TsDecorator", () => {
         }
         dummy.transform(ast, parent);
         let clazz = <Core.ClassMetaData>parent.children[0];
-        Chai.expect(clazz.properties[1].name).eq("myProperty")
-        Chai.expect(clazz.properties[1].decorators[0]).deep.eq(<Core.DecoratorMetaData>{
+        Chai.expect((<any>clazz).properties[1].name).eq("myProperty")
+        Chai.expect((<any>clazz).properties[1].decorators[0]).deep.eq(<Core.DecoratorMetaData>{
             type: "Decorator",
             name: "decoOne",
             analysis: Core.AnalysisType.Valid,
@@ -255,7 +255,7 @@ describe("TsDecorator", () => {
                 type: "Class",
                 name: "MyOtherClass",
                 analysis: Core.AnalysisType.Valid,
-                methods: []
+                methods: <Core.MethodMetaData[]>[]
             }]
         }
         dummy.transform(ast, parent);

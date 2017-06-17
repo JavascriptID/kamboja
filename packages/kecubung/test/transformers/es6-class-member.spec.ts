@@ -18,7 +18,7 @@ describe("Es6ClassMember", () => {
             type: "Class",
             name: "MyClass",
             analysis: Core.AnalysisType.Valid,
-            methods: []
+            methods: <Core.MethodMetaData[]>[]
         }
         let test = new Es6ClassMember("ASTree")
         test.transform(ast.body.body[0], parent)
@@ -34,7 +34,6 @@ describe("Es6ClassMember", () => {
                 analysis: 1,
                 location: { start: 57, end: 61 }
             }],
-            decorators: undefined
         })
     })
 
@@ -49,7 +48,7 @@ describe("Es6ClassMember", () => {
             type: "Class",
             name: "MyClass",
             analysis: Core.AnalysisType.Valid,
-            methods: []
+            methods: <Core.MethodMetaData[]>[]
         }
         let test = new Es6ClassMember("ASTree")
         test.transform(ast.body.body[0], parent)
@@ -59,7 +58,6 @@ describe("Es6ClassMember", () => {
             analysis: 1,
             location: { start: 45, end: 62 },
             parameters: [],
-            decorators: undefined
         })
     })
 
@@ -74,7 +72,7 @@ describe("Es6ClassMember", () => {
             type: "Class",
             name: "MyClass",
             analysis: Core.AnalysisType.Valid,
-            methods: []
+            methods: <Core.MethodMetaData[]>[]
         }
         let test = new Es6ClassMember("ASTree")
         test.transform(ast.body.body[1], parent)
@@ -90,7 +88,6 @@ describe("Es6ClassMember", () => {
                 analysis: 1,
                 location: { start: 92, end: 96 }
             }],
-            decorators: undefined
         })
     })
 
@@ -105,7 +102,7 @@ describe("Es6ClassMember", () => {
             type: "Class",
             name: "MyClass",
             analysis: Core.AnalysisType.Valid,
-            methods: []
+            methods: <Core.MethodMetaData[]>[]
         }
         let test = new Es6ClassMember("ASTree")
         test.transform(ast.body.body[1], parent)
@@ -115,7 +112,6 @@ describe("Es6ClassMember", () => {
             analysis: 1,
             location: { start: 79, end: 93 },
             parameters: [],
-            decorators: undefined
         })
     })
 
@@ -127,7 +123,7 @@ describe("Es6ClassMember", () => {
             type: "Class",
             name: "MyClass",
             analysis: Core.AnalysisType.Valid,
-            methods: []
+            methods: <Core.MethodMetaData[]>[]
         }
         let test = new Es6ClassMember("ASTree")
         test.transform(ast, parent)

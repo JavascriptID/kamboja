@@ -3,7 +3,7 @@ import * as HP from "./helper"
 
 
 export class DecoratorAnalyzer {
-    constructor(private node) { }
+    constructor(private node:any) { }
 
     isMethodDecorator() {
         return this.node.type == SyntaxKind.ExpressionStatement

@@ -3,12 +3,12 @@ import * as Chai from "chai"
 
 export class DummyTransformer extends Core.TransformerBase {
     @Core.Call.when(Core.SyntaxKind.VariableDeclaration)
-    transform(node, parent: Core.ParentMetaData) {
+    transform(node:any, parent: Core.ParentMetaData) {
     }
 }
 
 export class FakeTransformer extends Core.TransformerBase {
-    transform(node, parent: Core.ParentMetaData) {
+    transform(node:any, parent: Core.ParentMetaData) {
     }
 }
 

@@ -4,7 +4,7 @@ import * as Analyzer from "../../analyzers"
 /**
  * require CallExpression.callee
  */
-export function getMethodNameFromCallee(callee) {
+export function getMethodNameFromCallee(callee:any) {
     if (!callee) return "";
     if (callee.type == SyntaxKind.MemberExpression) return callee.property.name;
     else return callee.name;
@@ -13,13 +13,13 @@ export function getMethodNameFromCallee(callee) {
 /**
  * require CallExpression 
  */
-export function isReservedDecorator(callExpression) {
+export function isReservedDecorator(callExpression:any) {
     return getMethodNameFromCallee(callExpression.callee) == "__metadata"
         || getMethodNameFromCallee(callExpression.callee) == "__param"
         || getMethodNameFromCallee(callExpression.callee) == "__decorate"
 }
 
-export function getDecoratorParameterName(param):ValueMetaData {
+export function getDecoratorParameterName(param:any):ValueMetaData {
     switch (param.type) {
         case SyntaxKind.StringLiteral:
             return getPrimitiveParameter("String", param)
@@ -40,7 +40,7 @@ export function getDecoratorParameterName(param):ValueMetaData {
     }
 }
 
-function getPrimitiveParameter(type: ValueMetaDataType, param) {
+function getPrimitiveParameter(type: ValueMetaDataType, param:any) {
     return <PrimitiveValueMetaData>{
         type: type,
         value: param.value
@@ -48,7 +48,7 @@ function getPrimitiveParameter(type: ValueMetaDataType, param) {
 }
 
 
-function getArrayParameter(param) {
+function getArrayParameter(param:any) {
     let result = <ArrayValueMetaData>{
         type: "Array",
         children: []
@@ -59,7 +59,7 @@ function getArrayParameter(param) {
     return result;
 }
 
-function getPropertyParameter(param) {
+function getPropertyParameter(param:any) {
     let value = getDecoratorParameterName(param.value);
     return <PrimitiveValueMetaData>{
         type: value.type,
@@ -68,7 +68,7 @@ function getPropertyParameter(param) {
     }
 }
 
-function getObjectParameter(param) {
+function getObjectParameter(param:any) {
     let result = <ObjectValueMetaData>{
         type: "Object",
         properties: []

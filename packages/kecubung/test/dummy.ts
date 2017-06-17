@@ -1,6 +1,6 @@
 
-function deco(any?){
-    return function(...args){}
+function deco(any?:any){
+    return function(...args:any[]){}
 }
 
 export module Module{

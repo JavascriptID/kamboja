@@ -9,7 +9,7 @@ export class Es6ClassTransformer extends Core.TransformerBase {
     }
 
     @Core.Call.when(Core.SyntaxKind.ClassDeclaration)
-    transform(node, parent: Core.ParentMetaData) {
+    transform(node:any, parent: Core.ParentMetaData) {
         let analyzer = <Analyzer.ClassAnalyzer>Analyzer
             .get(this.parserType, Analyzer.AnalyzerType.Es6Class, node)
         if (analyzer.isCandidate()) {

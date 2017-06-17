@@ -2,7 +2,7 @@ import { SyntaxKind, SourceLocation } from "../../core"
 
 
 export class FileAnalyzer {
-    constructor(private node) { }
+    constructor(private node:any) { }
 
     getChildren(){
         return this.node.program.body;

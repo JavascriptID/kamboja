@@ -4,7 +4,7 @@ export class ModuleAnalyzer {
     /**
      * require ExpressionStatement 
      */
-    constructor(private node) {
+    constructor(private node:any) {
 
     }
 

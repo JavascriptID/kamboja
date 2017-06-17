@@ -75,7 +75,6 @@ describe("Transformer", () => {
                             analysis: 1,
                             location: { start: 126, end: 140 },
                             parameters: [],
-                            decorators: undefined
                         }]
                     }],
                     location: { start: 45, end: 253 },
@@ -94,7 +93,6 @@ describe("Transformer", () => {
                         analysis: 1,
                         location: { start: 380, end: 394 },
                         parameters: [],
-                        decorators: undefined
                     }],
                     constructor:
                     {
@@ -109,7 +107,6 @@ describe("Transformer", () => {
                             analysis: 1,
                             location: { start: 341, end: 345 }
                         }],
-                        decorators: undefined
                     }
                 }],
                 location: { start: 0, end: 468 }
@@ -162,7 +159,6 @@ describe("Transformer", () => {
                             analysis: 1,
                             location: { start: 226, end: 236 }
                         }],
-                        decorators: undefined
                     }],
                     constructor:
                     {
@@ -171,7 +167,6 @@ describe("Transformer", () => {
                         analysis: 1,
                         location: { start: 127, end: 201 },
                         parameters: [],
-                        decorators: undefined
                     },
                     decorators:
                     [{
@@ -226,7 +221,6 @@ describe("Transformer", () => {
                             analysis: 1,
                             location: { start: 120, end: 129 }
                         }],
-                        decorators: undefined
                     }],
                     constructor:
                     {
@@ -247,7 +241,6 @@ describe("Transformer", () => {
                             analysis: 1,
                             location: { start: 71, end: 81 }
                         }],
-                        decorators: undefined
                     }
                 }],
                 location: { start: 0, end: 208 }

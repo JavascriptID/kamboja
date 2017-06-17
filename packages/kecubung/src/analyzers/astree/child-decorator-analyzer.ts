@@ -3,7 +3,7 @@ import * as H from "./helper"
 import * as Base from "../baseclasses"
 
 export class ChildDecoratorAnalyzer implements Base.ChildDecoratorAnalyzer {
-    constructor(private node) { }
+    constructor(private node:any) { }
 
     isMethodDecorator() {
         return !H.isReservedDecorator(this.node)
@@ -26,7 +26,7 @@ export class ChildDecoratorAnalyzer implements Base.ChildDecoratorAnalyzer {
     }
 
     getMethodParameters() {
-        return this.node.arguments.map(x => H.getDecoratorParameterName(x));
+        return this.node.arguments.map((x:any) => H.getDecoratorParameterName(x));
     }
 
     getParameterDecoratorName() {
@@ -42,7 +42,7 @@ export class ChildDecoratorAnalyzer implements Base.ChildDecoratorAnalyzer {
 
     getParameterDecoratorParameters() {
         return this.node.arguments[1].arguments
-            .map(x => H.getDecoratorParameterName(x));
+            .map((x:any) => H.getDecoratorParameterName(x));
     }
 
 }
