@@ -1,4 +1,4 @@
-export { KambojaApplication } from "./kamboja-express"
+export { KambojaApplication, OptionKeys } from "./kamboja-express"
 export { MiddlewareActionResult } from "./middleware-action-result"
 export { ViewActionResult} from "./view-action-result"
 export { JsonActionResult} from "./json-action-result"

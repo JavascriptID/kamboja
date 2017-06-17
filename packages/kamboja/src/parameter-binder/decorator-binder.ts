@@ -1,10 +1,10 @@
 import { RouteInfo, HttpRequest } from "kamboja-core"
-import { BinderBase } from "./binder-base"
+import { BinderBase, BinderResult } from "./binder-base"
 import { convert } from "./value-converter"
 import { DecoratorMetaData, PrimitiveValueMetaData } from "kecubung"
 
 export class DecoratorBinder extends BinderBase {
-    bind(routeInfo: RouteInfo, parameterName: string, request: HttpRequest) {
+    bind(routeInfo: RouteInfo, parameterName: string, request: HttpRequest):BinderResult {
         let decorators = routeInfo.methodMetaData.parameters
             .filter(x => x.name == parameterName)[0]
             .decorators

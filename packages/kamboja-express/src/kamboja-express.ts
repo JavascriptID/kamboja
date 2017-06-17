@@ -3,11 +3,11 @@ import { ExpressEngine } from "./express-engine"
 import { ExpressMiddlewareAdapter } from "./express-middleware-adapter"
 import { RequestHandler, Application } from "express"
 
-type KambojaOptionKeys = keyof Core.KambojaOption
-type ExpressOptionKeys = "case sensitive routing" | "env" | "etag"
+export type KambojaOptionKeys = keyof Core.KambojaOption
+export type ExpressOptionKeys = "case sensitive routing" | "env" | "etag"
     | "json replacer" | "json spaces" | "query parser" | "trust proxy"
     | "views" | "view cache" | "view engine" | "x-powered-by"
-type OptionKeys = KambojaOptionKeys | ExpressOptionKeys
+export type OptionKeys = KambojaOptionKeys | ExpressOptionKeys
 
 export class KambojaApplication {
     private expressEngine: ExpressEngine;
