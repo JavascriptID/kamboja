@@ -6,7 +6,7 @@ import * as Util from "util"
 import { DefaultPathResolver } from "../../../src/resolver"
 import { HttpDecoratorTransformer } from "../../../src/route-generator/transformers/http-decorator"
 
-describe("DefaultActionTransformer", () => {
+describe("Http Decorator", () => {
     it("Should pass to next transformer if provide @http.get()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
@@ -23,9 +23,9 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
         Chai.expect(result.status).eq("Next")
-        Chai.expect(result.info[0].httpMethod).eq("GET")
+        Chai.expect(result.info![0].httpMethod).eq("GET")
     })
 
     it("Should pass to next transformer if provide @http.post()", () => {
@@ -44,9 +44,9 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
         Chai.expect(result.status).eq("Next")
-        Chai.expect(result.info[0].httpMethod).eq("POST")
+        Chai.expect(result.info![0].httpMethod).eq("POST")
     })
 
     it("Should pass to next transformer if provide @http.put()", () => {
@@ -65,9 +65,9 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
         Chai.expect(result.status).eq("Next")
-        Chai.expect(result.info[0].httpMethod).eq("PUT")
+        Chai.expect(result.info![0].httpMethod).eq("PUT")
     })
 
     it("Should pass to next transformer if provide @http.patch()", () => {
@@ -86,9 +86,9 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
         Chai.expect(result.status).eq("Next")
-        Chai.expect(result.info[0].httpMethod).eq("PATCH")
+        Chai.expect(result.info![0].httpMethod).eq("PATCH")
     })
 
     it("Should pass to next transformer if provide @http.delete()", () => {
@@ -107,9 +107,9 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
         Chai.expect(result.status).eq("Next")
-        Chai.expect(result.info[0].httpMethod).eq("DELETE")
+        Chai.expect(result.info![0].httpMethod).eq("DELETE")
     })
 
     it("Should able to change route with relative @http.get()", () => {
@@ -128,9 +128,9 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].httpMethod).eq("GET")
-        Chai.expect(result.info[0].route).eq("/user/relative")
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
+        Chai.expect(result.info![0].httpMethod).eq("GET")
+        Chai.expect(result.info![0].route).eq("/user/relative")
     })
 
     it("Should able to change route with absolute @http.get()", () => {
@@ -149,9 +149,9 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].httpMethod).eq("GET")
-        Chai.expect(result.info[0].route).eq("/absolute/relative")
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
+        Chai.expect(result.info![0].httpMethod).eq("GET")
+        Chai.expect(result.info![0].route).eq("/absolute/relative")
     })
 
     it("Should able to change route with relative @http.post()", () => {
@@ -170,9 +170,9 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].httpMethod).eq("POST")
-        Chai.expect(result.info[0].route).eq("/user/relative")
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
+        Chai.expect(result.info![0].httpMethod).eq("POST")
+        Chai.expect(result.info![0].route).eq("/user/relative")
     })
 
     it("Should able to change route with absolute @http.post()", () => {
@@ -191,9 +191,9 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].httpMethod).eq("POST")
-        Chai.expect(result.info[0].route).eq("/absolute/relative")
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
+        Chai.expect(result.info![0].httpMethod).eq("POST")
+        Chai.expect(result.info![0].route).eq("/absolute/relative")
     })
 
     it("Should able to change route with relative @http.patch()", () => {
@@ -212,9 +212,9 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].httpMethod).eq("PATCH")
-        Chai.expect(result.info[0].route).eq("/user/relative")
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
+        Chai.expect(result.info![0].httpMethod).eq("PATCH")
+        Chai.expect(result.info![0].route).eq("/user/relative")
     })
 
     it("Should able to change route with absolute @http.patch()", () => {
@@ -233,9 +233,9 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].httpMethod).eq("PATCH")
-        Chai.expect(result.info[0].route).eq("/absolute/relative")
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
+        Chai.expect(result.info![0].httpMethod).eq("PATCH")
+        Chai.expect(result.info![0].route).eq("/absolute/relative")
     })
 
     it("Should able to change route with relative @http.put()", () => {
@@ -254,9 +254,9 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].httpMethod).eq("PUT")
-        Chai.expect(result.info[0].route).eq("/user/relative")
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
+        Chai.expect(result.info![0].httpMethod).eq("PUT")
+        Chai.expect(result.info![0].route).eq("/user/relative")
     })
 
     it("Should able to change route with absolute @http.put()", () => {
@@ -275,9 +275,9 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].httpMethod).eq("PUT")
-        Chai.expect(result.info[0].route).eq("/absolute/relative")
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
+        Chai.expect(result.info![0].httpMethod).eq("PUT")
+        Chai.expect(result.info![0].route).eq("/absolute/relative")
     })
 
     it("Should able to change route with relative @http.delete()", () => {
@@ -296,9 +296,9 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].httpMethod).eq("DELETE")
-        Chai.expect(result.info[0].route).eq("/user/relative")
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
+        Chai.expect(result.info![0].httpMethod).eq("DELETE")
+        Chai.expect(result.info![0].route).eq("/user/relative")
     })
 
     it("Should able to change route with absolute @http.delete()", () => {
@@ -317,9 +317,9 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].httpMethod).eq("DELETE")
-        Chai.expect(result.info[0].route).eq("/absolute/relative")
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
+        Chai.expect(result.info![0].httpMethod).eq("DELETE")
+        Chai.expect(result.info![0].route).eq("/absolute/relative")
     })
 
     it("Should pass to next transformer if not contains decorator", () => {
@@ -335,7 +335,7 @@ describe("DefaultActionTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
         Chai.expect(result.status).eq("Next")
     })
 

@@ -6,7 +6,7 @@ class BaseClass {
 }
 
 export class SimpleController extends BaseClass {
-    myGetAction(par1, par2) { }
-    myOtherGetAction(par1) { }
+    myGetAction(par1:any, par2:any) { }
+    myOtherGetAction(par1:any) { }
     myActionWithoutParameter() { }
 }

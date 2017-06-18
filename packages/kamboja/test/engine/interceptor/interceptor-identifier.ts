@@ -13,7 +13,7 @@ export function id(id:string) {
     }
 }
 
-export function getId(target, methodName?: string) {
+export function getId(target:any, methodName?: string) {
     if (!methodName) {
         return <string> Reflect.getMetadata(InterceptorMetadataKey, target.constructor)
     }

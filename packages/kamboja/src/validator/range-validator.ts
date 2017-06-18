@@ -9,13 +9,15 @@ export class RangeValidator extends ValidatorBase {
     validate(args:FieldValidatorArg) {
         if (this.isEmpty(args.value)) return
         let fieldName = args.parentField ? `${args.parentField}.${args.field}` : args.field
-        let minValue:number, maxValue: number, customMessage: string;
+        let minValue:number|undefined = undefined, 
+            maxValue: number|undefined = undefined,
+            customMessage: string|undefined = undefined;
         minValue = (<Kecubung.PrimitiveValueMetaData>args.decoratorArgs[0]).value
         if(args.decoratorArgs[1]) maxValue = (<Kecubung.PrimitiveValueMetaData>args.decoratorArgs[1]).value
         if(args.decoratorArgs[2]) customMessage = (<Kecubung.PrimitiveValueMetaData>args.decoratorArgs[2]).value
         if (typeof args.value == "number") {
             let numericValue = args.value;
-            if (numericValue < minValue) {
+            if (numericValue < minValue!) {
                 return [{
                     field: fieldName,
                     message: customMessage || `[${args.field}] must be greater than ${minValue}`
@@ -30,7 +32,7 @@ export class RangeValidator extends ValidatorBase {
         }
         else if(typeof args.value == "string") {
             let length = args.value.length;
-            if (length < minValue){
+            if (length < minValue!){
                 return [{
                     field: fieldName,
                     message: customMessage || `[${args.field}] length must be more than ${minValue} characters`

@@ -8,9 +8,9 @@ import { DefaultPathResolver } from "../../../src/resolver"
 import { TransformerBase, getWhen, when } from "../../../src/route-generator/transformers/transformer-base"
 
 class MyCustomClassTransformer extends TransformerBase {
-    constructor(trans: TransformerBase[]) {
+    constructor(trans: TransformerBase[]|undefined) {
         super()
-        this.transformers = trans
+        this.transformers = trans!
     }
     @when("Class")
     transform(meta: Kecubung.ClassMetaData, parent: string, prevResult: Core.RouteInfo[]): Core.TransformResult {
@@ -58,7 +58,7 @@ class NextTransformer extends TransformerBase {
 describe("TransformerBase", () => {
     describe("Decorators", () => {
         it("Should decorate transformer properly", () => {
-            let test = new MyCustomClassTransformer(null)
+            let test = new MyCustomClassTransformer(undefined)
             Chai.expect(getWhen(test, "transform")).eq("Class")
         })
     })
@@ -68,8 +68,8 @@ describe("TransformerBase", () => {
             new ExitTransformer(),
             new NextWithResultTransformer()
         ])
-        let result = test.transform(<Kecubung.ClassMetaData>{ methods: [{ type: "Method" }] }, "", undefined)
-        Chai.expect(result.info[0]).undefined
+        let result = test.transform(<Kecubung.ClassMetaData>{ methods: [{ type: "Method" }] }, "", [])
+        Chai.expect(result.info![0]).undefined
     })
 
     it("Should be able to pass result to next children", () => {
@@ -77,8 +77,8 @@ describe("TransformerBase", () => {
             new NextWithResultTransformer(),
             new MergeWithPreviousResultTransformer(),
         ])
-        let result = test.transform(<Kecubung.ClassMetaData>{ methods: [{ type: "Method" }] }, "", undefined)
-        Chai.expect(result.info[0].route).eq("/next/with/result/merged/with/last")
+        let result = test.transform(<Kecubung.ClassMetaData>{ methods: [{ type: "Method" }] }, "", [])
+        Chai.expect(result.info![0].route).eq("/next/with/result/merged/with/last")
     })
 
     it("Should be able to pass result to next children", () => {
@@ -86,7 +86,7 @@ describe("TransformerBase", () => {
             new NextTransformer(),
             new MergeWithPreviousResultTransformer(),
         ])
-        let result = test.transform(<Kecubung.ClassMetaData>{ methods: [{ type: "Method" }] }, "", undefined)
-        Chai.expect(result.info[0].route).eq("/merged/with/last")
+        let result = test.transform(<Kecubung.ClassMetaData>{ methods: [{ type: "Method" }] }, "", [])
+        Chai.expect(result.info![0].route).eq("/merged/with/last")
     })
 })

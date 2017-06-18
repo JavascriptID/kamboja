@@ -97,7 +97,7 @@ describe("Transformer", () => {
         it("Should not transform @internal action", () => {
             let meta = H.fromFile("./transformer-dummy/internal-decorators.js", new DefaultPathResolver(__dirname))
             let result = Transformer.transform(meta);
-            let info = result.filter(x => x.methodMetaData.name == "privateMethod")
+            let info = result.filter(x => x.methodMetaData!.name == "privateMethod")
             Chai.expect(info.length).eq(0);
         })
 
@@ -149,13 +149,13 @@ describe("Transformer", () => {
             let meta = H.fromFile("./transformer-dummy/http-decorator-multiple.js", new DefaultPathResolver(__dirname))
             let result = Transformer.transform(meta);
             Chai.expect(result[0].route).eq('/this/is/the/first/route')
-            Chai.expect(result[0].methodMetaData.name).eq('actionHaveNoParameter')
+            Chai.expect(result[0].methodMetaData!.name).eq('actionHaveNoParameter')
             Chai.expect(result[1].route).eq('/this/is/the/other/route')
-            Chai.expect(result[1].methodMetaData.name).eq('actionHaveNoParameter')
+            Chai.expect(result[1].methodMetaData!.name).eq('actionHaveNoParameter')
             Chai.expect(result[2].route).eq('/this/is/:parameter')
-            Chai.expect(result[2].methodMetaData.name).eq('actionWithParameter')
+            Chai.expect(result[2].methodMetaData!.name).eq('actionWithParameter')
             Chai.expect(result[3].route).eq('/the/:parameter/in/the/middle')
-            Chai.expect(result[3].methodMetaData.name).eq('actionWithParameter')
+            Chai.expect(result[3].methodMetaData!.name).eq('actionWithParameter')
         })
 
         it("Empty http decorator parameter should fall back to default action generator", () => {
@@ -164,19 +164,19 @@ describe("Transformer", () => {
             Chai.expect(result[0].route).eq("/simple/getmethod")
             Chai.expect(result[0].httpMethod).eq("GET")
             Chai.expect(result[0].initiator).eq("HttpMethodDecorator")
-            Chai.expect(result[0].collaborator.some(x => x == "DefaultAction")).true
+            Chai.expect(result[0].collaborator!.some(x => x == "DefaultAction")).true
             Chai.expect(result[1].route).eq("/simple/postmethod")
             Chai.expect(result[1].httpMethod).eq("POST")
             Chai.expect(result[1].initiator).eq("HttpMethodDecorator")
-            Chai.expect(result[1].collaborator.some(x => x == "DefaultAction")).true
+            Chai.expect(result[1].collaborator!.some(x => x == "DefaultAction")).true
             Chai.expect(result[2].route).eq("/simple/putmethod")
             Chai.expect(result[2].httpMethod).eq("PUT")
             Chai.expect(result[2].initiator).eq("HttpMethodDecorator")
-            Chai.expect(result[2].collaborator.some(x => x == "DefaultAction")).true
+            Chai.expect(result[2].collaborator!.some(x => x == "DefaultAction")).true
             Chai.expect(result[3].route).eq("/simple/deletemethod")
             Chai.expect(result[3].httpMethod).eq("DELETE")
             Chai.expect(result[3].initiator).eq("HttpMethodDecorator")
-            Chai.expect(result[3].collaborator.some(x => x == "DefaultAction")).true
+            Chai.expect(result[3].collaborator!.some(x => x == "DefaultAction")).true
         })
 
         it("Should check parameters association issue on multiple decorators", () => {
@@ -187,12 +187,12 @@ describe("Transformer", () => {
             Chai.expect(result[0].analysis).deep.eq([
                 Core.RouteAnalysisCode.UnAssociatedParameters
             ])
-            Chai.expect(result[0].methodMetaData.name).eq("actionHaveNoParameter")
+            Chai.expect(result[0].methodMetaData!.name).eq("actionHaveNoParameter")
             Chai.expect(result[1].route).eq("/this/is/the/:nonPar/route")
             Chai.expect(result[1].analysis).deep.eq([
                 Core.RouteAnalysisCode.UnAssociatedParameters
             ])
-            Chai.expect(result[1].methodMetaData.name).eq("actionHaveNoParameter")
+            Chai.expect(result[1].methodMetaData!.name).eq("actionHaveNoParameter")
         })
     })
 
@@ -290,7 +290,7 @@ describe("Transformer", () => {
         it("Should support @internal decorator", () => {
             let meta = H.fromFile("./transformer-dummy/api-convention-with-internal.js", new DefaultPathResolver(__dirname))
             let result = Transformer.transform(meta);
-            let info = result.filter(x => x.methodMetaData.name == "getByPage")
+            let info = result.filter(x => x.methodMetaData!.name == "getByPage")
             Chai.expect(info.length).eq(0)
         })
 
@@ -299,38 +299,38 @@ describe("Transformer", () => {
             let result = Transformer.transform(meta);
             Chai.expect(result[0].route).eq("/simple/getbypage")
             Chai.expect(result[0].initiator).eq("HttpMethodDecorator")
-            Chai.expect(result[0].collaborator.some(x => x == "DefaultAction")).true
+            Chai.expect(result[0].collaborator!.some(x => x == "DefaultAction")).true
         })
 
         it("Should add @val.required validator on `get` action", () => {
             let meta = H.fromFile("./transformer-dummy/api-convention.js", new DefaultPathResolver(__dirname))
             let result = Transformer.transform(meta);
-            let hasRequired = result.filter(x => x.methodMetaData.name == "get")
-                .some(x => x.methodMetaData.parameters[0].decorators.some(y => y.name == "required"))
+            let hasRequired = result.filter(x => x.methodMetaData!.name == "get")
+                .some(x => x.methodMetaData!.parameters[0].decorators!.some(y => y.name == "required"))
             Chai.expect(hasRequired).true
         })
 
         it("Should add @val.required validator on `modify` action", () => {
             let meta = H.fromFile("./transformer-dummy/api-convention.js", new DefaultPathResolver(__dirname))
             let result = Transformer.transform(meta);
-            let hasRequired = result.filter(x => x.methodMetaData.name == "modify")
-                .some(x => x.methodMetaData.parameters[0].decorators.some(y => y.name == "required"))
+            let hasRequired = result.filter(x => x.methodMetaData!.name == "modify")
+                .some(x => x.methodMetaData!.parameters[0].decorators!.some(y => y.name == "required"))
             Chai.expect(hasRequired).true
         })
 
         it("Should add @val.required validator on `replace` action", () => {
             let meta = H.fromFile("./transformer-dummy/api-convention.js", new DefaultPathResolver(__dirname))
             let result = Transformer.transform(meta);
-            let hasRequired = result.filter(x => x.methodMetaData.name == "replace")
-                .some(x => x.methodMetaData.parameters[0].decorators.some(y => y.name == "required"))
+            let hasRequired = result.filter(x => x.methodMetaData!.name == "replace")
+                .some(x => x.methodMetaData!.parameters[0].decorators!.some(y => y.name == "required"))
             Chai.expect(hasRequired).true
         })
 
         it("Should add @val.required validator on `delete` action", () => {
             let meta = H.fromFile("./transformer-dummy/api-convention.js", new DefaultPathResolver(__dirname))
             let result = Transformer.transform(meta);
-            let hasRequired = result.filter(x => x.methodMetaData.name == "delete")
-                .some(x => x.methodMetaData.parameters[0].decorators.some(y => y.name == "required"))
+            let hasRequired = result.filter(x => x.methodMetaData!.name == "delete")
+                .some(x => x.methodMetaData!.parameters[0].decorators!.some(y => y.name == "required"))
             Chai.expect(hasRequired).true
         })
     })
@@ -420,7 +420,7 @@ describe("Transformer", () => {
         it("Should automatically add required validator on appropriate parameter", () => {
             let meta = H.fromFile("./transformer-dummy/root-decorator-parameterized.js", new DefaultPathResolver(__dirname))
             let result = Transformer.transform(meta);
-            Chai.expect(result[2].methodMetaData.parameters[1].decorators[0].name).eq("required")
+            Chai.expect(result[2].methodMetaData!.parameters[1].decorators![0].name).eq("required")
         })
     })
 
@@ -482,7 +482,7 @@ describe("Transformer", () => {
             `)
 
             let result = Transformer.transform(meta)
-            Chai.expect(result[0].analysis[0]).eq(Core.RouteAnalysisCode.UnAssociatedParameters)
+            Chai.expect(result[0].analysis![0]).eq(Core.RouteAnalysisCode.UnAssociatedParameters)
         })
 
         it("Should transform ES6 class which have method with default parameter", () => {

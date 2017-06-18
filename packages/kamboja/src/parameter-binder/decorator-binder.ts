@@ -5,7 +5,7 @@ import { DecoratorMetaData, PrimitiveValueMetaData } from "kecubung"
 
 export class DecoratorBinder extends BinderBase {
     bind(routeInfo: RouteInfo, parameterName: string, request: HttpRequest):BinderResult {
-        let decorators = routeInfo.methodMetaData.parameters
+        let decorators = routeInfo.methodMetaData!.parameters
             .filter(x => x.name == parameterName)[0]
             .decorators
         if (!decorators) return this.next()

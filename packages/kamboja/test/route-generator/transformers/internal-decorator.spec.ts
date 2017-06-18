@@ -23,7 +23,7 @@ describe("InternalDecoratorTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new InternalDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", [])
         Chai.expect(result.status).eq("Exit")
     })
 
@@ -40,7 +40,7 @@ describe("InternalDecoratorTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new InternalDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", [])
         Chai.expect(result.status).eq("Next")
     })
 
@@ -61,8 +61,8 @@ describe("InternalDecoratorTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new InternalDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].analysis).deep.eq([Core.RouteAnalysisCode.ConflictDecorators])
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", [])
+        Chai.expect(result.info![0].analysis).deep.eq([Core.RouteAnalysisCode.ConflictDecorators])
     })
 
     it("Should analyze DecoratorConflict if combine with @http.post()", () => {
@@ -82,8 +82,8 @@ describe("InternalDecoratorTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new InternalDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].analysis).deep.eq([Core.RouteAnalysisCode.ConflictDecorators])
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", [])
+        Chai.expect(result.info![0].analysis).deep.eq([Core.RouteAnalysisCode.ConflictDecorators])
     })
 
     it("Should analyze DecoratorConflict if combine with @http.put()", () => {
@@ -103,8 +103,8 @@ describe("InternalDecoratorTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new InternalDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].analysis).deep.eq([Core.RouteAnalysisCode.ConflictDecorators])
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", [])
+        Chai.expect(result.info![0].analysis).deep.eq([Core.RouteAnalysisCode.ConflictDecorators])
     })
 
     it("Should analyze DecoratorConflict if combine with @http.patch()", () => {
@@ -124,8 +124,8 @@ describe("InternalDecoratorTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new InternalDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].analysis).deep.eq([Core.RouteAnalysisCode.ConflictDecorators])
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", [])
+        Chai.expect(result.info![0].analysis).deep.eq([Core.RouteAnalysisCode.ConflictDecorators])
     })
 
     it("Should analyze DecoratorConflict if combine with @http.delete()", () => {
@@ -145,8 +145,8 @@ describe("InternalDecoratorTransformer", () => {
         exports.MyController = MyController;
         `, "controller/user-controller.js")
         let test = new InternalDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].analysis).deep.eq([Core.RouteAnalysisCode.ConflictDecorators])
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", [])
+        Chai.expect(result.info![0].analysis).deep.eq([Core.RouteAnalysisCode.ConflictDecorators])
     })
 
 })

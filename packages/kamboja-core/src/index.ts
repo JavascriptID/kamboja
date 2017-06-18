@@ -128,7 +128,7 @@ export interface FieldValidatorArg {
 }
 
 export interface ValidatorCommand {
-    validate(args: FieldValidatorArg):ValidationError[]
+    validate(args: FieldValidatorArg):ValidationError[]| undefined
 }
 
 export interface Facade {
@@ -153,7 +153,7 @@ export interface KambojaOption extends Facade {
 
 export interface MetaDataStorage {
     pathResolver: PathResolver
-    get(classId: string): QualifiedClassMetaData
+    get(classId: string): QualifiedClassMetaData | undefined
     getFiles(category: MetaDataLoaderCategory): Kecubung.ParentMetaData[]
     getClasses(category: MetaDataLoaderCategory): QualifiedClassMetaData[]
 }
@@ -169,7 +169,7 @@ export interface ValidationError {
 
 export interface Validator {
     isValid(): boolean
-    getValidationErrors(): ValidationError[]
+    getValidationErrors(): ValidationError[] | undefined
 }
 
 export interface BaseController {
@@ -290,8 +290,8 @@ export class ActionResult {
 }
 
 export function getRouteDetail(info: RouteInfo) {
-    const tokens = info.qualifiedClassName.split(",")
-    const method = `${tokens[0].trim()}.${info.methodMetaData.name}`
+    const tokens = info.qualifiedClassName!.split(",")
+    const method = `${tokens[0].trim()}.${info.methodMetaData!.name}`
     const file = tokens[1].trim()
     return `[${method} ${file}]`;
 }

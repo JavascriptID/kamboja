@@ -7,8 +7,8 @@ export class SimpleController extends Controller {
     actionHaveNoParameter(){}
 
     @http.get("/route/:associated/:notAssociated")
-    postMethod(associated){}
+    postMethod(associated:any){}
 
     @http.get("/route/have/no/parameter")
-    actionHaveParameter(parameter){}
+    actionHaveParameter(parameter:any){}
 }

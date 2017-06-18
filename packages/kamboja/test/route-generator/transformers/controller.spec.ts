@@ -17,7 +17,7 @@ describe("ControllerTransformer", () => {
             }(controller_1.Controller));
         `, "controller/user-controller.js")
         let test = new ControllerTransformer()
-        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], undefined, undefined)
+        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], "", [])
         Chai.expect(result.status).eq("ExitWithResult")
     })
 
@@ -32,8 +32,8 @@ describe("ControllerTransformer", () => {
             exports.AbsoluteRootController = AbsoluteRootController;
         `, "controller/user-controller.js")
         let test = new ControllerTransformer()
-        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], undefined, undefined)
-        Chai.expect(result.info[0].route).eq("/absoluteroot/index")
+        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], "", [])
+        Chai.expect(result.info![0].route).eq("/absoluteroot/index")
     })
 
 

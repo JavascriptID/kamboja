@@ -24,7 +24,7 @@ describe("ModuleTransformer", () => {
             })(Namespace = exports.Namespace || (exports.Namespace = {}));
         `, "controller/user-controller.js")
         let test = new ModuleTransformer()
-        let result = test.transform(<Kecubung.ParentMetaData>meta.children[0], "", undefined)
-        Chai.expect(result.info[0].route).eq("/namespace/relative/index")
+        let result = test.transform(<Kecubung.ParentMetaData>meta.children[0], "", [])
+        Chai.expect(result.info![0].route).eq("/namespace/relative/index")
     })
 })

@@ -19,7 +19,7 @@ describe("ApiConventionTransformer", () => {
         `, "controller/user-controller.js")
         let test = new ApiConventionTransformer()
         let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].route).eq("/user")
+        Chai.expect(result.info![0].route).eq("/user")
     })
 
     it("Should transform 'get' properly", () => {
@@ -34,7 +34,7 @@ describe("ApiConventionTransformer", () => {
         `, "controller/user-controller.js")
         let test = new ApiConventionTransformer()
         let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].route).eq("/user/:id")
+        Chai.expect(result.info![0].route).eq("/user/:id")
     })
 
     it("Should transform 'list' properly", () => {
@@ -49,7 +49,7 @@ describe("ApiConventionTransformer", () => {
         `, "controller/user-controller.js")
         let test = new ApiConventionTransformer()
         let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].route).eq("/user")
+        Chai.expect(result.info![0].route).eq("/user")
     })
 
     it("Should transform 'modify' properly", () => {
@@ -64,7 +64,7 @@ describe("ApiConventionTransformer", () => {
         `, "controller/user-controller.js")
         let test = new ApiConventionTransformer()
         let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].route).eq("/user/:id")
+        Chai.expect(result.info![0].route).eq("/user/:id")
     })
 
     it("Should transform 'replace' properly", () => {
@@ -79,7 +79,7 @@ describe("ApiConventionTransformer", () => {
         `, "controller/user-controller.js")
         let test = new ApiConventionTransformer()
         let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].route).eq("/user/:id")
+        Chai.expect(result.info![0].route).eq("/user/:id")
     })
 
     it("Should transform 'delete' properly", () => {
@@ -94,7 +94,7 @@ describe("ApiConventionTransformer", () => {
         `, "controller/user-controller.js")
         let test = new ApiConventionTransformer()
         let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].route).eq("/user/:id")
+        Chai.expect(result.info![0].route).eq("/user/:id")
     })
 
     it("Should pass to next transformer if method name not [list, delete, get, modify, replace, add]", () => {

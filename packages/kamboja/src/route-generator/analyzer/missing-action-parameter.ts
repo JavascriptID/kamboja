@@ -2,9 +2,9 @@ import { AnalysisMessage, RouteInfo, RouteAnalysisCode } from "kamboja-core"
 import { AnalyzerCommand, getRouteDetail } from "./definitions"
 
 export class MissingActionParameterAnalyzer implements AnalyzerCommand {
-    analyse(route: RouteInfo): AnalysisMessage[] {
+    analyse(route: RouteInfo): AnalysisMessage[] | undefined{
         if (route.analysis && route.analysis.some(x => x == RouteAnalysisCode.MissingActionParameters)) {
-            let routeParams = route.route.split("/")
+            let routeParams = route.route!.split("/")
                 .filter(x => x.charAt(0) == ":")
                 .map(x => x.substring(1))
             return [{

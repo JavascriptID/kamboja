@@ -4,7 +4,7 @@ import { ApiController } from "../../../src/controller"
 
 export class UserController extends ApiController {
     @http.get("this/is/dupe")
-    getByPage(offset, take) { }
+    list(offset:number, take:number) { }
     @http.get("this/is/dupe")
     get() { }
 }

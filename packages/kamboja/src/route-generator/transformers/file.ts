@@ -8,7 +8,7 @@ import { ControllerWithDecorator } from "./controller-decorator"
 export class FileTransformer extends TransformerBase {
 
     @when("File")
-    transform(meta: Kecubung.ParentMetaData, parent: string, prevResult: Core.RouteInfo[]): Core.TransformResult {
+    transform(meta: Kecubung.ParentMetaData, parent: string, prevResult: Core.RouteInfo[] | undefined): Core.TransformResult {
         this.installChildTransformer()
         let result = this.transformChildren(meta.children, parent)
         result.forEach(x => x.qualifiedClassName += `, ${meta.name}`)

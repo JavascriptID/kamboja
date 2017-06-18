@@ -1,6 +1,6 @@
 import * as Chai from "chai"
 import { InvocationResult } from "../../src/engine/invocation-result"
-import { ApiActionResult, Core } from "../../src"
+import { Core } from "../../src"
 import * as Test from "kamboja-testing"
 import * as H from "../helper"
 import * as Sinon from "sinon"
@@ -16,14 +16,14 @@ describe("InvocationResult", () => {
 
     it("Should allow primitive value result", async () => {
         let result = await InvocationResult.create("Hello")
-        let actionResult = <ApiActionResult>result
+        let actionResult = result
         Chai.expect(actionResult.body).eq("Hello")
         result.execute(request, response, {})
     })
 
     it("Should allow undefined value result", async () => {
         let result = await InvocationResult.create(undefined)
-        let actionResult = <ApiActionResult>result
+        let actionResult = result
         Chai.expect(actionResult.body).eq(undefined)
     })
 
@@ -34,7 +34,7 @@ describe("InvocationResult", () => {
 
     it("Should allow Promise value result", async () => {
         let result = await InvocationResult.create(Promise.resolve("Hello"))
-        let actionResult = <ApiActionResult>result
+        let actionResult = result
         Chai.expect(actionResult.body).eq("Hello")
     })
 

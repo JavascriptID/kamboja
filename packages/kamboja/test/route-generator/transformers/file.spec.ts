@@ -18,8 +18,8 @@ describe("FileTransformer", () => {
             exports.AbsoluteRootController = AbsoluteRootController;
         `, "controller/user-controller.js")
         let test = new FileTransformer()
-        let result = test.transform(meta, undefined, undefined)
-        Chai.expect(result.info[0].route).eq("/absoluteroot/index")
+        let result = test.transform(meta, "", [])
+        Chai.expect(result.info!![0].route).eq("/absoluteroot/index")
     })
 
     it("Should transform controller with namespace properly", () => {
@@ -37,7 +37,7 @@ describe("FileTransformer", () => {
         `, "controller/user-controller.js")
         let test = new FileTransformer()
         let result = test.transform(meta, "", undefined)
-        Chai.expect(result.info[0].route).eq("/namespace/absoluteroot/index")
+        Chai.expect(result.info![0].route).eq("/namespace/absoluteroot/index")
     })
 
     it("Should transform controller with @http.root() properly", () => {
@@ -54,8 +54,8 @@ describe("FileTransformer", () => {
             exports.AbsoluteRootController = AbsoluteRootController;
         `, "controller/user-controller.js")
         let test = new FileTransformer()
-        let result = test.transform(meta, undefined, undefined)
-        Chai.expect(result.info[0].route).eq("/absolute/index")
+        let result = test.transform(meta, "", undefined)
+        Chai.expect(result.info![0].route).eq("/absolute/index")
     })
 
     it("Should transform controller with @http.root() with namespace properly", () => {
@@ -76,6 +76,6 @@ describe("FileTransformer", () => {
         `, "controller/user-controller.js")
         let test = new FileTransformer()
         let result = test.transform(meta, "", undefined)
-        Chai.expect(result.info[0].route).eq("/namespace/relative/index")
+        Chai.expect(result.info![0].route).eq("/namespace/relative/index")
     })
 })

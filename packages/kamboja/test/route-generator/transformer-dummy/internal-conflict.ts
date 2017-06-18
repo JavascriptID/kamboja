@@ -6,7 +6,7 @@ export class SimpleController extends Controller {
     //conflict decorators 
     @internal()
     @http.get()
-    privateMethod(par1, par2) { }
+    privateMethod(par1:any, par2:any) { }
 
-    publicMethod(par1) { }
+    publicMethod(par1:any) { }
 }

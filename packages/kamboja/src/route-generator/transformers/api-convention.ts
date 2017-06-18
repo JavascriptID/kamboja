@@ -8,7 +8,7 @@ export class ApiConventionTransformer extends TransformerBase {
     private conventions: Array<MethodConventionType> = ["get", "list", "add", "replace", "modify", "delete"]
 
     @when("Method")
-    transform(meta: Kecubung.MethodMetaData, parent: string, prevResult: Core.RouteInfo[]): Core.TransformResult {
+    transform(meta: Kecubung.MethodMetaData, parent: string, prevResult: Core.RouteInfo[]|undefined): Core.TransformResult {
         if (prevResult) {
             return this.next(prevResult);
         }
@@ -46,8 +46,8 @@ export class ApiConventionTransformer extends TransformerBase {
         let path = "/:" + meta.parameters[0].name;
         //auto assigned required validation on id
         if (!meta.parameters[0].decorators) meta.parameters[0].decorators = []
-        if (!meta.parameters[0].decorators.some(x => x.name == "required")) {
-            meta.parameters[0].decorators.push({
+        if (!meta.parameters[0].decorators!.some(x => x.name == "required")) {
+            meta.parameters[0].decorators!.push({
                 type: 'Decorator',
                 name: 'required',
                 analysis: 1,

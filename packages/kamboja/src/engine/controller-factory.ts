@@ -10,7 +10,7 @@ export class ControllerFactory {
 
     createController(): Core.BaseController {
         try {
-            return this.facade.dependencyResolver.resolve<Core.BaseController>(this.routeInfo.classId)
+            return this.facade.dependencyResolver!.resolve<Core.BaseController>(this.routeInfo.classId)
         }
         catch (e) {
             throw new Error(`Can not instantiate [${this.routeInfo.classId}] as Controller.\n\t Inner message: ${e.message}`)
@@ -18,8 +18,8 @@ export class ControllerFactory {
     }
 
     createValidatorForParameters(values: any[]) {
-        let validator = new ValidatorImpl(this.facade.metaDataStorage, this.getValidatorCommands())
-        validator.setValue(values, this.routeInfo.classMetaData, this.routeInfo.methodMetaData.name)
+        let validator = new ValidatorImpl(this.facade.metaDataStorage!, this.getValidatorCommands())
+        validator.setValue(values, this.routeInfo.classMetaData!, this.routeInfo.methodMetaData!.name)
         return validator
     }
 
@@ -29,7 +29,7 @@ export class ControllerFactory {
             this.facade.validators.forEach(x => {
                 if (typeof x == "string") {
                     try {
-                        let validator = this.facade.dependencyResolver.resolve<Core.ValidatorCommand>(x)
+                        let validator = this.facade.dependencyResolver!.resolve<Core.ValidatorCommand>(x)
                         commands.push(validator)
                     }
                     catch (e) {

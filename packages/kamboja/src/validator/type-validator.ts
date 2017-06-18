@@ -11,7 +11,7 @@ export class TypeValidator extends ValidatorBase {
     }
 
     @decoratorName("type")
-    validate(args: FieldValidatorArg): ValidationError[] {
+    validate(args: FieldValidatorArg): ValidationError[] | undefined {
         const FIELD_NAME = args.parentField ? `${args.parentField}.${args.field}` : args.field
         if (this.isEmpty(args.value)) return
         if(!args.decoratorArgs) return;

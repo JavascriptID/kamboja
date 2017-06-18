@@ -10,7 +10,7 @@ export { Core }
 export { Resolver }
 export { RouteGenerator }
 export { Middleware }
-export { ApiActionResult, ApiController, Controller, HttpStatusError } from "./controller"
+export { ApiController, Controller, HttpStatusError } from "./controller"
 export { Kamboja } from "./kamboja"
 export { MetaDataLoader } from "./metadata-loader/metadata-loader"
 export { RequestHandler } from "./engine/request-handler"
@@ -22,5 +22,5 @@ export const internal = new Core.Decorator().internal;
 export const http = new Core.HttpDecorator();
 export const bind = new Core.BinderDecorator();
 export function authorize(role?: string | string[]) {
-    return middleware.use(new Middleware.Authorize(role))
+    return middleware.use(new Middleware.Authorize(role!))
 }

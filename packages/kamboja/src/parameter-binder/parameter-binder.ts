@@ -16,11 +16,11 @@ export class ParameterBinder {
     }
 
     getParameters(): Array<any> {
-        if(!this.routeInfo.methodMetaData.parameters 
-            || this.routeInfo.methodMetaData.parameters.length == 0)
+        if(!this.routeInfo.methodMetaData!.parameters 
+            || this.routeInfo.methodMetaData!.parameters.length == 0)
             return []
         let result = []
-        for(let par of this.routeInfo.methodMetaData.parameters){
+        for(let par of this.routeInfo.methodMetaData!.parameters){
             result.push(this.bind(par.name))
         }
         return result

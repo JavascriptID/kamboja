@@ -49,13 +49,13 @@ describe("MetaDataLoader", () => {
         it("Should return class by qualified name properly", () => {
             storage.load("controller", "Controller")
             let result = storage.get("DummyController, controller/dummy-controller.js")
-            Chai.expect(result.name).eq("DummyController")
+            Chai.expect(result!.name).eq("DummyController")
         })
 
         it("Should provide qualifiedClassName properly", () => {
             storage.load("controller", "Controller")
             let result = storage.get("DummyController, controller/dummy-controller.js")
-            let q = new QualifiedName(result.qualifiedClassName, new DefaultPathResolver(__dirname))
+            let q = new QualifiedName(result!.qualifiedClassName, new DefaultPathResolver(__dirname))
             Chai.expect(q.equals("DummyController, controller/dummy-controller")).true
         })
 
@@ -74,7 +74,7 @@ describe("MetaDataLoader", () => {
         it("Should return class by qualified name in deep namespace", () => {
             storage.load("with-deep-namespace", "Controller")
             let result = storage.get("MyParentNamespace.MyChildNamespace.DummyController, with-deep-namespace/dummy-controller.js")
-            Chai.expect(result.name).eq("DummyController")
+            Chai.expect(result!.name).eq("DummyController")
         })
 
         it("Should not return class if provided only class name on deep namespace", () => {

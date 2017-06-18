@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "description": "KambojaJS engine implementation using ExpressJs",
   "main": "src/index.js",
-  "types": "src/index.d.ts",
+  "types": "src/index.ts",
   "directories": {
     "test": "test"
   },

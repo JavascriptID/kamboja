@@ -8,5 +8,5 @@ export class MyModel {
 export class MyController extends Controller {
 
     @http.get()
-    getByPage(model) {}
+    getByPage(model:any) {}
 }

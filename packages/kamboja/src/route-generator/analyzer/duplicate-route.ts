@@ -3,9 +3,9 @@ import { AnalyzerCommand, getRouteDetail } from "./definitions"
 
 export class DuplicateRouteAnalyzer implements AnalyzerCommand {
     routes: RouteInfo[] = []
-    analyse(route: RouteInfo): AnalysisMessage[] {
+    analyse(route: RouteInfo): AnalysisMessage[] | undefined {
         if(!route.route) return
-        let dupe = this.routes.filter(x => x.route.toLowerCase() == route.route.toLowerCase() 
+        let dupe = this.routes.filter(x => x.route!.toLowerCase() == route.route!.toLowerCase() 
             && route.httpMethod == x.httpMethod);
         if (dupe.length > 0) {
             return [{

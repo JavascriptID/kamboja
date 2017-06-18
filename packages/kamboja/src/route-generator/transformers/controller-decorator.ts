@@ -42,7 +42,7 @@ export class ControllerWithDecorator extends TransformerBase {
     private checkUnassociatedParameter(info: Core.RouteInfo, route: string) {
         let param = route.split("/").filter(x => x.charAt(0) == ":")
             .map(x => x.substring(1))
-        let match = info.methodMetaData.parameters.filter(x => param.some(y => x.name == y))
+        let match = info.methodMetaData!.parameters.filter(x => param.some(y => x.name == y))
         if (match.length != param.length) {
             if (!info.analysis) info.analysis = []
             if (!info.analysis.some(x => x == Core.RouteAnalysisCode.UnAssociatedParameters))

@@ -13,7 +13,7 @@ export function convert(routeInfo: Core.RouteInfo, name:string, value: any) {
         new DefaultValueConverter(routeInfo)
     ]
     for (let converter of Converters) {
-        let result = converter.convert(routeInfo.methodMetaData.parameters.filter(x => x.name == name)[0], value)
+        let result = converter.convert(routeInfo.methodMetaData!.parameters.filter(x => x.name == name)[0], value)
         if (result.type == "Exit") return result.result;
     }
 }

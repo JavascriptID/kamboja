@@ -19,7 +19,7 @@ describe("MiddlewareFactory", () => {
     it("Should provide interceptors properly", () => {
         let meta = H.fromFile("controller/controller-intercepted.js", new DefaultPathResolver(__dirname))
         let infos = Transformer.transform(meta)
-        let info = infos.filter(x => x.methodMetaData && x.methodMetaData.name == "returnView" && x.classMetaData.name == "DummyApi")[0]
+        let info = infos.filter(x => x.methodMetaData && x.methodMetaData.name == "returnView" && x.classMetaData!.name == "DummyApi")[0]
         info.classId = info.qualifiedClassName
         facade.middlewares = [
             "DefaultInterceptor, interceptor/default-interceptor",
@@ -33,7 +33,7 @@ describe("MiddlewareFactory", () => {
     it("Should throw if provided unqualified class name in global interceptor", () => {
         let meta = H.fromFile("controller/controller-intercepted.js", new DefaultPathResolver(__dirname))
         let infos = Transformer.transform(meta)
-        let info = infos.filter(x => x.methodMetaData && x.methodMetaData.name == "returnView" && x.classMetaData.name == "DummyApi")[0]
+        let info = infos.filter(x => x.methodMetaData && x.methodMetaData.name == "returnView" && x.classMetaData!.name == "DummyApi")[0]
         info.classId = info.qualifiedClassName
         facade.middlewares = [
             "UnqualifiedName, path/of/nowhere"
@@ -45,7 +45,7 @@ describe("MiddlewareFactory", () => {
     it("Should throw if provided unqualified class name interceptor in class scope", () => {
         let meta = H.fromFile("controller/controller-intercepted-invalid-class.js", new DefaultPathResolver(__dirname))
         let infos = Transformer.transform(meta)
-        let info = infos.filter(x => x.methodMetaData && x.methodMetaData.name == "returnView" && x.classMetaData.name == "UnQualifiedNameOnClassController")[0]
+        let info = infos.filter(x => x.methodMetaData && x.methodMetaData.name == "returnView" && x.classMetaData!.name == "UnQualifiedNameOnClassController")[0]
         info.classId = info.qualifiedClassName
         let factory = new MiddlewareFactory(facade, new UnQualifiedNameOnClassController(), info)
         Chai.expect(() => factory.createMiddlewares()).throw("Can not instantiate middleware [UnqualifiedName, path/of/nowhere] on [UnQualifiedNameOnClassController, controller/controller-intercepted-invalid-class.js]")
@@ -54,7 +54,7 @@ describe("MiddlewareFactory", () => {
     it("Should throw if provided unqualified class name in method scope", () => {
         let meta = H.fromFile("controller/controller-intercepted-invalid-method.js", new DefaultPathResolver(__dirname))
         let infos = Transformer.transform(meta)
-        let info = infos.filter(x => x.methodMetaData && x.methodMetaData.name == "returnView" && x.classMetaData.name == "UnQualifiedNameOnMethodController")[0]
+        let info = infos.filter(x => x.methodMetaData && x.methodMetaData.name == "returnView" && x.classMetaData!.name == "UnQualifiedNameOnMethodController")[0]
         info.classId = info.qualifiedClassName
         let factory = new MiddlewareFactory(facade, new UnQualifiedNameOnMethodController(), info)
         Chai.expect(() => factory.createMiddlewares()).throw("Can not instantiate middleware [UnqualifiedName, path/of/nowhere] on [UnQualifiedNameOnMethodController.returnView controller/controller-intercepted-invalid-method.js]")
@@ -63,7 +63,7 @@ describe("MiddlewareFactory", () => {
     it("Should return in reverse order in global interceptors", () => {
         let meta = H.fromFile("controller/controller-intercepted.js", new DefaultPathResolver(__dirname))
         let infos = Transformer.transform(meta)
-        let info = infos.filter(x => x.methodMetaData && x.methodMetaData.name == "returnView" && x.classMetaData.name == "DummyApi")[0]
+        let info = infos.filter(x => x.methodMetaData && x.methodMetaData.name == "returnView" && x.classMetaData!.name == "DummyApi")[0]
         info.classId = info.qualifiedClassName
         facade.middlewares = [
             "DefaultInterceptor, interceptor/default-interceptor",
@@ -78,7 +78,7 @@ describe("MiddlewareFactory", () => {
     it("Should return in reverse order in class scope interceptors", () => {
         let meta = H.fromFile("controller/controller-intercepted.js", new DefaultPathResolver(__dirname))
         let infos = Transformer.transform(meta)
-        let info = infos.filter(x => x.methodMetaData && x.methodMetaData.name == "returnView" && x.classMetaData.name == "DummyApi")[0]
+        let info = infos.filter(x => x.methodMetaData && x.methodMetaData.name == "returnView" && x.classMetaData!.name == "DummyApi")[0]
         info.classId = info.qualifiedClassName
         let executor = new MiddlewareFactory(facade, new DummyApi(), info)
         let result = executor.getClassMiddlewares(new DummyApi());
@@ -89,7 +89,7 @@ describe("MiddlewareFactory", () => {
     it("Should return in reverse order in method scope interceptors", () => {
         let meta = H.fromFile("controller/controller-intercepted.js", new DefaultPathResolver(__dirname))
         let infos = Transformer.transform(meta)
-        let info = infos.filter(x => x.methodMetaData && x.methodMetaData.name == "returnView" && x.classMetaData.name == "DummyApi")[0]
+        let info = infos.filter(x => x.methodMetaData && x.methodMetaData.name == "returnView" && x.classMetaData!.name == "DummyApi")[0]
         info.classId = info.qualifiedClassName
         let executor = new MiddlewareFactory(facade, new DummyApi(), info)
         let result = executor.getMethodMiddlewares(new DummyApi());

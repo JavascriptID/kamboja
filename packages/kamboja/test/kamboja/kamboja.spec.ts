@@ -10,8 +10,8 @@ let engine = {
 }
 
 class FakeValidator extends Validator.ValidatorBase {
-    validate(arg: Core.FieldValidatorArg): Core.ValidationError[] {
-        return;
+    validate(arg: Core.FieldValidatorArg): Core.ValidationError[] | undefined {
+        return ;
     }
 }
 

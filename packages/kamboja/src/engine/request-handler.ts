@@ -7,7 +7,7 @@ import { PageNotFoundInvocation } from "./page-not-found-invocation"
 import { ErrorInvocation } from "./error-invocation"
 import { ControllerFactory } from "./controller-factory"
 import { MiddlewareFactory } from "./middleware-factory"
-import { HttpStatusError, ApiActionResult } from "../controller"
+import { HttpStatusError } from "../controller"
 
 export class RequestHandler {
     constructor(private option: Core.Facade,
@@ -17,14 +17,14 @@ export class RequestHandler {
 
     async execute() {
         let invocation: Core.Invocation;
-        let controller: Core.BaseController;
-        let routeInfo: Core.RouteInfo;
+        let controller: Core.BaseController | undefined;
+        let routeInfo: Core.RouteInfo | undefined;
         try {
             if (!this.info) {
                 invocation = new PageNotFoundInvocation(this.request, this.response)
             }
             else if (this.info instanceof Error) {
-                invocation = new ErrorInvocation(this.request, this.response, this.info, this.option.routeInfos)
+                invocation = new ErrorInvocation(this.request, this.response, this.info, this.option.routeInfos!)
             }
             else {
                 routeInfo = this.info;

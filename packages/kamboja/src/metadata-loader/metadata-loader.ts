@@ -7,7 +7,7 @@ import * as Kecubung from "kecubung"
 import * as Babylon from "babylon"
 
 function flatten(metaList: Kecubung.MetaData[], fileName: string): QualifiedClassMetaData[] {
-    let result = []
+    let result:any[] = []
     metaList.forEach(x => {
         switch (x.type) {
             case "Module":
@@ -75,7 +75,7 @@ export class MetaDataLoader implements MetaDataStorage {
         return this.flatStorage[category]
     }
 
-    get(classId: string): QualifiedClassMetaData {
+    get(classId: string): QualifiedClassMetaData | undefined {
         let request = new QualifiedName(classId, this.pathResolver)
         for (let key in this.flatStorage) {
             let result = this.flatStorage[key].filter(x => {

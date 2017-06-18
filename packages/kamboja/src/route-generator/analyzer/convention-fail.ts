@@ -2,7 +2,7 @@ import { AnalysisMessage, RouteInfo, RouteAnalysisCode } from "kamboja-core"
 import { AnalyzerCommand, getRouteDetail } from "./definitions"
 
 export class ConventionFailDecoratorAnalyzer implements AnalyzerCommand {
-    analyse(route: RouteInfo): AnalysisMessage[] {
+    analyse(route: RouteInfo): AnalysisMessage[] | undefined{
         if (route.analysis && route.analysis.some(x => x == RouteAnalysisCode.ConventionFail)) {
             return [{
                 code: RouteAnalysisCode.ConventionFail,

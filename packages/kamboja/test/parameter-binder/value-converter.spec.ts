@@ -10,8 +10,8 @@ describe("Value Converter", () => {
         it("Should convert string properly", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "defaultConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "defaultConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[0]
             let result = convert(info, parameterMeta.name, "halo")
             Chai.expect(typeof result).eq("string")
         })
@@ -19,8 +19,8 @@ describe("Value Converter", () => {
         it("Should convert number properly", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "defaultConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "defaultConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[0]
             let result = convert(info, parameterMeta.name, "200")
             Chai.expect(typeof result).eq("number")
         })
@@ -28,8 +28,8 @@ describe("Value Converter", () => {
         it("Should convert boolean properly", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "defaultConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "defaultConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[0]
             let result = convert(info, parameterMeta.name, "True")
             Chai.expect(typeof result).eq("boolean")
         })
@@ -37,8 +37,8 @@ describe("Value Converter", () => {
         it("Should convert undefined properly", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "defaultConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "defaultConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[0]
             let result = convert(info, parameterMeta.name, undefined)
             Chai.expect(typeof result).eq("undefined")
         })
@@ -46,8 +46,8 @@ describe("Value Converter", () => {
         it("Should convert object properly", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "defaultConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "defaultConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[0]
             let result = convert(info, parameterMeta.name, { data: "Hello" })
             Chai.expect(result).deep.eq({ data: "Hello" })
         })
@@ -57,8 +57,8 @@ describe("Value Converter", () => {
         it("Should convert string properly", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "decoratedConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "decoratedConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[0]
             let result = convert(info, parameterMeta.name, "halo")
             Chai.expect(typeof result).eq("string")
         })
@@ -66,8 +66,8 @@ describe("Value Converter", () => {
         it("Should convert number properly", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "decoratedConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[1]
+            let info = infos.filter(x => x.methodMetaData!.name == "decoratedConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[1]
             let result = convert(info, parameterMeta.name, "200")
             Chai.expect(typeof result).eq("number")
         })
@@ -75,8 +75,8 @@ describe("Value Converter", () => {
         it("Should convert boolean properly", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "decoratedConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[2]
+            let info = infos.filter(x => x.methodMetaData!.name == "decoratedConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[2]
             let result = convert(info, parameterMeta.name, "True")
             Chai.expect(typeof result).eq("boolean")
         })
@@ -84,8 +84,8 @@ describe("Value Converter", () => {
         it("Should convert undefined properly", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "decoratedConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "decoratedConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[0]
             let result = convert(info, parameterMeta.name, undefined)
             Chai.expect(typeof result).eq("undefined")
         })
@@ -93,8 +93,8 @@ describe("Value Converter", () => {
         it("Should throw if provided object", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "decoratedConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "decoratedConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[0]
             Chai.expect(() => convert(info, parameterMeta.name, { data: "Hello" }))
                 .throw("Expected parameter type of [@val.type('string') str] but got object in [DummyApi.decoratedConversion controller/parameter-binder-controller.js]")
         })
@@ -102,8 +102,8 @@ describe("Value Converter", () => {
         it("Should ignore string[]", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "arrayDecorated")[0]
-            let parameterMeta = info.methodMetaData.parameters[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "arrayDecorated")[0]
+            let parameterMeta = info.methodMetaData!.parameters[0]
             Chai.expect(convert(info, parameterMeta.name, [{ data: "Hello" }]))
                 .deep.eq([{ data: "Hello" }])
         })
@@ -111,8 +111,8 @@ describe("Value Converter", () => {
         it("Should ignore number[]", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "arrayDecorated")[0]
-            let parameterMeta = info.methodMetaData.parameters[1]
+            let info = infos.filter(x => x.methodMetaData!.name == "arrayDecorated")[0]
+            let parameterMeta = info.methodMetaData!.parameters[1]
             Chai.expect(convert(info, parameterMeta.name, [{ data: "Hello" }]))
                 .deep.eq([{ data: "Hello" }])
         })
@@ -120,8 +120,8 @@ describe("Value Converter", () => {
         it("Should ignore boolean[]", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "arrayDecorated")[0]
-            let parameterMeta = info.methodMetaData.parameters[2]
+            let info = infos.filter(x => x.methodMetaData!.name == "arrayDecorated")[0]
+            let parameterMeta = info.methodMetaData!.parameters[2]
             Chai.expect(convert(info, parameterMeta.name, [{ data: "Hello" }]))
                 .deep.eq([{ data: "Hello" }])
         })
@@ -131,8 +131,8 @@ describe("Value Converter", () => {
         it("Should convert string properly", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "conventionConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "conventionConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[0]
             let result = convert(info, parameterMeta.name, "halo")
             Chai.expect(typeof result).eq("string")
         })
@@ -140,8 +140,8 @@ describe("Value Converter", () => {
         it("Should convert number properly", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "conventionConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[1]
+            let info = infos.filter(x => x.methodMetaData!.name == "conventionConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[1]
             let result = convert(info, parameterMeta.name, "200")
             Chai.expect(typeof result).eq("number")
         })
@@ -149,8 +149,8 @@ describe("Value Converter", () => {
         it("Should convert boolean properly", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "conventionConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[2]
+            let info = infos.filter(x => x.methodMetaData!.name == "conventionConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[2]
             let result = convert(info, parameterMeta.name, "True")
             Chai.expect(typeof result).eq("boolean")
         })
@@ -158,8 +158,8 @@ describe("Value Converter", () => {
         it("Should convert undefined properly", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "conventionConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "conventionConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[0]
             let result = convert(info, parameterMeta.name, undefined)
             Chai.expect(typeof result).eq("undefined")
         })
@@ -167,8 +167,8 @@ describe("Value Converter", () => {
         it("Should throw if provided object on s<Name>", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "conventionConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "conventionConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[0]
             Chai.expect(() => convert(info, parameterMeta.name, { data: "Hello" }))
                 .throw("Expected parameter type of \'string\'  but got object in [sName] [DummyApi.conventionConversion controller/parameter-binder-controller.js]")
         })
@@ -176,8 +176,8 @@ describe("Value Converter", () => {
         it("Should throw if provided object on i<Name>", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "conventionConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[1]
+            let info = infos.filter(x => x.methodMetaData!.name == "conventionConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[1]
             Chai.expect(() => convert(info, parameterMeta.name, { data: "Hello" }))
                 .throw("Expected parameter type of \'number\'  but got object in [iAge] [DummyApi.conventionConversion controller/parameter-binder-controller.js")
         })
@@ -185,8 +185,8 @@ describe("Value Converter", () => {
         it("Should throw if provided object on b<Name>", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "conventionConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[2]
+            let info = infos.filter(x => x.methodMetaData!.name == "conventionConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[2]
             Chai.expect(() => convert(info, parameterMeta.name, { data: "Hello" }))
                 .throw("Expected parameter type of \'boolean\'  but got object in [bIsDirty] [DummyApi.conventionConversion controller/parameter-binder-controller.js]")
         })
@@ -194,8 +194,8 @@ describe("Value Converter", () => {
         it("Should not convert if parameter name after 'str' is lower case", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "conventionConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[3]
+            let info = infos.filter(x => x.methodMetaData!.name == "conventionConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[3]
             Chai.expect(convert(info, parameterMeta.name, { data: "Hello" }))
                 .deep.eq({ data: "Hello" })
         })
@@ -203,8 +203,8 @@ describe("Value Converter", () => {
         it("Should not convert if parameter name after 'int' is lower case", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "conventionConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[4]
+            let info = infos.filter(x => x.methodMetaData!.name == "conventionConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[4]
             Chai.expect(convert(info, parameterMeta.name, { data: "Hello" }))
                 .deep.eq({ data: "Hello" })
         })
@@ -212,8 +212,8 @@ describe("Value Converter", () => {
         it("Should not convert if parameter name after 'bool' is lower case", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "conventionConversion")[0]
-            let parameterMeta = info.methodMetaData.parameters[5]
+            let info = infos.filter(x => x.methodMetaData!.name == "conventionConversion")[0]
+            let parameterMeta = info.methodMetaData!.parameters[5]
             Chai.expect(convert(info, parameterMeta.name, { data: "Hello" }))
                 .deep.eq({ data: "Hello" })
         })
@@ -223,8 +223,8 @@ describe("Value Converter", () => {
     it("Should prioritize @val.type decorator vs naming convention", () => {
         let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
         let infos = Transformer.transform(meta)
-        let info = infos.filter(x => x.methodMetaData.name == "priority")[0]
-        let parameterMeta = info.methodMetaData.parameters[0]
+        let info = infos.filter(x => x.methodMetaData!.name == "priority")[0]
+        let parameterMeta = info.methodMetaData!.parameters[0]
         let result = convert(info, parameterMeta.name, "abc")
         Chai.expect(typeof result).eq("number")
     })

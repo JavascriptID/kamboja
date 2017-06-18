@@ -34,12 +34,11 @@ describe("Validator", () => {
 
     it("Should return undefined when provided correct value", () => {
         let clazz = storage.get("UserController, controller/user-controller")
-        let model: UserModel = {
+        let model = <UserModel> {
             email: "email@host.com",
             displayName: "Nobita Nobi",
-            item: null
         }
-        test.setValue([model], clazz, "saveUser")
+        test.setValue([model], <Kecubung.ClassMetaData>clazz, "saveUser")
         let isValid = test.isValid();
         let result = test.getValidationErrors();
         Chai.expect(result).undefined
@@ -48,12 +47,11 @@ describe("Validator", () => {
 
     it("Should return messages when provided incorrect value", () => {
         let clazz = storage.get("UserController, controller/user-controller")
-        let model: UserModel = {
+        let model = <UserModel> {
             email: "not-an-email",
             displayName: "Nobita Nobi",
-            item: null
         }
-        test.setValue([model], clazz, "saveUser")
+        test.setValue([model], <Kecubung.ClassMetaData>clazz, "saveUser")
         let isValid = test.isValid();
         let result = test.getValidationErrors();
         Chai.expect(result).deep.eq([{
@@ -66,12 +64,11 @@ describe("Validator", () => {
     it("Should not validate parameter without validation decorator", () => {
         let test = new ValidatorImpl(storage, [new ExternalValidator()])
         let clazz = storage.get("UserController, controller/user-controller")
-        let model: UserModel = {
+        let model = <UserModel> {
             email: "not-valid-email",
             displayName: "Nobita Nobi",
-            item: null
         }
-        test.setValue([model], clazz, "noValidator")
+        test.setValue([model], <Kecubung.ClassMetaData>clazz, "noValidator")
         let isValid = test.isValid();
         Chai.expect(isValid).true
     })
@@ -79,12 +76,11 @@ describe("Validator", () => {
     it("Should not error if provided other decorator", () => {
         let test = new ValidatorImpl(storage, [new ExternalValidator()])
         let clazz = storage.get("UserController, controller/user-controller")
-        let model: UserModel = {
+        let model = <UserModel> {
             email: "not-valid-email",
             displayName: "Nobita Nobi",
-            item: null
         }
-        test.setValue([model], clazz, "customDecorator")
+        test.setValue([model], <Kecubung.ClassMetaData>clazz, "customDecorator")
         let isValid = test.isValid();
         Chai.expect(isValid).true
     })
@@ -92,12 +88,11 @@ describe("Validator", () => {
     it("Should able to use external validator", () => {
         let test = new ValidatorImpl(storage, [new ExternalValidator()])
         let clazz = storage.get("UserController, controller/user-controller")
-        let model: UserModel = {
+        let model = <UserModel> {
             email: "nobita@yahoo.com",
             displayName: "Nobita Nobi",
-            item: null
         }
-        test.setValue([model], clazz, "saveUser")
+        test.setValue([model], <Kecubung.ClassMetaData>clazz, "saveUser")
         let isValid = test.isValid();
         Chai.expect(isValid).true
     })
