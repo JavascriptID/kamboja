@@ -14,8 +14,8 @@ export class MongooseHelper {
         if (!MongooseHelper.instance) {
             let facade = Kamboja.getFacade();
             if (!facade) throw new Error("Instance of Kamboja not found, do setup after Kamboja instantiation")
-            MongooseHelper.instance = new MongooseHelper(facade.pathResolver,
-                facade.metaDataStorage.getClasses("Model"))
+            MongooseHelper.instance = new MongooseHelper(facade.pathResolver!,
+                facade.metaDataStorage!.getClasses("Model"))
         }
         return MongooseHelper.instance
     }

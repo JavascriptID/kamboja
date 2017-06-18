@@ -6,7 +6,7 @@ import { Core } from "kamboja"
 import * as Mongoose from "mongoose"
 
 function flatten(metaList: Kecubung.MetaData[], fileName: string): Core.QualifiedClassMetaData[] {
-    let result = []
+    let result:Core.QualifiedClassMetaData[] = []
     metaList.forEach(x => {
         switch (x.type) {
             case "Module":
@@ -35,7 +35,7 @@ export function fromFile(filePath: string, pathResolver:Core.PathResolver) {
     return fromCode(code, filePath)
 }
 
-export function fromCode(code, filePath: string = "") {
+export function fromCode(code:string, filePath: string = "") {
     let ast = Babylon.parse(code);
     let result = Kecubung.transform("ASTree", ast, filePath);
     return flatten(result.children, filePath)
@@ -43,14 +43,14 @@ export function fromCode(code, filePath: string = "") {
 
 function cleanupArray(obj: any) {
     let result:any[] = []
-    obj.forEach(x => {
+    obj.forEach((x:any) => {
         let clean = cleanup(x)
         result.push(clean)
     })
     return result
 }
 
-export function cleanup(obj) {
+export function cleanup(obj:any) {
     let exclude = ["_id", "__v"]
     let result:any = {}
     if(Array.isArray(obj)) return cleanupArray(obj)

@@ -54,7 +54,7 @@ describe("Integration Test", () => {
 
     it("Should save/load simple object", async () => {
         let User = test.createModel<UserModel>("User")
-        await User.remove(x => { })
+        await User.remove((x:any) => { })
         let dob = new Date()
         let user = new User({
             email: "nobita.nobi@gmail.com",

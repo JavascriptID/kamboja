@@ -2,10 +2,10 @@
 
 export class MongooseDecorator{
     timestamp(type:"createdAt"|"updatedAt"){
-        return (...args) => {}
+        return (...args:any[]) => {}
     }
 
     shortid(){
-        return (constructor) => {}
+        return (constructor:any) => {}
     }
 }

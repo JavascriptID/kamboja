@@ -11,7 +11,7 @@ let Es5Class = (() => {
 })()
 
 class Es6Class {
-    myProperty
+    myProperty:string
     myMethod(){
         console.log("Hello")
     }
@@ -19,7 +19,7 @@ class Es6Class {
 
 describe("reflect", () => {
     it("Should reflect ES5 methods and properties", () => {
-        let obj = new Es5Class()
+        let obj = new (<any>Es5Class())
         obj.myProperty = "Hello"
         let props = reflect(obj)
         Chai.expect(props.some(x => x == "myProperty")).true
