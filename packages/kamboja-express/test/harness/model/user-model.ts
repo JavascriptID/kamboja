@@ -34,7 +34,7 @@ export class UserRepository{
         return this.users;
     }
 
-    async modify(id, modified:UserEntity){
+    async modify(id:number, modified:UserEntity){
         await H.delay()
         let user = this.users.filter(x => x.id == id)[0]
         user.name = modified.name

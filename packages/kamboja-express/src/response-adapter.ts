@@ -14,7 +14,7 @@ export class ResponseAdapter implements Core.HttpResponse {
         this.nativeResponse.status(this.status || 200)
         if (this.cookies) {
             this.cookies.forEach(x => {
-                this.nativeResponse.cookie(x.key, x.value, x.options)
+                this.nativeResponse.cookie(x.key, x.value, x.options!)
             })
         }
     }
@@ -39,7 +39,7 @@ export class ResponseAdapter implements Core.HttpResponse {
         this.nativeResponse.sendFile(path)
     }
 
-    render(viewName:string, model){
+    render(viewName:string, model:any){
         this.setup()
         this.nativeResponse.render(viewName, model)
     }

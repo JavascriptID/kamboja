@@ -22,11 +22,11 @@ describe("ResponseAdapter", () => {
             let result = new ViewActionResult({}, "user/index")
             result.cookies = [{ key: "User", value: "Nobita" }]
             result.header = { "Access-Control-Allow-Origin": "*" }
-            await result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), undefined)
+            await result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), <any>undefined)
         });
         return Supertest(app)
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.header["access-control-allow-origin"]).eq("*")
                 Chai.expect(response.header["set-cookie"]).deep.eq(['User=Nobita; Path=/'])
                 Chai.expect(response.text).contain("This is user/index")
@@ -37,11 +37,11 @@ describe("ResponseAdapter", () => {
     it("Should send body properly", () => {
         app.use(async (req, resp, next) => {
             let result = new ViewActionResult({}, "user/index")
-            await result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), undefined)
+            await result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), <any>undefined)
         });
         return Supertest(app)
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.text).contain("This is user/index")
             })
             .expect(200)
@@ -58,7 +58,7 @@ describe("ResponseAdapter", () => {
         });
         return Supertest(app)
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.text).contain("This is user/index")
             })
             .expect(200)
@@ -75,7 +75,7 @@ describe("ResponseAdapter", () => {
         });
         return Supertest(app)
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.text).contain("This is user/index")
             })
             .expect(200)
@@ -92,7 +92,7 @@ describe("ResponseAdapter", () => {
         });
         return Supertest(app)
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.text).contain("This is user/list")
             })
             .expect(200)
@@ -102,14 +102,14 @@ describe("ResponseAdapter", () => {
         app.use(async (req, resp, next) => {
             try {
                 let result = new ViewActionResult({}, "list")
-                await result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), undefined)
+                await result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), <any>undefined)
             } catch (e) {
                 resp.status(500).end(e.message)
             }
         });
         return Supertest(app)
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.text).contain("Relative view path can not be use inside middlewares")
             })
             .expect(500)
@@ -119,14 +119,14 @@ describe("ResponseAdapter", () => {
         app.use(async (req, resp, next) => {
             try {
                 let result = new ViewActionResult({})
-                await result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), undefined)
+                await result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), <any>undefined)
             } catch (e) {
                 resp.status(500).end(e.message)
             }
         });
         return Supertest(app)
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.text).contain("Relative view path can not be use inside middlewares")
             })
             .expect(500)

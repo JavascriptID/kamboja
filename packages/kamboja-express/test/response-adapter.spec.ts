@@ -14,7 +14,7 @@ describe("ResponseAdapter", () => {
             adapter.send()
         }))
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.text).eq("Halo")
                 Chai.expect(response.type).eq("text/plain")
             })
@@ -29,7 +29,7 @@ describe("ResponseAdapter", () => {
             adapter.send()
         }))
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.body).eq(400)
             })
             .expect(200)
@@ -43,7 +43,7 @@ describe("ResponseAdapter", () => {
             adapter.send()
         }))
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.body).eq(false)
             })
             .expect(200)
@@ -56,7 +56,7 @@ describe("ResponseAdapter", () => {
             adapter.send()
         }))
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.header["set-cookie"]).deep.eq([ 'Key=Value; Path=/' ])
             })
             .expect(200)
@@ -69,7 +69,7 @@ describe("ResponseAdapter", () => {
             adapter.send()
         }))
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.header["accept"]).eq("text/xml")
             })
             .expect(200)
@@ -93,7 +93,7 @@ describe("ResponseAdapter", () => {
             adapter.send()
         }))
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.body).deep.eq({ message: "Hello" })
                 Chai.expect(response.type).eq("application/json")
             })

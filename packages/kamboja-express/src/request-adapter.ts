@@ -32,7 +32,7 @@ export class RequestAdapter implements Core.HttpRequest {
         this.route = request.route;
     }
 
-    private findCaseInsensitive(obj, key) {
+    private findCaseInsensitive(obj:any, key:string) {
         let keys = Object.keys(obj);
         for (let item of keys) {
             if (item.toLowerCase() == key.toLowerCase())
@@ -67,6 +67,6 @@ export class RequestAdapter implements Core.HttpRequest {
         if (this.user)
             return this.user.role
         else
-            return
+            return <any>undefined
     }
 }
