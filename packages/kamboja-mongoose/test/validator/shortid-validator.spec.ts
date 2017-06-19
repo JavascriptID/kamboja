@@ -8,8 +8,8 @@ import * as Shortid from "shortid"
 describe("ShortIdValidator", () => {
     it("Should provided decorator properly", () => {
         let decorator = new ValidatorDecorator()
-        decorator.objectid()(null, null, null);
-        decorator.shortid()(null, null, null)
+        decorator.objectid()(null, <any>null, <any>null);
+        decorator.shortid()(null, <any>null, <any>null)
     })
     it("Should return undefined if provided correct value", () => {
         let meta = H.fromCode(`
@@ -34,7 +34,7 @@ describe("ShortIdValidator", () => {
         let result = test.validate({
             value: ID,
             classInfo: clazz,
-            decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+            decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
             field: "model"
         })
         Chai.expect(result).undefined
@@ -61,7 +61,7 @@ describe("ShortIdValidator", () => {
         let result = test.validate({
             value: null,
             classInfo: clazz,
-            decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+            decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
             field: "model"
         })
         Chai.expect(result).undefined
@@ -88,11 +88,11 @@ describe("ShortIdValidator", () => {
         let result = test.validate({
             value: "123-5",
             classInfo: clazz,
-            decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+            decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
             field: "model"
         })
-        Chai.expect(result[0].field).eq("model")
-        Chai.expect(result[0].message).eq("[model] is not valid")
+        Chai.expect(result![0].field).eq("model")
+        Chai.expect(result![0].message).eq("[model] is not valid")
     })
 
     it("Should validate when inside model", () => {
@@ -117,11 +117,11 @@ describe("ShortIdValidator", () => {
             parentField: "entity",
             value: "123-5",
             classInfo: clazz,
-            decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+            decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
             field: "model"
         })
-        Chai.expect(result[0].field).eq("entity.model")
-        Chai.expect(result[0].message).eq("[model] is not valid")
+        Chai.expect(result![0].field).eq("entity.model")
+        Chai.expect(result![0].message).eq("[model] is not valid")
     })
 
     it("Should able to use custom message", () => {
@@ -145,10 +145,10 @@ describe("ShortIdValidator", () => {
         let result = test.validate({
             value: "123-5",
             classInfo: clazz,
-            decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+            decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
             field: "model"
         })
-        Chai.expect(result[0].field).eq("model")
-        Chai.expect(result[0].message).eq("Invalid")
+        Chai.expect(result![0].field).eq("model")
+        Chai.expect(result![0].message).eq("Invalid")
     })
 })

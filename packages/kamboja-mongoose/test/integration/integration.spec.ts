@@ -78,9 +78,9 @@ describe("Integration Test", () => {
         let User = test.createModel<UserModel & Mongoose.Document>("User")
 
         await Promise.all([
-            User.remove(x => { }),
-            Category.remove(x => { }),
-            Item.remove(x => { })
+            User.remove((x:any) => { }),
+            Category.remove((x:any) => { }),
+            Item.remove((x:any) => { })
         ])
 
         let categoryModel = new Category(<CategoryModel>{
@@ -122,13 +122,13 @@ describe("Integration Test", () => {
 
     it("Should able to use shortid", async () => {
         let Product = test.createModel<ProductModel>("Product")
-        await Product.remove(x => { })
+        await Product.remove((x:any) => { })
         let dob = new Date()
         let user = new Product({
             name: "i-Phone 7s Plus",
         })
         await user.save()
-        let result = await Product.find().lean().exec()
+        let result = <any[]>await Product.find().lean().exec()
         console.log(result)
         Chai.expect(result[0].name).eq("i-Phone 7s Plus")
         Chai.expect(result[0]._id.length).eq(9)
@@ -139,8 +139,8 @@ describe("Integration Test", () => {
         let ParentProduct = test.createModel<ParentProductModel>("ParentProduct")
 
         await Promise.all([
-            Product.remove(x => { }),
-            ParentProduct.remove(x => { })
+            Product.remove((x:any) => { }),
+            ParentProduct.remove((x:any) => { })
         ])
 
         let productModel = new Product({ name: "i-Phone 7s Plus" })
@@ -158,8 +158,8 @@ describe("Integration Test", () => {
         let ParentProduct = test.createModel<ParentMultiChildModel>("ParentMultiChild")
 
         await Promise.all([
-            Product.remove(x => { }),
-            ParentProduct.remove(x => { })
+            Product.remove((x:any) => { }),
+            ParentProduct.remove((x:any) => { })
         ])
 
         let iphoneModel = new Product({ name: "i-Phone 7s Plus" })

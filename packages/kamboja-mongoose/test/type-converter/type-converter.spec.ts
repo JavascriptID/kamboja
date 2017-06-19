@@ -6,42 +6,42 @@ import * as H from "../helper"
 
 describe("TypeConverter", () => {
     it("Should convert 'string'", () => {
-        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), null)
+        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), <any>undefined)
         Chai.expect(test.convert("string", "Type, the/path")).eq(String)
     })
 
     it("Should convert 'boolean'", () => {
-        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), null)
+        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), <any>undefined)
         Chai.expect(test.convert("boolean", "Type, the/path")).eq(Boolean)
     })
 
     it("Should convert 'number'", () => {
-        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), null)
+        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), <any>undefined)
         Chai.expect(test.convert("number", "Type, the/path")).eq(Number)
     })
 
     it("Should convert 'date'", () => {
-        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), null)
+        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), <any>undefined)
         Chai.expect(test.convert("date", "Type, the/path")).eq(Date)
     })
 
     it("Should convert 'string[]'", () => {
-        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), null)
+        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), <any>undefined)
         Chai.expect(test.convert("string[]", "Type, the/path")).deep.eq([String])
     })
 
     it("Should convert 'boolean[]'", () => {
-        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), null)
+        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), <any>undefined)
         Chai.expect(test.convert("boolean[]", "Type, the/path")).deep.eq([Boolean])
     })
 
     it("Should convert 'number[]'", () => {
-        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), null)
+        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), <any>undefined)
         Chai.expect(test.convert("number[]", "Type, the/path")).deep.eq([Number])
     })
 
     it("Should convert 'date[]'", () => {
-        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), null)
+        let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), <any>undefined)
         Chai.expect(test.convert("date[]", "Type, the/path")).deep.eq([Date])
     })
 
