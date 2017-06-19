@@ -2,14 +2,6 @@ import * as Chai from "chai"
 import {reflect} from "../src/index"
 
 
-let Es5Class = (() => {
-    function Es5Class(){}
-    Es5Class.prototype.myMethod = () => {
-        console.log("Hello");
-    }
-    return Es5Class
-})()
-
 class Es6Class {
     myProperty:string
     myMethod(){
@@ -18,14 +10,6 @@ class Es6Class {
 }
 
 describe("reflect", () => {
-    it("Should reflect ES5 methods and properties", () => {
-        let obj = new (<any>Es5Class())
-        obj.myProperty = "Hello"
-        let props = reflect(obj)
-        Chai.expect(props.some(x => x == "myProperty")).true
-        Chai.expect(props.some(x => x == "myMethod")).true
-        Chai.expect(props.length).eq(2)
-    })
 
     it("Should reflect object properly", () => {
         let obj = {
