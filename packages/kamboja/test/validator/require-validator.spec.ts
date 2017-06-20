@@ -25,11 +25,11 @@ describe("RequireValidator", () => {
         let result = test.validate({
                 value: null,
                 classInfo: clazz,
-                decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+                decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
                 field: "model"
             })
-        Chai.expect(result[0].field).eq("model")
-        Chai.expect(result[0].message).contain("required")
+        Chai.expect(result![0].field).eq("model")
+        Chai.expect(result![0].message).contain("required")
     })
 
     it("Should return undefined when provided a value", () => {
@@ -53,7 +53,7 @@ describe("RequireValidator", () => {
         let result = test.validate({
                 value: 100,
                 classInfo: clazz,
-                decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+                decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
                 field: "model"
             })
         Chai.expect(result).undefined
@@ -80,10 +80,10 @@ describe("RequireValidator", () => {
         let result = test.validate({
                 value: null,
                 classInfo: clazz,
-                decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+                decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
                 field: "model"
             })
-        Chai.expect(result[0].field).eq("model")
-        Chai.expect(result[0].message).eq("Hey you must fill this")
+        Chai.expect(result![0].field).eq("model")
+        Chai.expect(result![0].message).eq("Hey you must fill this")
     })
 })

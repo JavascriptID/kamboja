@@ -17,8 +17,8 @@ describe("DefaultActionTransformer", () => {
             }(controller_1.Controller));
         `, "controller/user-controller.js")
         let test = new DefaultActionTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", undefined)
-        Chai.expect(result.info[0].route).eq("/user/index")
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
+        Chai.expect(result.info![0].route).eq("/user/index")
     })
 
     it("Should add route and collaborator if requested from previous transformer", () => {
@@ -39,8 +39,8 @@ describe("DefaultActionTransformer", () => {
             methodPath: '/index'
         }]
         let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", prevResult)
-        Chai.expect(result.info[0].route).eq("/user/index")
-        Chai.expect(result.info[0].collaborator.some(x => x == "DefaultAction")).true
+        Chai.expect(result.info![0].route).eq("/user/index")
+        Chai.expect(result.info![0].collaborator!.some(x => x == "DefaultAction")).true
         
     })
 
@@ -62,8 +62,8 @@ describe("DefaultActionTransformer", () => {
             methodPath: '/index'
         }]
         let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", prevResult)
-        Chai.expect(result.info[0].route).undefined
-        Chai.expect(result.info[0].collaborator.some(x => x == "DefaultAction")).true
+        Chai.expect(result.info![0].route).undefined
+        Chai.expect(result.info![0].collaborator!.some(x => x == "DefaultAction")).true
         
     })
 })

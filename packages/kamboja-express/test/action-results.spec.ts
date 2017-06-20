@@ -15,11 +15,11 @@ describe("ActionResults", () => {
             let result = action.download(Path.join(__dirname, "helper.js"))
             result.cookies = [{ key: "User", value: "Nobita" }]
             result.header = { "Access-Control-Allow-Origin": "*" }
-            result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), undefined)
+            result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), <any>undefined)
         })
         return Supertest(app)
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.header["access-control-allow-origin"]).eq("*")
                 Chai.expect(response.header["set-cookie"]).deep.eq(['User=Nobita; Path=/'])
                 Chai.expect(response.header["content-disposition"]).eq(`attachment; filename="helper.js"`)
@@ -34,11 +34,11 @@ describe("ActionResults", () => {
             let result = action.file(Path.join(__dirname, "helper.js"))
             result.cookies = [{ key: "User", value: "Nobita" }]
             result.header = { "Access-Control-Allow-Origin": "*" }
-            result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), undefined)
+            result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), <any>undefined)
         })
         return Supertest(app)
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.header["access-control-allow-origin"]).eq("*")
                 Chai.expect(response.header["set-cookie"]).deep.eq(['User=Nobita; Path=/'])
                 Chai.expect(response.type).eq(`application/javascript`)
@@ -57,11 +57,11 @@ describe("ActionResults", () => {
             let result = action.redirect("/user")
             result.cookies = [{ key: "User", value: "Nobita" }]
             result.header = { "Access-Control-Allow-Origin": "*" }
-            result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), undefined)
+            result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), <any>undefined)
         })
         return Supertest(app)
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.header["access-control-allow-origin"]).eq("*")
                 Chai.expect(response.header["set-cookie"]).deep.eq(['User=Nobita; Path=/'])
                 Chai.expect(response.header["location"]).eq("/user")
@@ -77,11 +77,11 @@ describe("ActionResults", () => {
             let result = action.json({ message: "Hello" })
             result.cookies = [{ key: "User", value: "Nobita" }]
             result.header = { "Access-Control-Allow-Origin": "*" }
-            result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), undefined)
+            result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), <any>undefined)
         })
         return Supertest(app)
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.header["access-control-allow-origin"]).eq("*")
                 Chai.expect(response.header["set-cookie"]).deep.eq(['User=Nobita; Path=/'])
                 Chai.expect(response.body).deep.eq({ message: "Hello" })
@@ -97,11 +97,11 @@ describe("ActionResults", () => {
             let result = action.json({ message: "Hello" })
             result.status = 400
             result.header = { "Access-Control-Allow-Origin": "*" }
-            result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), undefined)
+            result.execute(new RequestAdapter(req), new ResponseAdapter(resp, next), <any>undefined)
         })
         return Supertest(app)
             .get("/")
-            .expect((response) => {
+            .expect((response:Supertest.Response) => {
                 Chai.expect(response.body).deep.eq({ message: "Hello" })
             })
             .expect(400)

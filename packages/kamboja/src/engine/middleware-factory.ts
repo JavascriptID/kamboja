@@ -15,23 +15,23 @@ export class MiddlewareFactory {
         let result: Core.Middleware[] = []
         result = result.concat(this.getGlobalMiddlewares())
         if (this.routeInfo) {
-            result = result.concat(this.getClassMiddlewares(this.controller))
-            result = result.concat(this.getMethodMiddlewares(this.controller))
+            result = result.concat(this.getClassMiddlewares(this.controller!))
+            result = result.concat(this.getMethodMiddlewares(this.controller!))
         }
         return result;
     }
 
     getMethodMiddlewares(controller: Core.BaseController) {
-        let middlewares = Middleware.getMiddlewares(controller, this.routeInfo.methodMetaData.name) || []
+        let middlewares = Middleware.getMiddlewares(controller, this.routeInfo!.methodMetaData!.name) || []
         let result: Core.Middleware[] = []
         for (let middleware of middlewares) {
             if (typeof middleware == "string") {
                 try {
-                    let instance = this.facade.dependencyResolver.resolve<Core.Middleware>(middleware)
+                    let instance = this.facade.dependencyResolver!.resolve<Core.Middleware>(middleware)
                     result.push(instance)
                 }
                 catch (e) {
-                    throw new Error(`Can not instantiate middleware [${middleware}] on ${Core.getRouteDetail(this.routeInfo)}`)
+                    throw new Error(`Can not instantiate middleware [${middleware}] on ${Core.getRouteDetail(this.routeInfo!)}`)
                 }
             }
             else {
@@ -48,11 +48,11 @@ export class MiddlewareFactory {
         for (let middleware of middlewares) {
             if (typeof middleware == "string") {
                 try {
-                    let instance = this.facade.dependencyResolver.resolve<Core.Middleware>(middleware)
+                    let instance = this.facade.dependencyResolver!.resolve<Core.Middleware>(middleware)
                     result.push(instance)
                 }
                 catch (e) {
-                    throw new Error(`Can not instantiate middleware [${middleware}] on [${this.routeInfo.qualifiedClassName}]`)
+                    throw new Error(`Can not instantiate middleware [${middleware}] on [${this.routeInfo!.qualifiedClassName}]`)
                 }
             }
             else {
@@ -69,7 +69,7 @@ export class MiddlewareFactory {
             let middleware = this.facade.middlewares[i]
             if (typeof middleware == "string") {
                 try {
-                    let instance = this.facade.dependencyResolver.resolve<Core.Middleware>(middleware)
+                    let instance = this.facade.dependencyResolver!.resolve<Core.Middleware>(middleware)
                     result.push(instance)
                 }
                 catch (e) {

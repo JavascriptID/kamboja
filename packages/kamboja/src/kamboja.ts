@@ -44,7 +44,7 @@ export class Kamboja implements Core.Application {
             controllerPaths: ["controller"],
             modelPath: Kamboja.defaultModelPath,
             autoValidation: true,
-            rootPath: undefined,
+            rootPath: process.cwd(),
             showLog: "Info",
             validators: [],
             middlewares: [],
@@ -56,7 +56,7 @@ export class Kamboja implements Core.Application {
         }, override)
         this.options = options
         Kamboja.facade = options;
-        this.log = new Logger(this.options.showLog)
+        this.log = new Logger(this.options.showLog!)
         this.storage = <MetaDataLoader>this.options.metaDataStorage
     }
 
@@ -76,16 +76,16 @@ export class Kamboja implements Core.Application {
      */
     use(middleware: Core.MiddlewaresType) {
         if (Array.isArray(middleware))
-            this.options.middlewares = this.options.middlewares.concat(middleware)
-        else this.options.middlewares.push(middleware)
+            this.options.middlewares = this.options.middlewares!.concat(middleware)
+        else this.options.middlewares!.push(middleware)
         return this
     }
 
     apply(facility: string | Core.Facility) {
         if (typeof facility == "string") {
             try {
-                let fac = this.options.dependencyResolver.resolve<Core.Facility>(facility)
-                this.options.facilities.push(fac)
+                let fac = this.options.dependencyResolver!.resolve<Core.Facility>(facility)
+                this.options.facilities!.push(fac)
                 fac.apply(this)
             }
             catch (e) {
@@ -93,7 +93,7 @@ export class Kamboja implements Core.Application {
             }
         }
         else {
-            this.options.facilities.push(facility)
+            this.options.facilities!.push(facility)
             facility.apply(this)
         }
         return this
@@ -103,15 +103,15 @@ export class Kamboja implements Core.Application {
         let result = true;
 
         //controller
-        this.options.controllerPaths.forEach(x => {
-            let path = this.options.pathResolver.resolve(x);
+        this.options.controllerPaths!.forEach(x => {
+            let path = this.options.pathResolver!.resolve(x);
             if (!Fs.existsSync(path)) {
                 result = false;
                 this.log.error(`Controller path [${x}] provided in configuration is not exist`)
             }
         })
         //model
-        let modelPath = this.options.pathResolver.resolve(this.options.modelPath)
+        let modelPath = this.options.pathResolver!.resolve(this.options.modelPath!)
         if (!Fs.existsSync(modelPath) && this.options.modelPath != Kamboja.defaultModelPath) {
             this.log.error(`Model path [${this.options.modelPath}] provided in configuration is not exist`)
             result = false;
@@ -120,10 +120,10 @@ export class Kamboja implements Core.Application {
     }
 
     private generateRoutes(controllerMeta: Kecubung.ParentMetaData[]) {
-        let route = new RouteGenerator(this.options.identifierResolver, controllerMeta)
+        let route = new RouteGenerator(this.options.identifierResolver!, controllerMeta)
         let infos = route.getRoutes()
         if (infos.length == 0) {
-            let paths = this.options.controllerPaths.join(",")
+            let paths = this.options.controllerPaths!.join(",")
             this.log.error(`No controller found in [${paths}]`)
         }
         return infos;
@@ -143,7 +143,7 @@ export class Kamboja implements Core.Application {
         }
         let validRoutes = infos.filter(x => !x.analysis || x.analysis.length == 0)
         if (validRoutes.length == 0) {
-            let path = this.options.controllerPaths.join(", ")
+            let path = this.options.controllerPaths!.join(", ")
             this.log.newLine().error(`No valid controller found in [${path}]`)
             return false;
         }
@@ -171,8 +171,8 @@ export class Kamboja implements Core.Application {
      */
     init() {
         if (!this.isFolderProvided()) throw new Error("Fatal error")
-        this.storage.load(this.options.controllerPaths, "Controller")
-        this.storage.load(this.options.modelPath, "Model")
+        this.storage.load(this.options.controllerPaths!, "Controller")
+        this.storage.load(this.options.modelPath!, "Model")
         let routeInfos = this.generateRoutes(this.storage.getFiles("Controller"))
         if (routeInfos.length == 0) throw new Error("Fatal error")
         if (!this.analyzeRoutes(routeInfos)) throw new Error("Fatal Error")

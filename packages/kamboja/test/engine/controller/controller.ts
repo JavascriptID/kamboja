@@ -2,7 +2,7 @@ import { Controller, ApiController } from "../../../src/controller"
 import { val, HttpStatusError, Core } from "../../../src"
 
 export function customValidation() {
-    return (...args) => { }
+    return (...args:any[]) => { }
 }
 
 export class DummyApi extends Controller {
@@ -31,14 +31,14 @@ export class DummyApi extends Controller {
         return result;
     }
 
-    validationTest( @val.required() age) {
+    validationTest( @val.required() age:number) {
         if (this.validator.isValid()) {
             return true
         }
         return this.validator.getValidationErrors()
     }
 
-    customValidationTest( @customValidation() par1) {
+    customValidationTest( @customValidation() par1:any) {
         if (this.validator.isValid()) {
             return true
         }

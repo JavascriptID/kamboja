@@ -7,7 +7,7 @@ import * as Util from "util"
 import { ControllerFactory } from "../../src/engine/controller-factory"
 import { ControllerExecutor } from "../../src/engine/controller-executor"
 import {
-    Kamboja, Resolver, ApiActionResult
+    Kamboja, Resolver
 } from "../../src"
 
 let HttpRequest: any = {
@@ -25,7 +25,7 @@ describe("ControllerExecutor", () => {
         it("Should not error if validators in facade is null", async () => {
             let meta = H.fromFile("controller/controller.js", new Resolver.DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "returnActionResult")[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "returnActionResult")[0]
             info.classId = info.qualifiedClassName
             let builder = new ControllerFactory(facade, info)
             let executor = new ControllerExecutor(builder, HttpRequest)
@@ -36,7 +36,7 @@ describe("ControllerExecutor", () => {
         it("Should accept validator by its qualified class name", async () => {
             let meta = H.fromFile("controller/controller.js", new Resolver.DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "customValidationTest")[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "customValidationTest")[0]
             info.classId = info.qualifiedClassName
             facade.validators = ["CustomValidation, validator/custom-validator"]
             let builder = new ControllerFactory(facade, info)
@@ -51,12 +51,12 @@ describe("ControllerExecutor", () => {
         it("Should set cookie properly", async () => {
             let meta = H.fromFile("controller/controller.js", new Resolver.DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "setTheCookie")[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "setTheCookie")[0]
             info.classId = info.qualifiedClassName
             let builder = new ControllerFactory(facade, info)
             let executor = new ControllerExecutor(builder, HttpRequest)
             let result = <Core.ActionResult>await executor.execute([])
-            Chai.expect(result.cookies[0]).deep.eq({ key: "TheKey", value: "TheValue", options: { expires: true } })
+            Chai.expect(result.cookies![0]).deep.eq({ key: "TheKey", value: "TheValue", options: { expires: true } })
         })
     })
 
@@ -65,7 +65,7 @@ describe("ControllerExecutor", () => {
         it("Should return value properly", async () => {
             let meta = H.fromFile("controller/api-controller.js", new Resolver.DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "returnTheParam")[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "returnTheParam")[0]
             info.classId = info.qualifiedClassName
             let builder = new ControllerFactory(facade, info)
             let executor = new ControllerExecutor(builder, HttpRequest)
@@ -76,7 +76,7 @@ describe("ControllerExecutor", () => {
         it("Should able to return value with Promise", async () => {
             let meta = H.fromFile("controller/api-controller.js", new Resolver.DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "returnTheParamWithPromise")[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "returnTheParamWithPromise")[0]
             info.classId = info.qualifiedClassName
             let builder = new ControllerFactory(facade, info)
             let executor = new ControllerExecutor(builder, HttpRequest)
@@ -87,7 +87,7 @@ describe("ControllerExecutor", () => {
         it("Should auto validate properly", async () => {
             let meta = H.fromFile("controller/api-controller.js", new Resolver.DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "validationTest")[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "validationTest")[0]
             info.classId = info.qualifiedClassName
             let builder = new ControllerFactory(facade, info)
             let executor = new ControllerExecutor(builder, HttpRequest)
@@ -98,7 +98,7 @@ describe("ControllerExecutor", () => {
         it("Should not execute action if in auto validate", async () => {
             let meta = H.fromFile("controller/api-controller.js", new Resolver.DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "validationTestThrowError")[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "validationTestThrowError")[0]
             info.classId = info.qualifiedClassName
             let builder = new ControllerFactory(facade, info)
             let executor = new ControllerExecutor(builder, HttpRequest)
@@ -115,7 +115,7 @@ describe("ControllerExecutor", () => {
         it("Should not auto validate if the setting is turned off", async () => {
             let meta = H.fromFile("controller/api-controller.js", new Resolver.DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "validationTest")[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "validationTest")[0]
             info.classId = info.qualifiedClassName
             facade.autoValidation = false
             let builder = new ControllerFactory(facade, info)
@@ -127,7 +127,7 @@ describe("ControllerExecutor", () => {
         it("Should able to use VOID method", async () => {
             let meta = H.fromFile("controller/api-controller.js", new Resolver.DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "voidMethod")[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "voidMethod")[0]
             info.classId = info.qualifiedClassName
             let builder = new ControllerFactory(facade, info)
             let executor = new ControllerExecutor(builder, HttpRequest)
@@ -138,12 +138,12 @@ describe("ControllerExecutor", () => {
         it("Should able to return ActionResult (ok/invalid)", async () => {
             let meta = H.fromFile("controller/api-controller.js", new Resolver.DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.methodMetaData.name == "returnOk")[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "returnOk")[0]
             info.classId = info.qualifiedClassName
             let builder = new ControllerFactory(facade, info)
             let executor = new ControllerExecutor(builder, HttpRequest)
-            let result: ApiActionResult = await executor.execute([])
-            Chai.expect(result.body).eq("OK!")
+            let result = await executor.execute([])
+            Chai.expect(result).eq("OK!")
         })
     })
 })

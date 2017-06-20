@@ -27,7 +27,7 @@ export interface ChildDecoratorAnalyzer {
 }
 
 export interface ClassAnalyzer {
-    isExported(name, parentName): boolean
+    isExported(name:string, parentName:string): boolean
     getLocation(): SourceLocation
     getMember(): any[]
     getName(): string
@@ -81,19 +81,19 @@ export interface ParameterAnalyzer {
 }
 
 export interface ValueAnalyzer{
-    isPrimitive()
-    isObject()
-    isArray()
-    isNull()
-    isProperty()
-    getValue()
-    getName()
+    isPrimitive():boolean
+    isObject():boolean
+    isArray():boolean
+    isNull():boolean
+    isProperty():boolean
+    getValue():any
+    getName():string
 }
 
 export interface Es6MemberAnalyzer {
-    getParameters() 
-    getType()
-    getName()
-    isCandidate()
-    getLocation()
+    getParameters():any[]
+    getType():string
+    getName():string
+    isCandidate():boolean
+    getLocation():SourceLocation
 }

@@ -11,7 +11,7 @@ import { ParameterAnalyzer } from "./parameter-analyzer"
 import { Es6ClassAnalyzer } from "./es6-class-analyzer"
 import { Es6MemberAnalyzer } from "./es6-member-analyzer"
 
-export function get(type: AnalyzerType, node) {
+export function get(type: AnalyzerType, node:any) {
     switch (type) {
         case AnalyzerType.ChildDecorator:
             return new ChildDecoratorAnalyzer(node)

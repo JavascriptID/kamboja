@@ -20,7 +20,7 @@ describe("Authorize", () => {
     })
 
     it("Should identify authorize in method properly", () => {
-        let auth = new Middleware.Authorize(undefined)
+        let auth = new Middleware.Authorize("")
         let id = Middleware.getId(auth)
         Chai.expect(id).eq("kamboja:authorize")
     })

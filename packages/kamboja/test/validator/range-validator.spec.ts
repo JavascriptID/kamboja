@@ -25,7 +25,7 @@ describe("RangeValidator", () => {
         let result = test.validate({
             value: { data: "hellow" },
             classInfo: clazz,
-            decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+            decoratorArgs: clazz.methods[0].parameters[0].decorators!![0].parameters,
             field: "model"
         })
         Chai.expect(result).undefined
@@ -52,7 +52,7 @@ describe("RangeValidator", () => {
         let result = test.validate({
             value: null,
             classInfo: clazz,
-            decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+            decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
             field: "model"
         })
         Chai.expect(result).undefined
@@ -79,11 +79,11 @@ describe("RangeValidator", () => {
         let result = test.validate({
             value: "123456789",
             classInfo: clazz,
-            decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+            decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
             field: "model",
             parentField: "parent"
         })
-        Chai.expect(result[0].field).eq("parent.model")
+        Chai.expect(result![0].field).eq("parent.model")
     })
 
     describe("String value", () => {
@@ -108,11 +108,11 @@ describe("RangeValidator", () => {
             let result = test.validate({
                 value: "123456789",
                 classInfo: clazz,
-                decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+                decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
                 field: "model"
             })
-            Chai.expect(result[0].field).eq("model")
-            Chai.expect(result[0].message).contain("more than 10 characters")
+            Chai.expect(result![0].field).eq("model")
+            Chai.expect(result![0].message).contain("more than 10 characters")
         })
 
         it("Should return error message when string length more then specified", () => {
@@ -136,11 +136,11 @@ describe("RangeValidator", () => {
             let result = test.validate({
                 value: "123456",
                 classInfo: clazz,
-                decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+                decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
                 field: "model"
             })
-            Chai.expect(result[0].field).eq("model")
-            Chai.expect(result[0].message).contain("less than 5 characters")
+            Chai.expect(result![0].field).eq("model")
+            Chai.expect(result![0].message).contain("less than 5 characters")
         })
 
         it("Should return undefined when provided correct value", () => {
@@ -164,7 +164,7 @@ describe("RangeValidator", () => {
             let result = test.validate({
                 value: "1234",
                 classInfo: clazz,
-                decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+                decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
                 field: "model"
             })
             Chai.expect(result).undefined
@@ -191,11 +191,11 @@ describe("RangeValidator", () => {
             let result = test.validate({
                 value: "123456",
                 classInfo: clazz,
-                decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+                decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
                 field: "model"
             })
-            Chai.expect(result[0].field).eq("model")
-            Chai.expect(result[0].message).eq("The string is too long")
+            Chai.expect(result![0].field).eq("model")
+            Chai.expect(result![0].message).eq("The string is too long")
         })
     })
 
@@ -221,11 +221,11 @@ describe("RangeValidator", () => {
             let result = test.validate({
                 value: 9,
                 classInfo: clazz,
-                decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+                decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
                 field: "model"
             })
-            Chai.expect(result[0].field).eq("model")
-            Chai.expect(result[0].message).contain("greater than 10")
+            Chai.expect(result![0].field).eq("model")
+            Chai.expect(result![0].message).contain("greater than 10")
         })
 
         it("Should return error message when number less then specified", () => {
@@ -249,11 +249,11 @@ describe("RangeValidator", () => {
             let result = test.validate({
                 value: 100,
                 classInfo: clazz,
-                decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+                decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
                 field: "model"
             })
-            Chai.expect(result[0].field).eq("model")
-            Chai.expect(result[0].message).contain("less than 99")
+            Chai.expect(result![0].field).eq("model")
+            Chai.expect(result![0].message).contain("less than 99")
         })
 
         it("Should return error message when number less then specified", () => {
@@ -277,7 +277,7 @@ describe("RangeValidator", () => {
             let result = test.validate({
                 value: 80,
                 classInfo: clazz,
-                decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+                decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
                 field: "model"
             })
             Chai.expect(result).undefined
@@ -304,11 +304,11 @@ describe("RangeValidator", () => {
             let result = test.validate({
                 value: 61,
                 classInfo: clazz,
-                decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+                decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
                 field: "model"
             })
-            Chai.expect(result[0].field).eq("model")
-            Chai.expect(result[0].message).eq("You are too old")
+            Chai.expect(result![0].field).eq("model")
+            Chai.expect(result![0].message).eq("You are too old")
         })
     })
 })

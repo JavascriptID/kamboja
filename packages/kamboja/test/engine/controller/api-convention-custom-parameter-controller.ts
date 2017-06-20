@@ -1,14 +1,14 @@
 import { ApiController, val } from "../../../src"
 
 export class DummyApi extends ApiController {
-    get(id, root) {
+    get(id:string, root:any) {
         return {
             id: id,
             root: root
         }
     }
 
-    list(iOffset, iLimit, root) {
+    list(iOffset:number, iLimit:number, root:any) {
         return {
             iOffset: iOffset,
             iLimit: iLimit,
@@ -16,22 +16,14 @@ export class DummyApi extends ApiController {
         }
     }
 
-    add(data, root) {
+    add(data:any, root:any) {
         return {
             data: data,
             root: root
         }
     }
 
-    replace(id, data, root) {
-        return {
-            id: id,
-            data: data,
-            root: root
-        }
-    }
-
-    modify(id, data, root) {
+    replace(id:string, data:any, root:any) {
         return {
             id: id,
             data: data,
@@ -39,7 +31,15 @@ export class DummyApi extends ApiController {
         }
     }
 
-    delete(id, root) {
+    modify(id:string, data:any, root:any) {
+        return {
+            id: id,
+            data: data,
+            root: root
+        }
+    }
+
+    delete(id:string, root:any) {
         return {
             id: id,
             root: root

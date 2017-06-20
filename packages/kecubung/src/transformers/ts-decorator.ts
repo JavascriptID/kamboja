@@ -8,7 +8,7 @@ export class TsDecorator extends Core.TransformerBase {
     }
     
     @Core.Call.when(Core.SyntaxKind.ExpressionStatement)
-    transform(node, parent: Core.ParentMetaData) {
+    transform(node:any, parent: Core.ParentMetaData) {
         if (!parent.children) return;
         let analyzer = <Analyzer.DecoratorAnalyzer>Analyzer
             .get(this.parserType, Analyzer.AnalyzerType.Decorator, node)
@@ -23,7 +23,7 @@ export class TsDecorator extends Core.TransformerBase {
         }
     }
 
-    private transformProperty(node, parent: Core.ParentMetaData, analyzer: Analyzer.DecoratorAnalyzer) {
+    private transformProperty(node:any, parent: Core.ParentMetaData, analyzer: Analyzer.DecoratorAnalyzer) {
         let methodName = analyzer.getMethodName();
         let className = analyzer.getClassName();
         let clazz = <Core.ClassMetaData>parent.children.filter(x => x.name == className)[0];
@@ -47,7 +47,7 @@ export class TsDecorator extends Core.TransformerBase {
         }
     }
 
-    private transformMethod(node, parent: Core.ParentMetaData, analyzer: Analyzer.DecoratorAnalyzer) {
+    private transformMethod(node:any, parent: Core.ParentMetaData, analyzer: Analyzer.DecoratorAnalyzer) {
         let methodName = analyzer.getMethodName();
         let className = analyzer.getClassName();
         let clazz = <Core.ClassMetaData>parent.children.filter(x => x.name == className)[0];
@@ -59,7 +59,7 @@ export class TsDecorator extends Core.TransformerBase {
         }
     }
 
-    private transformClass(node, parent: Core.ParentMetaData, analyzer: Analyzer.DecoratorAnalyzer) {
+    private transformClass(node:any, parent: Core.ParentMetaData, analyzer: Analyzer.DecoratorAnalyzer) {
         let className = analyzer.getClassName();
         let clazz = <Core.ClassMetaData>parent.children.filter(x => x.name == className)[0];
         if (clazz) {

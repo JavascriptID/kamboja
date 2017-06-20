@@ -2,7 +2,7 @@ import { Invocation, HttpRequest, HttpResponse, KambojaOption, ActionResult, Rou
 import * as Url from "url"
 
 export class ErrorInvocation extends Invocation {
-    constructor(request: HttpRequest, private response: HttpResponse, private error, routes: RouteInfo[]) {
+    constructor(request: HttpRequest, private response: HttpResponse, private error:any, routes: RouteInfo[]) {
         super()
         let routeInfo = routes.filter(x => x.route == request.route)[0]
         if (routeInfo) {

@@ -3,7 +3,7 @@ import {Controller, ApiController} from "../../../src/controller"
 
 export class SimpleController extends ApiController {
     @internal()
-    getByPage(offset, pageWidth){}
+    getByPage(offset:number, pageWidth:number){}
 
-    get(id){}
+    get(id:string){}
 }

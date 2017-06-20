@@ -6,12 +6,12 @@ export class ClassAnalyzer {
     /**
      * expect VariableDeclaration, ExpressionStatement
      */
-    constructor(protected node) { }
+    constructor(protected node:any) { }
 
     /**
      * expect ExpressionStatement
      */
-    isExported(name, parentName) {
+    isExported(name:any, parentName:string) {
         return this.isExportedStatement()
             && (this.node.expression.left.object.name == parentName || this.node.expression.left.object.name == "exports")
             && this.node.expression.right.name == name

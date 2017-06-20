@@ -2,7 +2,7 @@ import { SyntaxKind, SourceLocation } from "../../core"
 
 
 export class ParameterAnalyzer {
-    constructor(private node) { }
+    constructor(private node:any) { }
 
     withDefaultValue(){
         return this.node.type == SyntaxKind.AssignmentPattern

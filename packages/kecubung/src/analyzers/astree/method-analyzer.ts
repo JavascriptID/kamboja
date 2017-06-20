@@ -6,7 +6,7 @@ export class MethodAnalyzer {
     /**
      * expect ExpressionStatement
      */
-    constructor(private node) { }
+    constructor(private node:any) { }
 
 
     isMethod(className: String) {
@@ -48,7 +48,7 @@ export class MethodAnalyzer {
 
     getParams() {
         if (this.isMethodStatement())
-            return this.node.expression.right.params.map(x => x.name);
+            return this.node.expression.right.params.map((x:any) => x.name);
         else
             return null;
     }

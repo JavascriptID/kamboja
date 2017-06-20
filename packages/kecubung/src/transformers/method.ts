@@ -10,7 +10,7 @@ export class MethodTransformer extends Core.TransformerBase {
     }
     
     @Core.Call.when(Core.SyntaxKind.ExpressionStatement)
-    transform(node, parent: Core.ClassMetaData) {
+    transform(node:any, parent: Core.ClassMetaData) {
         let analyser = <Analyzer.MethodAnalyzer>Analyzer
             .get(this.parserType, Analyzer.AnalyzerType.Method, node)
         if (analyser.isMethod(parent.name)) {

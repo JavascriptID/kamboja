@@ -8,7 +8,7 @@ import { Es6ClassTransformer } from "./transformers/es6-class"
 
 export class Transformer {
     constructor(private fileName: string, private parser: Analyzer.ParserType) { }
-    transform(ast) {
+    transform(ast:any) {
         let analyzer = <Analyzer.FileAnalyzer>Analyzer
             .get(this.parser, Analyzer.AnalyzerType.File, ast)
         let file: ParentMetaData = {
@@ -29,7 +29,7 @@ class FileTransformer extends TransformerBase {
         super()
     }
 
-    transform(node, parent: MetaData) {
+    transform(node:any, parent: MetaData) {
         let analyzer = <Analyzer.FileAnalyzer>Analyzer
             .get(this.parserType, Analyzer.AnalyzerType.File, node)
         this.traverse(analyzer.getChildren(), parent, [

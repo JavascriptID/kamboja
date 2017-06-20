@@ -10,7 +10,7 @@ export class TsClassTransformer extends Core.TransformerBase {
     }
 
     @Core.Call.when(Core.SyntaxKind.VariableDeclaration)
-    transform(node, parent: Core.ParentMetaData) {
+    transform(node:any, parent: Core.ParentMetaData) {
         let analyzer = <Analyzer.ClassAnalyzer>Analyzer
             .get(this.parserType, Analyzer.AnalyzerType.TSClass, node)
         if (analyzer.isCandidate()) {

@@ -7,7 +7,7 @@ export class ParameterTransformer extends Core.TransformerBase {
     }
     
     @Core.Call.when(Core.SyntaxKind.Identifier)
-    transform(node, parent: Core.MethodMetaData | Core.ConstructorMetaData) {
+    transform(node:any, parent: Core.MethodMetaData | Core.ConstructorMetaData) {
         let analyzer = <Analyzer.ParameterAnalyzer>Analyzer
             .get(this.parserType, Analyzer.AnalyzerType.Parameter, node)
         if(analyzer.withDefaultValue()) return

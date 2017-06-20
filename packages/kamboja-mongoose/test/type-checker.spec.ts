@@ -101,7 +101,7 @@ describe("TypeChecker", () => {
     })
 
     it("Should not valid if provided undefined", () => {
-        let test = new TypeChecker(undefined, new Resolver.DefaultPathResolver(__dirname))
+        let test = new TypeChecker(<any>undefined, new Resolver.DefaultPathResolver(__dirname))
         Chai.expect(test.isValid()).eq(false)
     })
 

@@ -11,7 +11,7 @@ export class TsModuleTransformer extends Core.TransformerBase {
     }
 
     @Core.Call.when(Core.SyntaxKind.ExpressionStatement)
-    transform(node, parent: Core.ParentMetaData) {
+    transform(node:any, parent: Core.ParentMetaData) {
         let analyzer = <Analyzer.ModuleAnalyzer>Analyzer
             .get(this.parserType, Analyzer.AnalyzerType.TSModule, node)
         if (analyzer.isCandidate() && (parent.type == "Module" || parent.type == "File")) {

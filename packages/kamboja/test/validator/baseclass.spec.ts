@@ -1,6 +1,6 @@
 import * as Chai from "chai"
-import { ValidatorDecorator, ValidatorBase } from "../../src/validator/baseclasses"
-
+import { ValidatorDecorator ,ValidatorBase } from "../../src/validator/baseclasses"
+import {FieldValidatorArg} from "kamboja-core"
 describe("Validator Base Classes", () => {
     it("Instantiate Validator Decorator properly", () => {
         let decorator = new ValidatorDecorator();
@@ -13,7 +13,7 @@ describe("Validator Base Classes", () => {
     describe("ValidatorBase", () => {
         it("Should instantiate validator base properly", () => {
             let validator = new ValidatorBase();
-            validator.validate(null)
+            validator.validate(<FieldValidatorArg>{})
         })
 
         it("Should identify empty object properly", () => {

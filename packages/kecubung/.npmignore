@@ -1,2 +1,4 @@
-test
 .npmignore
+tsconfig.json
+test
+.vscode

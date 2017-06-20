@@ -19,19 +19,19 @@ export class ConventionValueConverter extends BaseConverter {
         return char && char == char.toUpperCase()
     }
 
-    toString(value, meta: Kecubung.ParameterMetaData) {
+    toString(value:any, meta: Kecubung.ParameterMetaData) {
         if (typeof value == "object")
             throw new Error(`Expected parameter type of 'string'  but got object in [${meta.name}] ${getRouteDetail(this.routeInfo)}`)
         return this.exit(value.toString())
     }
 
-    toNumber(value, meta: Kecubung.ParameterMetaData) {
+    toNumber(value:any, meta: Kecubung.ParameterMetaData) {
         if (typeof value == "object")
             throw new Error(`Expected parameter type of 'number'  but got object in [${meta.name}] ${getRouteDetail(this.routeInfo)}`)
         return this.exit(parseInt(value))
     }
 
-    toBoolean(value, meta: Kecubung.ParameterMetaData) {
+    toBoolean(value:any, meta: Kecubung.ParameterMetaData) {
         if (typeof value == "object")
             throw new Error(`Expected parameter type of 'boolean'  but got object in [${meta.name}] ${getRouteDetail(this.routeInfo)}`)
         return this.exit(value.toLowerCase() === "true")

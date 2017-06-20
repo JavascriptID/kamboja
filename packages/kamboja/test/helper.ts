@@ -14,7 +14,7 @@ export function fromFile(filePath: string, pathResolver: Core.PathResolver) {
     return fromCode(code, filePath)
 }
 
-export function fromCode(code, filePath: string = "") {
+export function fromCode(code:any, filePath: string = "") {
     let ast = Babylon.parse(code);
     return Kecubung.transform("ASTree", ast, filePath);
 }
@@ -29,14 +29,14 @@ export function cleanUp(info: Core.RouteInfo[]) {
                 name: x.methodMetaData ? x.methodMetaData.name : ""
             },
             //windows hack
-            qualifiedClassName: x.qualifiedClassName.replace(/\\/g, "/"),
+            qualifiedClassName: x.qualifiedClassName!.replace(/\\/g, "/"),
             classMetaData: {
-                name: x.classMetaData.name
+                name: x.classMetaData!.name
             },
             collaborator: x.collaborator,
         }
         if (x.analysis) result.analysis = x.analysis
-        if (x.classMetaData.baseClass) result.classMetaData.baseClass = x.classMetaData.baseClass
+        if (x.classMetaData!.baseClass) result.classMetaData.baseClass = x.classMetaData!.baseClass
         return result;
     });
 }
@@ -58,9 +58,9 @@ export function createFacade(rootPath: string) {
 }
 
 export function getRouteInfo(facade: Core.Facade, path: string, methodName: string) {
-    let meta = fromFile(path, facade.pathResolver)
+    let meta = fromFile(path, facade.pathResolver!)
     let infos = Transformer.transform(meta)
-    let info = infos.filter(x => x.methodMetaData.name == methodName)[0]
+    let info = infos.filter(x => x.methodMetaData!.name == methodName)[0]
     info.classId = info.qualifiedClassName
     return info
 }

@@ -1,6 +1,6 @@
 import { Controller } from "../../../src/controller"
 import { Middleware } from "../../../src"
-import { val, ApiActionResult } from "../../../src"
+import { val } from "../../../src"
 
 let middleware = new Middleware.MiddlewareDecorator()
 
@@ -8,6 +8,6 @@ let middleware = new Middleware.MiddlewareDecorator()
 export class UnQualifiedNameOnClassController extends Controller {
 
     returnView() {
-        return new ApiActionResult("Helow")
+        return "Helow"
     }
 }

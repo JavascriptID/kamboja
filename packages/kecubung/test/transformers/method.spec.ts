@@ -15,7 +15,7 @@ describe("MethodTransformer", () => {
             type: "Class",
             name: "MyClass",
             analysis: Core.AnalysisType.Valid,
-            methods: []
+            methods: <Core.MethodMetaData[]>[]
         }
         dummy.transform(ast, parent);
         Chai.expect(parent.methods[0]).deep.eq(<Core.MethodMetaData>{

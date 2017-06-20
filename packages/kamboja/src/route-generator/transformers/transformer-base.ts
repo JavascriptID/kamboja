@@ -4,23 +4,23 @@ import * as Core from "kamboja-core"
 
 const META_DATA_KEY = "kamboja:Call.when";
 export function when(kind: Kecubung.MetadataType) {
-    return function (target, method, descriptor) {
+    return function (target:any, method:string, descriptor:PropertyDescriptor) {
         Reflect.defineMetadata(META_DATA_KEY, kind, target, method);
     }
 }
 
-export function getWhen(target, methodName: string) {
+export function getWhen(target:any, methodName: string) {
     return <Kecubung.MetadataType>Reflect.getMetadata(META_DATA_KEY, target, methodName);
 }
 
 export abstract class TransformerBase {
     protected transformers: TransformerBase[];
 
-    abstract transform(meta: Kecubung.MetaData, parent: string, prevResult: Core.RouteInfo[]): Core.TransformResult
+    abstract transform(meta: Kecubung.MetaData, parent: string, prevResult: Core.RouteInfo[]|undefined): Core.TransformResult
 
     protected transformChildren(children: Kecubung.MetaData[], parent: string) {
         let result: Core.RouteInfo[] = []
-        let lastResult: Core.TransformResult;
+        let lastResult: Core.TransformResult | undefined;
         for (let child of children) {
             let trans = this.transformers.filter(x => getWhen(x, "transform") == child.type)
             for (let transformer of trans) {
@@ -28,7 +28,7 @@ export abstract class TransformerBase {
                 let exit = false;
                 switch (tempResult.status) {
                     case "ExitWithResult":
-                        result = result.concat(tempResult.info);
+                        result = result.concat(tempResult.info!);
                         exit = true;
                         break;
                     case "Next":

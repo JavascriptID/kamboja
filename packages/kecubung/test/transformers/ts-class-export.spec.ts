@@ -19,7 +19,7 @@ describe("TsClassExporterTransformer", () => {
                 type: "Class",
                 name: "MyClass",
                 analysis: Core.AnalysisType.Candidate | Core.AnalysisType.HasMethod,
-                methods: []
+                methods: <Core.MethodMetaData[]>[]
             }]
         }
         dummy.transform(ast, parent);
@@ -41,7 +41,7 @@ describe("TsClassExporterTransformer", () => {
                 type: "Class",
                 name: "MyClass",
                 analysis: Core.AnalysisType.Candidate | Core.AnalysisType.HasMethod,
-                methods: []
+                methods: <Core.MethodMetaData[]>[]
             }]
         }
         dummy.transform(ast, parent);
@@ -63,7 +63,7 @@ describe("TsClassExporterTransformer", () => {
                 type: "Class",
                 name: "MyClass",
                 analysis: Core.AnalysisType.Candidate,
-                methods: []
+                methods: <Core.MethodMetaData[]>[]
             }]
         }
         dummy.transform(ast, parent);
@@ -90,7 +90,7 @@ describe("TsClassExporterTransformer", () => {
                 type: "Class",
                 name: "MyClass",
                 analysis: Core.AnalysisType.Candidate,
-                methods: []
+                methods: <Core.MethodMetaData[]>[]
             }]
         }
         dummy.transform(ast, parent);

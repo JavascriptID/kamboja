@@ -9,7 +9,7 @@ export class BooleanValueTransformer extends Core.TransformerBase {
     }
 
     @Core.Call.when(Core.SyntaxKind.BooleanLiteral)
-    transform(node, parent: Core.DecoratorMetaData) {
+    transform(node:any, parent: Core.DecoratorMetaData) {
         let analyser = <Analyzer.ValueAnalyzer>Analyzer
             .get(this.parserType, Analyzer.AnalyzerType.ValueAnalyzer, node)
         if (analyser.isPrimitive()) {
@@ -28,7 +28,7 @@ export class StringValueTransformer extends Core.TransformerBase {
     }
 
     @Core.Call.when(Core.SyntaxKind.StringLiteral)
-    transform(node, parent: Core.DecoratorMetaData) {
+    transform(node:any, parent: Core.DecoratorMetaData) {
         let analyser = <Analyzer.ValueAnalyzer>Analyzer
             .get(this.parserType, Analyzer.AnalyzerType.ValueAnalyzer, node)
         if (analyser.isPrimitive()) {
@@ -47,7 +47,7 @@ export class NumberValueTransformer extends Core.TransformerBase {
     }
 
     @Core.Call.when(Core.SyntaxKind.NumericLiteral)
-    transform(node, parent: Core.DecoratorMetaData) {
+    transform(node:any, parent: Core.DecoratorMetaData) {
         let analyser = <Analyzer.ValueAnalyzer>Analyzer
             .get(this.parserType, Analyzer.AnalyzerType.ValueAnalyzer, node)
         if (analyser.isPrimitive()) {
@@ -66,7 +66,7 @@ export class NullValueTransformer extends Core.TransformerBase {
     }
 
     @Core.Call.when(Core.SyntaxKind.NullLiteral)
-    transform(node, parent: Core.DecoratorMetaData) {
+    transform(node:any, parent: Core.DecoratorMetaData) {
         let analyser = <Analyzer.ValueAnalyzer>Analyzer
             .get(this.parserType, Analyzer.AnalyzerType.ValueAnalyzer, node)
         if (analyser.isNull()) {

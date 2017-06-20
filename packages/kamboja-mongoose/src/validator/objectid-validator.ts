@@ -4,7 +4,7 @@ import * as Kecubung from "kecubung"
 
 export class ObjectIdValidator extends Validator.ValidatorBase {
     @Validator.decoratorName("objectid")
-    validate(arg: Core.FieldValidatorArg): Core.ValidationError[] {
+    validate(arg: Core.FieldValidatorArg): Core.ValidationError[] | undefined {
         if (this.isEmpty(arg.value)) return
         if (!Types.ObjectId.isValid(arg.value)) {
             let argument = <Kecubung.PrimitiveValueMetaData>arg.decoratorArgs[0]

@@ -5,7 +5,7 @@ export class Logger {
     constructor(private type: LogType) { }
 
     private log(type: "Info" | "Warning" | "Error", message: string) {
-        let chalk: (...string) => string;
+        let chalk: (...string:any[]) => string;
         let prefix = ""
         switch (type) {
             case "Error":

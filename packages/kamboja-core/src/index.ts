@@ -1,6 +1,7 @@
 import { MetaData, ParentMetaData, MetadataType, MethodMetaData, ClassMetaData } from "kecubung";
 import * as Kecubung from "kecubung"
 import * as Url from "url"
+import "reflect-metadata"
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
 export type TransformStatus = "ExitWithResult" | "Next" | "Exit"
@@ -127,7 +128,7 @@ export interface FieldValidatorArg {
 }
 
 export interface ValidatorCommand {
-    validate(args: FieldValidatorArg):ValidationError[]
+    validate(args: FieldValidatorArg):ValidationError[]| undefined
 }
 
 export interface Facade {
@@ -152,7 +153,7 @@ export interface KambojaOption extends Facade {
 
 export interface MetaDataStorage {
     pathResolver: PathResolver
-    get(classId: string): QualifiedClassMetaData
+    get(classId: string): QualifiedClassMetaData | undefined
     getFiles(category: MetaDataLoaderCategory): Kecubung.ParentMetaData[]
     getClasses(category: MetaDataLoaderCategory): QualifiedClassMetaData[]
 }
@@ -168,7 +169,7 @@ export interface ValidationError {
 
 export interface Validator {
     isValid(): boolean
-    getValidationErrors(): ValidationError[]
+    getValidationErrors(): ValidationError[] | undefined
 }
 
 export interface BaseController {
@@ -186,9 +187,9 @@ export interface HttpRequest {
     body: any
     referrer: string
     url: Url.Url
-    getHeader(key: string): string
-    getCookie(key: string): string
-    getParam(key: string): string
+    getHeader(key: string): string|undefined
+    getCookie(key: string): string|undefined
+    getParam(key: string): string|undefined
     getAccepts(key: string | string[]): string | boolean
     //isAccept(mime: string): boolean
     isAuthenticated(): boolean
@@ -289,8 +290,8 @@ export class ActionResult {
 }
 
 export function getRouteDetail(info: RouteInfo) {
-    const tokens = info.qualifiedClassName.split(",")
-    const method = `${tokens[0].trim()}.${info.methodMetaData.name}`
+    const tokens = info.qualifiedClassName!.split(",")
+    const method = `${tokens[0].trim()}.${info.methodMetaData!.name}`
     const file = tokens[1].trim()
     return `[${method} ${file}]`;
 }

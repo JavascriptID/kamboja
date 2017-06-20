@@ -20,7 +20,7 @@ describe("ControllerWithDecorator", () => {
             ], AbsoluteRootController);
         `, "controller/user-controller.js")
         let test = new ControllerWithDecorator()
-        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], undefined, undefined)
+        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], "", [])
         Chai.expect(result.status).eq("ExitWithResult")
     })
 
@@ -38,7 +38,7 @@ describe("ControllerWithDecorator", () => {
             exports.AbsoluteRootController = AbsoluteRootController;
         `, "controller/user-controller.js")
         let test = new ControllerWithDecorator()
-        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], undefined, undefined)
+        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], "", [])
         Chai.expect(result.status).eq("Next")
     })
 
@@ -56,8 +56,8 @@ describe("ControllerWithDecorator", () => {
             exports.AbsoluteRootController = AbsoluteRootController;
         `, "controller/user-controller.js")
         let test = new ControllerWithDecorator()
-        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], undefined, undefined)
-        Chai.expect(result.info[0].route).eq("/absolute/index")
+        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], "", [])
+        Chai.expect(result.info![0].route).eq("/absolute/index")
     })
 
     it("Should be able to change api controller name with decorator", () => {
@@ -74,8 +74,8 @@ describe("ControllerWithDecorator", () => {
             exports.AbsoluteRootController = AbsoluteRootController;
         `, "controller/user-controller.js")
         let test = new ControllerWithDecorator()
-        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], undefined, undefined)
-        Chai.expect(result.info[0].route).eq("/absolute/index")
+        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], "", [])
+        Chai.expect(result.info![0].route).eq("/absolute/index")
     })
 
     it("Should analyze issue if @http.root() decorator used twice", () => {
@@ -93,8 +93,8 @@ describe("ControllerWithDecorator", () => {
             exports.AbsoluteRootController = AbsoluteRootController;
         `, "controller/user-controller.js")
         let test = new ControllerWithDecorator()
-        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], undefined, undefined)
-        Chai.expect(result.info[0].analysis).deep.eq([Core.RouteAnalysisCode.DuplicateRoutes])
+        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], "", [])
+        Chai.expect(result.info![0].analysis).deep.eq([Core.RouteAnalysisCode.DuplicateRoutes])
     })
 
     it("Should add parent name when using relative path", () => {
@@ -115,8 +115,8 @@ describe("ControllerWithDecorator", () => {
         `, "controller/user-controller.js")
         let test = new ControllerWithDecorator()
         let nameSpace = <Kecubung.ParentMetaData>meta.children[0]
-        let result = test.transform(<Kecubung.ClassMetaData>nameSpace.children[0], "/namespace", undefined)
-        Chai.expect(result.info[0].route).eq("/namespace/relative/index")
+        let result = test.transform(<Kecubung.ClassMetaData>nameSpace.children[0], "/namespace", [])
+        Chai.expect(result.info![0].route).eq("/namespace/relative/index")
     })
 
     it("Should close relative path if no parent provided", () => {
@@ -133,8 +133,8 @@ describe("ControllerWithDecorator", () => {
             exports.AbsoluteRootController = AbsoluteRootController;
         `, "controller/user-controller.js")
         let test = new ControllerWithDecorator()
-        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], undefined, undefined)
-        Chai.expect(result.info[0].route).eq("/relative/index")
+        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], "", [])
+        Chai.expect(result.info![0].route).eq("/relative/index")
     })
 
     it("Should allow parameters inside url", () => {
@@ -151,10 +151,10 @@ describe("ControllerWithDecorator", () => {
             exports.AbsoluteRootController = AbsoluteRootController;
         `, "controller/user-controller.js")
         let test = new ControllerWithDecorator()
-        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], undefined, undefined)
-        Chai.expect(result.info[0].route)
+        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], "", [])
+        Chai.expect(result.info![0].route)
             .eq("/relative/:par1/:par2/other/index")
-        Chai.expect(result.info[0].analysis).undefined
+        Chai.expect(result.info![0].analysis).undefined
     })
 
     it("Should analyze if provided url parameter doesn't have associated action parameter", () => {
@@ -171,8 +171,8 @@ describe("ControllerWithDecorator", () => {
             exports.AbsoluteRootController = AbsoluteRootController;
         `, "controller/user-controller.js")
         let test = new ControllerWithDecorator()
-        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], undefined, undefined)
-        Chai.expect(result.info[0].analysis)
+        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], "", [])
+        Chai.expect(result.info![0].analysis)
             .deep.eq([Core.RouteAnalysisCode.UnAssociatedParameters])
     })
 
@@ -193,8 +193,8 @@ describe("ControllerWithDecorator", () => {
             exports.AbsoluteRootController = AbsoluteRootController;
         `, "controller/user-controller.js")
         let test = new ControllerWithDecorator()
-        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], undefined, undefined)
-        Chai.expect(result.info[0].analysis)
+        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], "", [])
+        Chai.expect(result.info![0].analysis)
             .deep.eq([Core.RouteAnalysisCode.UnAssociatedParameters])
     })
 
@@ -212,8 +212,8 @@ describe("ControllerWithDecorator", () => {
             exports.AbsoluteRootController = AbsoluteRootController;
         `, "controller/user-controller.js")
         let test = new ControllerWithDecorator()
-        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], undefined, undefined)
-        Chai.expect(result.info[0].methodMetaData.parameters[1].decorators[0].name)
+        let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], "", [])
+        Chai.expect(result.info![0].methodMetaData!.parameters[1].decorators![0].name)
             .eq("required")
     })
 

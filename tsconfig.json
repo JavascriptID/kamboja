@@ -6,11 +6,11 @@
         "sourceMap": false,
         "declaration": false,
         "experimentalDecorators": true,
-        "importHelpers": true
+        "importHelpers": true,
+        "strict":true
     },
     "exclude": [
         "./node_modules",
-        "./packages/*/node_modules",
-        "./packages/*/lib"
+        "./packages/*/node_modules"
     ]
 }

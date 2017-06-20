@@ -10,11 +10,11 @@ export function decoratorName(decoratorName: string) {
     }
 }
 
-export function getDecoratorName(target) {
+export function getDecoratorName(target: any) {
     return <string>Reflect.getMetadata(MetaDataKey, target)
 }
 
-export function parameterDecorator(...params) { }
+export function parameterDecorator(...params: any[]) { }
 
 export class ValidatorDecorator {
     required(message?: string) { return parameterDecorator; }
@@ -42,8 +42,8 @@ export interface PropertiesValidatorArg {
 export class ValidatorBase implements ValidatorCommand {
     public validators: ValidatorCommand[]
 
-    validate(args: FieldValidatorArg): ValidationError[] {
-        return null;
+    validate(args: FieldValidatorArg): ValidationError[] | undefined {
+        return undefined;
     }
 
     isEmpty(value: any) {
@@ -52,13 +52,13 @@ export class ValidatorBase implements ValidatorCommand {
             || (typeof value == "string" && value.trim() == "")
     }
 
-    protected validateFields(arg: ParametersValidatorArg | PropertiesValidatorArg): ValidationError[] {
+    protected validateFields(arg: ParametersValidatorArg | PropertiesValidatorArg): ValidationError[] | undefined{
         if (arg.type == "PropertiesValidator") {
             let result: ValidationError[] = []
-            for (let property of arg.classInfo.properties) {
+            for (let property of arg.classInfo.properties!) {
                 if (arg.isArray) {
                     if (!Array.isArray(arg.classInstance))
-                        return [{
+                        return [<ValidationError>{
                             field: arg.parentField,
                             message: `[${arg.parentField}] must be a type of Array`
                         }]
@@ -73,7 +73,7 @@ export class ValidatorBase implements ValidatorCommand {
                             parentField: `${arg.parentField}[${i}]`,
                             classInfo: arg.classInfo
                         })
-                        result = result.concat(valResult)
+                        result = result.concat(valResult!)
                     }
                 }
                 else {
@@ -85,7 +85,7 @@ export class ValidatorBase implements ValidatorCommand {
                         parentField: arg.parentField,
                         classInfo: arg.classInfo
                     })
-                    result = result.concat(valResult)
+                    result = result.concat(valResult!)
                 }
 
             }
@@ -111,7 +111,7 @@ export class ValidatorBase implements ValidatorCommand {
     }
 
     private useValidators(arg: {
-        decorators: Kecubung.DecoratorMetaData[],
+        decorators?: Kecubung.DecoratorMetaData[],
         value: any,
         field: string,
         parentField?: string,

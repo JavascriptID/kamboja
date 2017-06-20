@@ -1,7 +1,7 @@
 import { ApiController, val, http } from "../../../src"
 
 export class CategoriesController extends ApiController {
-    get( @val.required() id) {
+    get( @val.required() id:string) {
         return id
     }
 
@@ -9,49 +9,49 @@ export class CategoriesController extends ApiController {
         return { offset: iOffset, limit: iLimit, query: query }
     }
 
-    add(model) {
+    add(model:any) {
         return model
     }
 
-    replace( @val.required() id, model) {
+    replace( @val.required() id:string, model:any) {
         return model
     }
 
-    modify( @val.required() id, model) {
+    modify( @val.required() id:string, model:any) {
         return model
     }
     
-    delete( @val.required() id) {
+    delete( @val.required() id:string) {
         return id
     }
 }
 
 @http.root("categories/:categoryId/items")
 export class CategoriesItemController extends ApiController {
-    get( @val.required() id, @val.required() categoryId) {
+    get( @val.required() id:string, @val.required() categoryId:string) {
         return { id: id, categoryId: categoryId }
     }
 
-    list( @val.required() categoryId, iOffset = 1, iLimit = 10, query = "") {
+    list( @val.required() categoryId:string, iOffset = 1, iLimit = 10, query = "") {
         return { offset: iOffset, limit: iLimit, query: query, categoryId: categoryId }
     }
 
-    add(model, @val.required() categoryId) {
+    add(model:any, @val.required() categoryId:string) {
         model.categoryId = categoryId
         return model
     }
 
-    replace( @val.required() id, model, @val.required() categoryId) {
+    replace( @val.required() id:string, model:any, @val.required() categoryId:string) {
         model.categoryId = categoryId
         return model
     }
 
-    modify( @val.required() id, model, @val.required() categoryId) {
+    modify( @val.required() id:string, model:any, @val.required() categoryId:string) {
         model.categoryId = categoryId
         return model
     }
 
-    delete( @val.required() id, @val.required() categoryId) {
+    delete( @val.required() id:string, @val.required() categoryId:string) {
         return { id: id, categoryId: categoryId }
     }
 }

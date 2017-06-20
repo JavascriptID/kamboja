@@ -1,4 +1,4 @@
-export function autoConvert(source: string) {
+export function autoConvert(source: string|undefined) {
     if(typeof source == "undefined" || source == null) return;
     if (!isNaN(+source))
         return parseFloat(source);

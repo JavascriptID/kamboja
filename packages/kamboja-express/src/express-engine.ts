@@ -17,8 +17,8 @@ export class ExpressEngine implements Core.Engine {
     init(routes: Core.RouteInfo[], option: Core.KambojaOption) {
         //routes
         routes.forEach(route => {
-            let method = route.httpMethod.toLowerCase()
-            this.application[method](route.route, async (req, resp, next) => {
+            let method = route.httpMethod!.toLowerCase();
+            (<any>this.application)[method](route.route, async (req:Express.Request, resp:Express.Response, next:Express.NextFunction) => {
                 let handler = new RequestHandler(option, new RequestAdapter(req), new ResponseAdapter(resp, next), route)
                 await handler.execute();
             })
@@ -31,7 +31,7 @@ export class ExpressEngine implements Core.Engine {
         })
 
         //error handler
-        this.application.use(async (err, req, res, next) => {
+        this.application.use(async (err:any, req:Express.Request, res:Express.Response, next:Express.NextFunction) => {
             let handler = new RequestHandler(option, new RequestAdapter(req), new ResponseAdapter(res, next), err)
             await handler.execute()
         })

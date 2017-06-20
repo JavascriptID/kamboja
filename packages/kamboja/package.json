@@ -34,8 +34,7 @@
     "lodash": "^4.17.4",
     "reflect-metadata": "^0.1.10",
     "tslib": "^1.7.1",
-    "validator": "^7.0.0",
-    "xml": "^1.0.1"
+    "validator": "^7.0.0"
   },
   "devDependencies": {
     "@types/chai": "^3.5.2",

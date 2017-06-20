@@ -1,4 +1,3 @@
-import { ApiActionResult } from "kamboja"
 import { JsonActionResult } from "./json-action-result"
 import { ViewActionResult } from "./view-action-result"
 import { RedirectActionResult } from "./redirect-action-result"

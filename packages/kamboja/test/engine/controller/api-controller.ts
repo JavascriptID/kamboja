@@ -1,12 +1,12 @@
-import { Controller, ApiController } from "../../../src/controller"
-import { val, HttpStatusError, ApiActionResult } from "../../../src"
+import { Controller, ApiController, } from "../../../src/controller"
+import { val, HttpStatusError, Core } from "../../../src"
 
 export class DummyApi extends ApiController {
-    returnTheParam(par1) {
+    returnTheParam(par1:any) {
         return par1;
     }
 
-    returnTheParamWithPromise(par1) {
+    returnTheParamWithPromise(par1:any) {
         return Promise.resolve(par1);
     }
 
@@ -17,14 +17,14 @@ export class DummyApi extends ApiController {
     }
 
     returnOk() {
-        return new ApiActionResult("OK!")
+        return "OK!"
     }
 
-    validationTest( @val.required() required) { 
+    validationTest( @val.required() required:any) { 
         return "OK"
     }
 
-    validationTestThrowError(@val.required() required){
+    validationTestThrowError(@val.required() required:any){
         throw new Error("Internal error")
     }
 

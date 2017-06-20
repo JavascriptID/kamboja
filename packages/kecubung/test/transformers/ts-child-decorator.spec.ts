@@ -19,7 +19,8 @@ describe("TsChildDecoratorTransformer", () => {
             }]
         }
         dummy.transform(ast.expression, parent);
-        Chai.expect(parent.parameters[0].decorators[0]).deep.eq(<Core.DecoratorMetaData>{
+        //let dec = parent.parameters[0]!.decorators
+        Chai.expect((<any>parent.parameters[0]).decorators[0]).deep.eq(<Core.DecoratorMetaData>{
             type: "Decorator",
             name: "decoOne",
             analysis: Core.AnalysisType.Valid,
@@ -46,7 +47,7 @@ describe("TsChildDecoratorTransformer", () => {
             }]
         }
         dummy.transform(ast.expression, parent);
-        Chai.expect(parent.parameters[0].decorators[0].parameters[0].type).eq("Unknown")
+        Chai.expect((<any>parent.parameters[0]).decorators[0].parameters[0].type).eq("Unknown")
     })
 
     it("Should merge existing parameter decorator", () => {
@@ -60,14 +61,14 @@ describe("TsChildDecoratorTransformer", () => {
                 decorators: [<Core.DecoratorMetaData>{
                     type: "Decorator",
                     name: "justName",
-                    parameters: []
+                    parameters: <Core.ValueMetaData[]>[]
                 }],
                 type: "Parameter",
                 name: "par1"
             }]
         }
         dummy.transform(ast.expression, parent);
-        Chai.expect(parent.parameters[0].decorators[1]).deep.eq(<Core.DecoratorMetaData>{
+        Chai.expect((<any>parent.parameters[0]).decorators[1]).deep.eq(<Core.DecoratorMetaData>{
             type: "Decorator",
             name: "decoOne",
             analysis: Core.AnalysisType.Valid,
@@ -94,7 +95,7 @@ describe("TsChildDecoratorTransformer", () => {
             }]
         }
         dummy.transform(ast.expression, parent);
-        Chai.expect(parent.decorators[0]).deep.eq(<Core.DecoratorMetaData>{
+        Chai.expect((<any>parent).decorators[0]).deep.eq(<Core.DecoratorMetaData>{
             type: "Decorator",
             name: "decoOne",
             analysis: Core.AnalysisType.Valid,
@@ -115,7 +116,7 @@ describe("TsChildDecoratorTransformer", () => {
             decorators: [<Core.DecoratorMetaData>{
                 type: "Decorator",
                 name: "justName",
-                parameters: []
+                parameters: <Core.ValueMetaData[]>[]
             }],
             type: "Method",
             name: "myMethod",
@@ -126,7 +127,7 @@ describe("TsChildDecoratorTransformer", () => {
             }]
         }
         dummy.transform(ast.expression, parent);
-        Chai.expect(parent.decorators[1]).deep.eq(<Core.DecoratorMetaData>{
+        Chai.expect((<any>parent).decorators[1]).deep.eq(<Core.DecoratorMetaData>{
             type: "Decorator",
             name: "decoOne",
             analysis: Core.AnalysisType.Valid,
@@ -153,7 +154,7 @@ describe("TsChildDecoratorTransformer", () => {
             }]
         }
         dummy.transform(ast.expression, parent);
-        Chai.expect(parent.decorators[0]).deep.eq(<Core.DecoratorMetaData>{
+        Chai.expect((<any>parent).decorators[0]).deep.eq(<Core.DecoratorMetaData>{
             type: "Decorator",
             name: "decoOne",
             analysis: Core.AnalysisType.Valid,

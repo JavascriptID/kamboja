@@ -10,8 +10,8 @@ describe("OptionBuilder", () => {
         let clazz = classes.filter(x => x.name == "ByConvention")[0]
         let test = new OptionBuilder()
         let result = test.getOption(clazz)
-        Chai.expect((<any>result.timestamps).createdAt).eq("createdAt")
-        Chai.expect((<any>result.timestamps).updatedAt).eq("updatedAt")
+        Chai.expect((<any>result!.timestamps).createdAt).eq("createdAt")
+        Chai.expect((<any>result!.timestamps).updatedAt).eq("updatedAt")
     })
 
     it("Should generate option with decorator", () => {
@@ -19,8 +19,8 @@ describe("OptionBuilder", () => {
         let clazz = classes.filter(x => x.name == "ByDecorator")[0]
         let test = new OptionBuilder()
         let result = test.getOption(clazz)
-        Chai.expect((<any>result.timestamps).createdAt).eq("createdOn")
-        Chai.expect((<any>result.timestamps).updatedAt).eq("updatedOn")
+        Chai.expect((<any>result!.timestamps).createdAt).eq("createdOn")
+        Chai.expect((<any>result!.timestamps).updatedAt).eq("updatedOn")
     })
 
     it("Should not error when only createdAt", () => {
@@ -28,7 +28,7 @@ describe("OptionBuilder", () => {
         let clazz = classes.filter(x => x.name == "OnlyCreatedOn")[0]
         let test = new OptionBuilder()
         let result = test.getOption(clazz)
-        Chai.expect((<any>result.timestamps).createdAt).eq("createdAt")
+        Chai.expect((<any>result!.timestamps).createdAt).eq("createdAt")
     })
 
     it("Should not error when only updatedAt", () => {
@@ -36,7 +36,7 @@ describe("OptionBuilder", () => {
         let clazz = classes.filter(x => x.name == "OnlyUpdatedOn")[0]
         let test = new OptionBuilder()
         let result = test.getOption(clazz)
-        Chai.expect((<any>result.timestamps).updatedAt).eq("updatedAt")
+        Chai.expect((<any>result!.timestamps).updatedAt).eq("updatedAt")
     })
 
     it("Should throw error when duplicate decorator", () => {

@@ -17,7 +17,7 @@ export class RouteGenerator {
         for (let file of this.metaData) {
             let route = Transformer.transform(file)
             route.forEach(x => {
-                x.classId = this.idResolver.getClassId(x.qualifiedClassName)
+                x.classId = this.idResolver.getClassId(x.qualifiedClassName!)
                 routes.push(x)
             })
         }

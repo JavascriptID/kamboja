@@ -2,12 +2,12 @@ import { AnalysisMessage, RouteInfo, RouteAnalysisCode } from "kamboja-core"
 import { AnalyzerCommand, getRouteDetail } from "./definitions"
 
 export class UnassociatedParameterAnalyzer implements AnalyzerCommand {
-    analyse(route: RouteInfo): AnalysisMessage[] {
+    analyse(route: RouteInfo): AnalysisMessage[] | undefined{
         if (route.analysis && route.analysis.some(x => x == RouteAnalysisCode.UnAssociatedParameters)) {
-            let routeParams = route.route.split("/")
+            let routeParams = route.route!.split("/")
                 .filter(x => x.charAt(0) == ":")
                 .map(x => x.substring(1))
-            let actionParams = route.methodMetaData
+            let actionParams = route.methodMetaData!
                 .parameters.map(x => x.name)
             let missing = actionParams.filter(x => !routeParams.some(y => x == y))
             if (missing.length > 0) {

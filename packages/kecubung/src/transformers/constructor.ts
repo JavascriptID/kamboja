@@ -9,7 +9,7 @@ export class ConstructorTransformer extends Core.TransformerBase {
     }
 
     @Core.Call.when(Core.SyntaxKind.FunctionDeclaration)
-    transform(node, parent: Core.ClassMetaData) {
+    transform(node:any, parent: Core.ClassMetaData) {
         let analyser = <Analyzer.ConstructorAnalyzer>Analyzer
             .get(this.parserType, Analyzer.AnalyzerType.Constructor, node)
         if (analyser.isConstructor(parent.name)) {

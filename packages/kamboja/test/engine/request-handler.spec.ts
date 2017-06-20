@@ -370,7 +370,7 @@ describe("RequestHandler", () => {
                 "ChangeToHello, interceptor/change-to-hello"
             ]
             //returnTheParam
-            let info = infos.filter(x => x.methodMetaData.name == "returnTheParam")[0]
+            let info = infos.filter(x => x.methodMetaData!.name == "returnTheParam")[0]
             info.classId = info.qualifiedClassName
             request.MOCKS.getParam.withArgs("par1").returns("param1")
 
@@ -379,7 +379,7 @@ describe("RequestHandler", () => {
             Chai.expect(response.body).eq("Hello world!")
 
             //returnTheParamWithPromise
-            info = infos.filter(x => x.methodMetaData.name == "returnTheParamWithPromise")[0]
+            info = infos.filter(x => x.methodMetaData!.name == "returnTheParamWithPromise")[0]
             info.classId = info.qualifiedClassName
             request.MOCKS.getParam.withArgs("par1").returns("param1")
             executor = new RequestHandler(facade, request, response, info)
@@ -387,14 +387,14 @@ describe("RequestHandler", () => {
             Chai.expect(response.body).eq("Hello world!")
 
             //voidMethod
-            info = infos.filter(x => x.methodMetaData.name == "voidMethod")[0]
+            info = infos.filter(x => x.methodMetaData!.name == "voidMethod")[0]
             info.classId = info.qualifiedClassName
             executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
             Chai.expect(response.body).eq("Hello world!")
 
             //internalError
-            info = infos.filter(x => x.methodMetaData.name == "internalError")[0]
+            info = infos.filter(x => x.methodMetaData!.name == "internalError")[0]
             info.classId = info.qualifiedClassName
             executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
@@ -404,7 +404,7 @@ describe("RequestHandler", () => {
         it("Should execute interception in proper order", async () => {
             let meta = H.fromFile("controller/interception-order-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
-            let info = infos.filter(x => x.classMetaData.name == "InterceptedTestController" && x.methodMetaData.name == "returnHello")[0]
+            let info = infos.filter(x => x.classMetaData!.name == "InterceptedTestController" && x.methodMetaData!.name == "returnHello")[0]
             facade.middlewares = [
                 new ConcatInterceptor("4"),
                 new ConcatInterceptor("5")
@@ -453,7 +453,7 @@ describe("RequestHandler", () => {
             request.route = "/dummyapi/returnview"
             facade.middlewares = [
                 new ErrorHandlerMiddleware((i) => {
-                    let clean = H.cleanUp([i.controllerInfo])
+                    let clean = H.cleanUp([i.controllerInfo!])
                     Chai.expect(clean).deep.eq([{
                         initiator: undefined,
                         route: undefined,

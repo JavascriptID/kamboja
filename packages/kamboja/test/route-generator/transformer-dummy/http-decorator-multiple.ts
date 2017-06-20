@@ -9,5 +9,5 @@ export class SimpleController extends Controller {
 
     @http.get("/this/is/:parameter")
     @http.get("/the/:parameter/in/the/middle")
-    actionWithParameter(parameter){}
+    actionWithParameter(parameter:any){}
 }

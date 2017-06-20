@@ -25,7 +25,7 @@ describe("EmailValidator", () => {
         let result = test.validate({
             value: "nobita@nobi.com",
             classInfo: clazz,
-            decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+            decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
             field: "model"
         })
         Chai.expect(result).undefined
@@ -52,11 +52,11 @@ describe("EmailValidator", () => {
         let result = test.validate({
             value: "not-an-email",
             classInfo: clazz,
-            decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+            decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
             field: "model",
             parentField: "parent"
         })
-        Chai.expect(result[0].field).eq("parent.model")
+        Chai.expect(result![0].field).eq("parent.model")
     })
 
     it("Should not error if provided null", () => {
@@ -80,7 +80,7 @@ describe("EmailValidator", () => {
         let result = test.validate({
             value: null,
             classInfo: clazz,
-            decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+            decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
             field: "model"
         })
         Chai.expect(result).undefined
@@ -107,10 +107,10 @@ describe("EmailValidator", () => {
         let result = test.validate({
             value: "not-an-email",
             classInfo: clazz,
-            decoratorArgs: clazz.methods[0].parameters[0].decorators[0].parameters,
+            decoratorArgs: clazz.methods[0].parameters[0].decorators![0].parameters,
             field: "model"
         })
-        Chai.expect(result[0].field).eq("model")
-        Chai.expect(result[0].message).eq("Not valid email")
+        Chai.expect(result![0].field).eq("model")
+        Chai.expect(result![0].message).eq("Not valid email")
     })
 })
