@@ -19,7 +19,7 @@ export class RequestAdapter implements Core.HttpRequest {
     route:string
 
     constructor(public request: Express.Request) {
-        this.headers = request.headers
+        this.headers = <{ [key: string]: string }>request.headers
         this.cookies = request.cookies
         this.params = Lodash.assign(request.params, request.query) 
         this.body = request.body;
@@ -27,7 +27,7 @@ export class RequestAdapter implements Core.HttpRequest {
         this.httpMethod = <Core.HttpMethod>request.method;
         if (request && request.originalUrl)
             this.url = Url.parse(request.originalUrl);
-        this.referrer = request.header("referrer");
+        this.referrer = <any>request.header("referrer");
         this.user = request.user;
         this.route = request.route;
     }
