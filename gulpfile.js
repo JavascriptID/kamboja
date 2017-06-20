@@ -85,7 +85,7 @@ var buildSequence = []
 for (var i = 0; i < PACKAGES.length; i++) {
     var pack = PACKAGES[i];
     var lean = pack.replace("packages/", "")
-    buildSequence.push(buildTypeScript("build-source-" + lean, pack, "/src", "/src", true))
+    buildSequence.push(buildTypeScript("build-source-" + lean, pack, "/src", "/src"))
     buildSequence.push(buildTypeScript("build-test-" + lean, pack, "/test", "/test"))
 }
 
