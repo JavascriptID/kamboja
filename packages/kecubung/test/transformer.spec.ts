@@ -18,8 +18,8 @@ describe("Transformer", () => {
             let result = dummy.transform(ast);
             //console.log(Util.inspect(result.children, false, null))
             Chai.expect(Path.resolve(result.name)).eq(Path.resolve(filename))
-            Chai.expect(result.children[0]).deep.property("children[0].name", "MyBaseClass")
-            Chai.expect(result.children[0]).deep.property("children[1].name", "MyClass")
+            Chai.expect((<Core.ParentMetaData>result.children[0]).children[0].name).eq("MyBaseClass")
+            Chai.expect((<Core.ParentMetaData>result.children[0]).children[1].name).eq("MyClass")
         })
 
         it("Should transform TypeScript (4.5 MB) file in less than 1 second", function () {
