@@ -12,7 +12,7 @@ export class ControllerInvocation extends Core.Invocation {
         private routeInfo: Core.RouteInfo,
         public request: Core.HttpRequest) {
         super()
-        let parameterBinder = new ParameterBinder(this.routeInfo, this.request)
+        let parameterBinder = new ParameterBinder(this.routeInfo, this.request, executor.facade.pathResolver!)
         this.parameters = parameterBinder.getParameters()
         this.controllerInfo = {
             classId: this.routeInfo.classId,

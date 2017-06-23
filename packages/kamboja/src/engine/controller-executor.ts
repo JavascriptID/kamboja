@@ -5,8 +5,10 @@ import { ParameterBinder } from "../parameter-binder"
 import { ControllerFactory } from "./controller-factory"
 
 export class ControllerExecutor {
+    public facade:Core.Facade
     constructor(private factory: ControllerFactory,
         private request: Core.HttpRequest) {
+            this.facade = factory.facade;
     }
 
     async execute(parameters: any[]) {
