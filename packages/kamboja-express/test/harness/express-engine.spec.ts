@@ -276,7 +276,7 @@ describe("Integration", () => {
         })
     })
 
-    describe("Middleware Function", () => {
+    describe("Express Minddleware", () => {
         it("Should able to chain invocation if using express middleware", () => {
             let app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
                 .set("views", Path.join(__dirname, "view"))
@@ -301,6 +301,17 @@ describe("Integration", () => {
                 .get("/user/executemiddleware")
                 .expect(401)
 
+        })
+
+        it("Should return 404 if execute middleware inside action which call next", () => {
+            let app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
+                .set("views", Path.join(__dirname, "view"))
+                .set("view engine", "hbs")
+                .init()
+
+            return Supertest(app)
+                .get("/user/expressmiddlewareinsideaction")
+                .expect(404)
         })
 
         it("Should be able to send error from express middleware to chain invocation", () => {
@@ -350,6 +361,37 @@ describe("Integration", () => {
 
         })
 
+        it("Should able to catch error inside action if using express middleware", () => {
+            let app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
+                .set("views", Path.join(__dirname, "view"))
+                .set("view engine", "hbs")
+                .init()
+
+            return Supertest(app)
+                .get("/user/expressmiddlewarewitherroraction")
+                .expect((result: Supertest.Response) => {
+                    Chai.expect(result.header["custom-header"]).eq("hello")
+                    Chai.expect(result.text).eq("Internal Error")
+                })
+                .expect(500)
+        })
+
+        it("Should able to modify req.user from inside express middleware", () => {
+            let app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
+                .set("views", Path.join(__dirname, "view"))
+                .set("view engine", "hbs")
+                .init()
+
+            return Supertest(app)
+                .get("/user/expressmiddlewaremodifyuser")
+                .expect((result: Supertest.Response) => {
+                    Chai.expect(result.body).deep.eq({ name: "Nobita" })
+                })
+                .expect(200)
+        })
+    })
+
+    describe("Middleware Function", () => {
         it("Should be able to add middleware in global scope", async () => {
             let app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
                 .set("views", Path.join(__dirname, "view"))

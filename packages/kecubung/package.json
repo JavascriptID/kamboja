@@ -7,19 +7,17 @@
   "scripts": {
     "test": "gulp"
   },
-  "keywords": [
-    "reflection",
-    "metadata",
-    "typesystem",
-    "babylon",
-    "typescript"
-  ],
-  "author": "Ketut Sandiarsa <ktutnik@gmail.com>",
-  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kambojajs/kecubung"
+    "url": "git+https://github.com/kambojajs/kamboja.git"
   },
+  "keywords": [],
+  "author": "Ketut Sandiarsa <ktutnik@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kambojajs/kamboja/issues"
+  },
+  "homepage": "http://kambojajs.com",
   "dependencies": {
     "@types/node": "^8.0.1",
     "reflect-metadata": "^0.1.10",

@@ -32,6 +32,13 @@ export class RequestAdapter implements Core.HttpRequest {
         this.route = request.route;
     }
 
+    update(request:Express.Request){
+        this.headers = Lodash.assign(this.headers, request.headers)
+        this.cookies = Lodash.assign(this.cookies, request.cookies)
+        this.user = request.user
+        this.request = request;
+    }
+
     private findCaseInsensitive(obj:any, key:string) {
         let keys = Object.keys(obj);
         for (let item of keys) {

@@ -1,7 +1,7 @@
 import { internal, http, Controller, Core } from "kamboja"
 import * as Model from "../model/user-model"
 import { Request, Response, NextFunction } from "express"
-import { MiddlewareActionResult, middleware } from "../../../src"
+import { MiddlewareActionResult, middleware, JsonActionResult } from "../../../src"
 import { Return400Middleware } from "../interceptor/400-middleware"
 import { response } from "../../../src"
 import { authenticate } from "passport"
@@ -23,7 +23,7 @@ export class UserController extends Controller {
     executeMiddleware() {
         return new MiddlewareActionResult((req: Request, res: Response, next: NextFunction) => {
             res.status(401)
-            next()
+            res.end()
         })
     }
 
@@ -81,5 +81,27 @@ export class UserController extends Controller {
     })
     expressMiddlewareAsyncBypassAction() {
         return "Hello"
+    }
+
+    @middleware.use((req, res, next) => {
+        res.setHeader("custom-header", "hello")
+        next()
+    })
+    expressMiddlewareWithErrorAction() {
+        throw new Error("Internal Error")
+    }
+
+    expressMiddlewareInsideAction() {
+        return new MiddlewareActionResult((req, res, next) => {
+            next()
+        })
+    }
+
+    @middleware.use((req, res, next) => {
+        req.user = { name: "Nobita" }
+        next()
+    })
+    expressMiddlewareModifyUser() {
+        return new JsonActionResult(this.request.user)
     }
 }

@@ -15,12 +15,40 @@ describe("RequestAdapter", () => {
         Chai.expect(test.getCookie("thekey")).eq("TheValue")
     })
 
+    it("Should able to update cookie properly", async () => {
+        let test = new RequestAdapter(<any>{
+            cookies: { otherKey: "OtherValue", TheKey: "TheValue" },
+            header: () => { }
+        })
+
+        test.update(<any>{
+            cookies: { otherKey: "OtherValue", TheKey: "The New Value", NewKey: "New Value" }
+        })
+
+        Chai.expect(test.getCookie("otherKey")).eq("OtherValue")
+        Chai.expect(test.getCookie("thekey")).eq("The New Value")
+        Chai.expect(test.getCookie("NewKey")).eq("New Value")
+    })
+
     it("Should return header with case insensitive", async () => {
         let test = new RequestAdapter(<any>{
             headers: { TheKey: "TheValue" },
             header: () => { }
         })
         Chai.expect(test.getHeader("thekey")).eq("TheValue")
+    })
+
+    it("Should able to update header properly", async () => {
+        let test = new RequestAdapter(<any>{
+            headers: { TheKey: "TheValue" },
+            header: () => { }
+        })
+        test.update(<any>{
+            headers: { otherKey: "OtherValue", TheKey: "The New Value", NewKey: "New Value" }
+        })
+        Chai.expect(test.getHeader("otherKey")).eq("OtherValue")
+        Chai.expect(test.getHeader("thekey")).eq("The New Value")
+        Chai.expect(test.getHeader("NewKey")).eq("New Value")
     })
 
     it("Should return params with case insensitive", async () => {
@@ -63,6 +91,29 @@ describe("RequestAdapter", () => {
         Chai.expect(test.user).deep.eq({
             role: "admin",
             displayName: "Ketut Sandiarsa",
+            id: "8083535"
+        })
+    })
+
+    it("Should able to update user properly", async () => {
+        let test = new RequestAdapter(<any>{
+            user: {
+                role: "admin",
+                displayName: "Ketut Sandiarsa",
+                id: "8083535"
+            },
+            header: () => { }
+        })
+        test.update(<any>{
+            user: {
+                role: "admin",
+                displayName: "Nobita Nobi",
+                id: "8083535"
+            }
+        })
+        Chai.expect(test.user).deep.eq({
+            role: "admin",
+            displayName: "Nobita Nobi",
             id: "8083535"
         })
     })
