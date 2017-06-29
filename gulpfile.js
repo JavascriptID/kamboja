@@ -22,6 +22,22 @@ var PACKAGES = [
 ]
 
 //********CLEAN ************
+function fixPackageJson(filePath){
+    var file = path.join(filePath, "/package.json")
+    var dest = path.join(filePath)
+    var name = "fixing: " + file
+    gulp.task(name, function () {
+        return gulp.src(file)
+            .pipe(jeditor(function(json){
+                json.main = "src/index.js";
+                json.types = "src/index.ts"
+                return json
+            }))
+            .pipe(gulp.dest(dest));
+    });
+    return name;
+}
+
 gulp.task("clean-source", function (cb) {
     return del([
         "./packages/*/src/**/*.js",
@@ -52,33 +68,10 @@ gulp.task("clean-lib", function (cb) {
             @types/chai need to removed due to typescript issue
             reporting duplicate operator error 
         */
-        "./packages/*/node_modules/@types/chai"],
+        "./packages/*/node_modules/@types/chai",
+        "./packages/*/node_modules/@types/validator"],
         cb)
 })
-
-
-gulp.task("clean", function (cb) {
-    runSequence("clean-source", "clean-test", "clean-lib", cb);
-});
-
-//******** FIXING PACKAGE JSON **********
-
-function fixPackageJson(filePath){
-    var file = path.join(process.cwd(), filePath, "/package.json")
-    var dest = path.join(process.cwd(), filePath)
-    var name = "adding package.json: " + filePath
-    gulp.task(name, function () {
-        return gulp.src(file)
-            .pipe(jeditor(function(json){
-                json.main = "src/index.js";
-                json.types = "src/index.ts"
-                return json
-            }))
-            .pipe(gulp.dest(dest));
-    });
-    return name;
-}
-
 
 gulp.task("fix-package.json", function (cb) {
     var buildSequence = []
@@ -88,6 +81,10 @@ gulp.task("fix-package.json", function (cb) {
     } 
     buildSequence.push(cb)
     runSequence.apply(null, buildSequence)
+});
+
+gulp.task("clean", function (cb) {
+    runSequence("clean-source", "clean-test", "clean-lib", "fix-package.json", cb);
 });
 
 //******** BUILD *************
