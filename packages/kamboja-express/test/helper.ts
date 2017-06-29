@@ -10,10 +10,10 @@ export function delay(millisecond = 5){
     })
 }
 
-export function spy<T>(obj:T) {
+export function spy<T>(obj:T): T & Test.Mockable<T, Sinon.SinonSpy> {
     return Test.spy<T>(obj);
 }
 
-export function stub<T>(obj:T) {
+export function stub<T>(obj:T): T & Test.Mockable<T, Sinon.SinonStub> {
     return Test.stub<T>(obj)
 }

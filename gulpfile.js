@@ -7,7 +7,9 @@ var gulp = require("gulp"),
     runSequence = require("run-sequence"),
     mocha = require("gulp-mocha"),
     fs = require("fs"),
+    jeditor = require("gulp-json-editor"),
     path = require("path"),
+    lodash = require("lodash"),
     istanbul = require("gulp-istanbul");
 
 var PACKAGES = [
@@ -20,7 +22,22 @@ var PACKAGES = [
 ]
 
 //********CLEAN ************
-gulp.task("clean-source", function (cb) {
+function fixPackageJson(filePath, cb) {
+    var file = path.join(filePath, "/package.json")
+    var dest = path.join(filePath)
+    var name = "fixing: " + file
+    gulp.task(name, function() {
+        return gulp.src(file)
+            .pipe(jeditor(function(json) {
+                cb(json)
+                return json
+            }))
+            .pipe(gulp.dest(dest));
+    });
+    return name;
+}
+
+gulp.task("clean-source", function(cb) {
     return del([
         "./packages/*/src/**/*.js",
         "./packages/*/src/**/*.d.ts",
@@ -28,7 +45,7 @@ gulp.task("clean-source", function (cb) {
     ], cb)
 })
 
-gulp.task("clean-test", function (cb) {
+gulp.task("clean-test", function(cb) {
     return del([
         "./packages/*/test/**/*.js",
         "./packages/*/test/**/*.d.ts",
@@ -36,7 +53,7 @@ gulp.task("clean-test", function (cb) {
     ], cb)
 })
 
-gulp.task("clean-lib", function (cb) {
+gulp.task("clean-lib", function(cb) {
     return del([
         "./coverage",
         "./packages/*/lib",
@@ -50,73 +67,109 @@ gulp.task("clean-lib", function (cb) {
             @types/chai need to removed due to typescript issue
             reporting duplicate operator error 
         */
-        "./packages/*/node_modules/@types/chai"], 
+        "./packages/*/node_modules/@types/chai",
+        "./packages/*/node_modules/@types/validator"],
         cb)
 })
 
-
-gulp.task("clean", function (cb) {
-    runSequence("clean-source", "clean-test", "clean-lib", cb);
+gulp.task("fix-package.json", function(cb) {
+    var buildSequence = []
+    for (var i = 0; i < PACKAGES.length; i++) {
+        var pack = PACKAGES[i];
+        buildSequence.push(fixPackageJson(pack, function(json) {
+            json.main = "src/index.js";
+            json.types = "src/index.ts"
+        }))
+    }
+    buildSequence.push(cb)
+    runSequence.apply(null, buildSequence)
 });
+
+gulp.task("clean", function(cb) {
+    runSequence("clean-source", "clean-test", "clean-lib", "fix-package.json", cb);
+});
+
 
 //******** BUILD *************
 
-function buildTypeScript(name, root, path, target, declaration) {
-    if (!declaration) declaration = false
+/**
+ * Compile typescript
+ * @param {*} option declaration, src, dest
+ */
+function compile(opt) {
+    var name = "compiling: " + opt.src;
+    if (!opt.declaration) opt.declaration = false;
+    if (!opt.dest) opt.dest = opt.src;
     var tsProject = tsc.createProject("tsconfig.json", {
-        declaration: declaration,
+        declaration: opt.declaration,
         noResolve: false,
         typescript: require("typescript")
     });
 
-    gulp.task(name, function () {
-        return gulp.src([root + path + "/**/*.ts"])
+    gulp.task(name, function() {
+        return gulp.src([opt.src + "/**/*.ts"])
             .pipe(tsProject())
-            .on("error", function (err) {
+            .on("error", function(err) {
                 process.exit(1);
             })
-            .pipe(gulp.dest(root + target));
+            .pipe(gulp.dest(opt.dest));
     });
     return name;
 }
 
 
-var buildSequence = []
-for (var i = 0; i < PACKAGES.length; i++) {
-    var pack = PACKAGES[i];
-    var lean = pack.replace("packages/", "")
-    buildSequence.push(buildTypeScript("build-source-" + lean, pack, "/src", "/src"))
-    buildSequence.push(buildTypeScript("build-test-" + lean, pack, "/test", "/test"))
-}
+gulp.task("build", function(cb) {
+    var buildSequence = []
+    for (var i = 0; i < PACKAGES.length; i++) {
+        var pack = PACKAGES[i];
+        buildSequence.push(compile({ src: pack + "/src" }))
+        buildSequence.push(compile({ src: pack + "/test" }))
+    }
+    buildSequence.push(cb)
+    runSequence.apply(null, buildSequence)
+});
 
-gulp.task("build", function (cb) {
+
+//******** PRE PUBLISH *************
+
+gulp.task("prepublish", function(cb) {
+    var buildSequence = []
+    for (var i = 0; i < PACKAGES.length; i++) {
+        var pack = PACKAGES[i];
+        buildSequence.push(compile({ src: pack + "/src", dest: pack + "/lib", declaration: true }))
+        buildSequence.push(fixPackageJson(pack, function(json) {
+            json.main = "lib/index.js";
+            json.types = "lib/index.d.ts"
+        }))
+    }
     buildSequence.push(cb)
     runSequence.apply(null, buildSequence)
 });
 
 //******** TEST *************
 
-gulp.task("test-debug", function () {
-    return gulp.src(PACKAGES.map(function (x) { return x + "/test/**/*.js" }))
+gulp.task("test-debug", function() {
+    return gulp.src(PACKAGES.map(function(x) { return x + "/test/**/*.js" }))
         .pipe(mocha());
 });
 
-gulp.task("pre-test", function () {
-    return gulp.src(PACKAGES.map(function (x) { return x + "/src/**/*.js" }))
+gulp.task("pre-test", function() {
+    return gulp.src(PACKAGES.map(function(x) { return x + "/src/**/*.js" }))
         .pipe(istanbul({ includeUntested: false }))
         .pipe(istanbul.hookRequire());
 });
 
-gulp.task("test", ["pre-test"], function () {
-    return gulp.src(PACKAGES.map(function (x) { return x + "/test/**/*.js" }))
+gulp.task("test", ["pre-test"], function() {
+    return gulp.src(PACKAGES.map(function(x) { return x + "/test/**/*.js" }))
         .pipe(mocha())
         .pipe(istanbul.writeReports());
 });
 
 /** DEFAULT */
-gulp.task("default", function (cb) {
+gulp.task("default", function(cb) {
     runSequence(
         "clean",
+        "fix-package.json",
         "build",
         "test",
         cb);

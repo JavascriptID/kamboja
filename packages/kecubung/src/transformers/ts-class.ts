@@ -2,6 +2,7 @@ import * as Analyzer from "../analyzers"
 import { MethodTransformer } from "./method"
 import { ConstructorTransformer } from "./constructor"
 import { ParameterTransformer } from "./parameter"
+import { TsDecorator } from "./ts-decorator"
 import * as Core from "../core"
 
 export class TsClassTransformer extends Core.TransformerBase {
@@ -10,7 +11,7 @@ export class TsClassTransformer extends Core.TransformerBase {
     }
 
     @Core.Call.when(Core.SyntaxKind.VariableDeclaration)
-    transform(node:any, parent: Core.ParentMetaData) {
+    transform(node: any, parent: Core.ParentMetaData) {
         let analyzer = <Analyzer.ClassAnalyzer>Analyzer
             .get(this.parserType, Analyzer.AnalyzerType.TSClass, node)
         if (analyzer.isCandidate()) {
@@ -23,6 +24,7 @@ export class TsClassTransformer extends Core.TransformerBase {
             }
             parent.children.push(clazz)
             this.traverse(analyzer.getMember(), clazz, [
+                new TsDecorator(this.parserType),
                 new MethodTransformer(this.parserType),
                 new ConstructorTransformer(this.parserType)
             ])

@@ -8,25 +8,27 @@ export class TsDecorator extends Core.TransformerBase {
     }
     
     @Core.Call.when(Core.SyntaxKind.ExpressionStatement)
-    transform(node:any, parent: Core.ParentMetaData) {
-        if (!parent.children) return;
+    transform(node:any, parent: Core.ParentMetaData | Core.ClassMetaData) {
         let analyzer = <Analyzer.DecoratorAnalyzer>Analyzer
             .get(this.parserType, Analyzer.AnalyzerType.Decorator, node)
+        let clazz:Core.ClassMetaData;
+        if(parent.type == "Class") clazz = parent;
+        else if(!parent.children) return;
+        else
+            clazz = <Core.ClassMetaData>parent.children.filter(x => x.name == analyzer.getClassName())[0]
         if (analyzer.isMethodDecorator()) {
-            this.transformMethod(node, parent, analyzer)
+            this.transformMethod(node, clazz, analyzer)
         }
         if(analyzer.isPropertyDecorator()){
-            this.transformProperty(node, parent, analyzer)
+            this.transformProperty(node, clazz, analyzer)
         }
         else if (analyzer.isClassDecorator()) {
-            this.transformClass(node, parent, analyzer)
+            this.transformClass(node, clazz, analyzer)
         }
     }
 
-    private transformProperty(node:any, parent: Core.ParentMetaData, analyzer: Analyzer.DecoratorAnalyzer) {
+    private transformProperty(node:any, clazz: Core.ClassMetaData, analyzer: Analyzer.DecoratorAnalyzer) {
         let methodName = analyzer.getMethodName();
-        let className = analyzer.getClassName();
-        let clazz = <Core.ClassMetaData>parent.children.filter(x => x.name == className)[0];
         if (clazz) {
             //property is special, because it only appears only on run time,
             //so here we add it manually
@@ -47,10 +49,8 @@ export class TsDecorator extends Core.TransformerBase {
         }
     }
 
-    private transformMethod(node:any, parent: Core.ParentMetaData, analyzer: Analyzer.DecoratorAnalyzer) {
+    private transformMethod(node:any, clazz: Core.ClassMetaData, analyzer: Analyzer.DecoratorAnalyzer) {
         let methodName = analyzer.getMethodName();
-        let className = analyzer.getClassName();
-        let clazz = <Core.ClassMetaData>parent.children.filter(x => x.name == className)[0];
         if (clazz && clazz.methods) {
             let method = clazz.methods.filter(x => x.name == methodName)[0]
             this.traverse(analyzer.getChildren(), method, [
@@ -59,9 +59,7 @@ export class TsDecorator extends Core.TransformerBase {
         }
     }
 
-    private transformClass(node:any, parent: Core.ParentMetaData, analyzer: Analyzer.DecoratorAnalyzer) {
-        let className = analyzer.getClassName();
-        let clazz = <Core.ClassMetaData>parent.children.filter(x => x.name == className)[0];
+    private transformClass(node:any, clazz: Core.ClassMetaData, analyzer: Analyzer.DecoratorAnalyzer) {
         if (clazz) {
             this.traverse(analyzer.getChildren(), clazz, [
                 new TsChildDecoratorTransformer(this.parserType)
