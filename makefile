@@ -5,4 +5,7 @@ update:
 	done 
 
 canary: 
-	gulp && lerna
+	gulp && gulp prepublish && lerna publish -c
+
+publish:
+	gulp && gulp prepublish && lerna publish

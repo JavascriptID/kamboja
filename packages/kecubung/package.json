@@ -4,10 +4,6 @@
   "description": "Javascript transformer to Type Metadata",
   "main": "src/index.js",
   "types": "src/index.ts",
-  "scripts": {
-    "prepublish": "gulp prepublish",
-    "postpublish": "gulp postpublish"
-  },
   "keywords": [],
   "author": "Ketut Sandiarsa <ktutnik@gmail.com>",
   "license": "MIT",
