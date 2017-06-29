@@ -1,9 +1,9 @@
 {
   "name": "kecubung",
-  "version": "0.3.1-alpha.ff9d61d9",
+  "version": "0.3.2",
   "description": "Javascript transformer to Type Metadata",
-  "main": "src/index.js",
-  "types": "src/index.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "keywords": [],
   "author": "Ketut Sandiarsa <ktutnik@gmail.com>",
   "license": "MIT",

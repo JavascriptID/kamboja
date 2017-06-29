@@ -1,9 +1,9 @@
 {
   "name": "kamboja-mongoose",
-  "version": "0.3.1-alpha.ff9d61d9",
+  "version": "0.3.2",
   "description": "Kamboja helper for MongooseJS",
-  "main": "src/index.js",
-  "types": "src/index.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "directories": {
     "test": "test"
   },
@@ -21,8 +21,8 @@
   "dependencies": {
     "@types/mongoose": "^4.7.18",
     "@types/shortid": "0.0.29",
-    "kamboja": "^0.3.1-alpha.ff9d61d9",
-    "kecubung": "^0.3.1-alpha.ff9d61d9",
+    "kamboja": "^0.3.2",
+    "kecubung": "^0.3.2",
     "mongoose": "^4.10.7",
     "shortid": "^2.2.8",
     "tslib": "^1.7.1"

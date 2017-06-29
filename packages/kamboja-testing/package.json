@@ -1,9 +1,9 @@
 {
   "name": "kamboja-testing",
-  "version": "0.3.1-alpha.ff9d61d9",
+  "version": "0.3.2",
   "description": "Testing library for KambojaJS",
-  "main": "src/index.js",
-  "types": "src/index.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "directories": {
     "test": "test"
   },
@@ -22,8 +22,8 @@
     "@types/lodash": "^4.14.66",
     "@types/node": "^8.0.1",
     "@types/sinon": "^2.3.1",
-    "kamboja-core": "^0.3.1-alpha.ff9d61d9",
-    "kecubung": "^0.3.1-alpha.ff9d61d9",
+    "kamboja-core": "^0.3.2",
+    "kecubung": "^0.3.2",
     "lodash": "^4.17.4",
     "reflect-metadata": "^0.1.10",
     "sinon": "^2.3.2",
