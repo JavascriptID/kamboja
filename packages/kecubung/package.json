@@ -8,10 +8,6 @@
     "prepublish": "gulp prepublish",
     "postpublish": "gulp postpublish"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kambojajs/kamboja.git"
-  },
   "keywords": [],
   "author": "Ketut Sandiarsa <ktutnik@gmail.com>",
   "license": "MIT",
