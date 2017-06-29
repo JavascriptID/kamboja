@@ -9,3 +9,6 @@ canary:
 
 publish:
 	gulp && gulp prepublish && lerna publish
+
+clean:
+	lerna clean --yes && lerna bootstrap && gulp clean
