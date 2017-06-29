@@ -1,4 +1,7 @@
-.npmignore
-tsconfig.json
 test
+src
 .vscode
+.npmignore
+*.ts
+tsconfig.json
+gulpfile.js

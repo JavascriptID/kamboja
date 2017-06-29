@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "types": "src/index.ts",
   "scripts": {
-    "test": "gulp"
+    "prepublish": "gulp prepublish",
+    "postpublish": "gulp postpublish"
   },
   "repository": {
     "type": "git",

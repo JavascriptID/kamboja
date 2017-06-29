@@ -31,5 +31,8 @@
     "reflect-metadata": "^0.1.10",
     "run-sequence": "^1.2.2",
     "typescript": "^2.3.4"
+  },
+  "dependencies": {
+    "gulp-json-editor": "^2.2.1"
   }
 }

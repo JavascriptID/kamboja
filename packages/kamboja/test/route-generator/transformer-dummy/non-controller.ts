@@ -1,7 +1,7 @@
 import { internal, http } from "../../../src"
 import {Controller, ApiController} from "../../../src/controller"
 
-class BaseClass {
+export class BaseClass {
     theMethod(){}
 }
 

@@ -1,5 +1,5 @@
 
-namespace Module {
+export namespace Module {
     export class MyClass {
 
         myProp: string;

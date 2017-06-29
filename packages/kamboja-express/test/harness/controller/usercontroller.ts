@@ -12,7 +12,7 @@ let Middleware = (req: Request, res: Response, next: NextFunction) => {
 }
 
 export class UserController extends Controller {
-    index() {
+    index():Core.ActionResult  {
         return response.view()
     }
 
@@ -34,7 +34,7 @@ export class UserController extends Controller {
     }
 
     @middleware.use(new Return400Middleware())
-    withMiddleware() {
+    withMiddleware():Core.ActionResult {
         return response.view()
     }
 

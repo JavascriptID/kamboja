@@ -8,13 +8,13 @@ import { DefaultDependencyResolver, DefaultIdentifierResolver, DefaultPathResolv
 import { MetaDataLoader } from "../src/metadata-loader/metadata-loader"
 import * as Sinon from "sinon"
 
-export function fromFile(filePath: string, pathResolver: Core.PathResolver) {
+export function fromFile(filePath: string, pathResolver: Core.PathResolver):Kecubung.ParentMetaData {
     let path = pathResolver.resolve(filePath)
     let code = Fs.readFileSync(path).toString()
-    return fromCode(code, filePath)
+    return fromCode(code, filePath) 
 }
 
-export function fromCode(code:any, filePath: string = "") {
+export function fromCode(code:any, filePath: string = ""):Kecubung.ParentMetaData {
     let ast = Babylon.parse(code);
     return Kecubung.transform("ASTree", ast, filePath);
 }
