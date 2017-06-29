@@ -5,10 +5,10 @@ update:
 	done 
 
 canary: 
-	gulp && gulp prepublish && lerna publish -c
+	lerna clean --yes && lerna bootstrap && gulp && gulp prepublish && lerna publish -c
 
 publish:
-	gulp && gulp prepublish && lerna publish
+	lerna clean --yes && lerna bootstrap && gulp && gulp prepublish && lerna publish
 
 clean:
 	lerna clean --yes && lerna bootstrap && gulp clean
