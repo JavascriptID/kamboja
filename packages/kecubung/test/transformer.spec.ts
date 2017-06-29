@@ -246,5 +246,263 @@ describe("Transformer", () => {
                 location: { start: 0, end: 208 }
             })
         })
+
+        it("Should transform TypeScript decorator prior to 2.4", () => {
+            let ast = JsParser.getAst(`
+                var MyModule;
+                (function (MyModule) {
+                    var MyBaseClass = (function () {
+                        function MyBaseClass() {
+                        }
+                        MyBaseClass.prototype.baseMethod = function (par1) { };
+                        return MyBaseClass;
+                    }());
+                    MyModule.MyBaseClass = MyBaseClass;
+                    var MyClass = (function (_super) {
+                        tslib_1.__extends(MyClass, _super);
+                        function MyClass() {
+                            return _super.call(this) || this;
+                        }
+                        MyClass.prototype.myMethod = function (par1) { };
+                        return MyClass;
+                    }(MyBaseClass));
+                    tslib_1.__decorate([
+                        decoOne(),
+                        tslib_1.__param(0, decoOne())
+                    ], MyClass.prototype, "myMethod", null);
+                    MyClass = tslib_1.__decorate([
+                        decoTwo("halo")
+                    ], MyClass);
+                    MyModule.MyClass = MyClass;
+                })(MyModule = exports.MyModule || (exports.MyModule = {}));
+            `, true)
+            let test = new Transformer("file.js", "ASTree")
+            let result = test.transform(ast)
+            Chai.expect(result).deep.eq({
+                type: 'File',
+                name: 'file.js',
+                analysis: 1,
+                children:
+                [{
+                    type: 'Module',
+                    analysis: 83,
+                    children:
+                    [{
+                        type: 'Class',
+                        name: 'MyBaseClass',
+                        baseClass: null,
+                        location: { start: 90, end: 347 },
+                        analysis: 31,
+                        constructor:
+                        {
+                            type: 'Constructor',
+                            name: 'MyBaseClass',
+                            analysis: 1,
+                            location: { start: 147, end: 197 },
+                            parameters: []
+                        },
+                        methods:
+                        [{
+                            type: 'Method',
+                            name: 'baseMethod',
+                            analysis: 1,
+                            location: { start: 222, end: 277 },
+                            parameters:
+                            [{
+                                type: 'Parameter',
+                                name: 'par1',
+                                analysis: 1,
+                                location: { start: 267, end: 271 }
+                            }]
+                        }]
+                    },
+                    {
+                        type: 'Class',
+                        name: 'MyClass',
+                        baseClass: 'MyBaseClass',
+                        location: { start: 424, end: 802 },
+                        analysis: 31,
+                        constructor:
+                        {
+                            type: 'Constructor',
+                            name: 'MyClass',
+                            analysis: 1,
+                            location: { start: 543, end: 651 },
+                            parameters: []
+                        },
+                        methods:
+                        [{
+                            type: 'Method',
+                            name: 'myMethod',
+                            analysis: 1,
+                            location: { start: 676, end: 725 },
+                            parameters:
+                            [{
+                                type: 'Parameter',
+                                name: 'par1',
+                                analysis: 1,
+                                location: { start: 715, end: 719 },
+                                decorators:
+                                [{
+                                    type: 'Decorator',
+                                    name: 'decoOne',
+                                    analysis: 1,
+                                    location: { start: 903, end: 932 },
+                                    parameters: []
+                                }]
+                            }],
+                            decorators:
+                            [{
+                                type: 'Decorator',
+                                name: 'decoOne',
+                                analysis: 1,
+                                location: { start: 868, end: 877 },
+                                parameters: []
+                            }]
+                        }],
+                        decorators:
+                        [{
+                            type: 'Decorator',
+                            name: 'decoTwo',
+                            analysis: 1,
+                            location: { start: 1069, end: 1084 },
+                            parameters: [{ type: 'String', value: 'halo' }]
+                        }]
+                    }],
+                    location: { start: 47, end: 1241 },
+                    name: 'MyModule'
+                }],
+                location: { start: 0, end: 1254 }
+            })
+        })
+
+        it("Should transform TypeScript decorator 2.4", () => {
+            let ast = JsParser.getAst(`
+                var MyModule;
+                (function (MyModule) {
+                    var MyBaseClass = (function () {
+                        function MyBaseClass() {
+                        }
+                        MyBaseClass.prototype.baseMethod = function (par1) { };
+                        return MyBaseClass;
+                    }());
+                    MyModule.MyBaseClass = MyBaseClass;
+                    var MyClass = (function (_super) {
+                        tslib_1.__extends(MyClass, _super);
+                        function MyClass() {
+                            return _super.call(this) || this;
+                        }
+                        MyClass.prototype.myMethod = function (par1) { };
+                        tslib_1.__decorate([
+                            decoOne(),
+                            tslib_1.__param(0, decoOne())
+                        ], MyClass.prototype, "myMethod", null);
+                        MyClass = tslib_1.__decorate([
+                            decoTwo("halo")
+                        ], MyClass);
+                        return MyClass;
+                    }(MyBaseClass));
+                    MyModule.MyClass = MyClass;
+                })(MyModule = exports.MyModule || (exports.MyModule = {}));
+            `, true)
+            let test = new Transformer("file.js", "ASTree")
+            let result = test.transform(ast)
+            Chai.expect(result).deep.eq({
+                type: 'File',
+                name: 'file.js',
+                analysis: 1,
+                children:
+                [{
+                    type: 'Module',
+                    analysis: 83,
+                    children:
+                    [{
+                        type: 'Class',
+                        name: 'MyBaseClass',
+                        baseClass: null,
+                        location: { start: 90, end: 347 },
+                        analysis: 31,
+                        constructor:
+                        {
+                            type: 'Constructor',
+                            name: 'MyBaseClass',
+                            analysis: 1,
+                            location: { start: 147, end: 197 },
+                            parameters: []
+                        },
+                        methods:
+                        [{
+                            type: 'Method',
+                            name: 'baseMethod',
+                            analysis: 1,
+                            location: { start: 222, end: 277 },
+                            parameters:
+                            [{
+                                type: 'Parameter',
+                                name: 'par1',
+                                analysis: 1,
+                                location: { start: 267, end: 271 }
+                            }]
+                        }]
+                    },
+                    {
+                        type: 'Class',
+                        name: 'MyClass',
+                        baseClass: 'MyBaseClass',
+                        location: { start: 424, end: 1145 },
+                        analysis: 31,
+                        constructor:
+                        {
+                            type: 'Constructor',
+                            name: 'MyClass',
+                            analysis: 1,
+                            location: { start: 543, end: 651 },
+                            parameters: []
+                        },
+                        methods:
+                        [{
+                            type: 'Method',
+                            name: 'myMethod',
+                            analysis: 1,
+                            location: { start: 676, end: 725 },
+                            parameters:
+                            [{
+                                type: 'Parameter',
+                                name: 'par1',
+                                analysis: 1,
+                                location: { start: 715, end: 719 },
+                                decorators:
+                                [{
+                                    type: 'Decorator',
+                                    name: 'decoOne',
+                                    analysis: 1,
+                                    location: { start: 838, end: 867 },
+                                    parameters: []
+                                }]
+                            }],
+                            decorators:
+                            [{
+                                type: 'Decorator',
+                                name: 'decoOne',
+                                analysis: 1,
+                                location: { start: 799, end: 808 },
+                                parameters: []
+                            }]
+                        }],
+                        decorators:
+                        [{
+                            type: 'Decorator',
+                            name: 'decoTwo',
+                            analysis: 1,
+                            location: { start: 1016, end: 1031 },
+                            parameters: [{ type: 'String', value: 'halo' }]
+                        }]
+                    }],
+                    location: { start: 47, end: 1269 },
+                    name: 'MyModule'
+                }],
+                location: { start: 0, end: 1282 }
+            })
+        })
     })
 })

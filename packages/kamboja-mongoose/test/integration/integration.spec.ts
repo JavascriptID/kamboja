@@ -78,9 +78,9 @@ describe("Integration Test", () => {
         let User = test.createModel<UserModel & Mongoose.Document>("User")
 
         await Promise.all([
-            User.remove((x:any) => { }),
-            Category.remove((x:any) => { }),
-            Item.remove((x:any) => { })
+            User.remove((x:any) => { }).exec(),
+            Category.remove((x:any) => { }).exec(),
+            Item.remove((x:any) => { }).exec()
         ])
 
         let categoryModel = new Category(<CategoryModel>{
@@ -139,8 +139,8 @@ describe("Integration Test", () => {
         let ParentProduct = test.createModel<ParentProductModel>("ParentProduct")
 
         await Promise.all([
-            Product.remove((x:any) => { }),
-            ParentProduct.remove((x:any) => { })
+            Product.remove((x:any) => { }).exec(),
+            ParentProduct.remove((x:any) => { }).exec()
         ])
 
         let productModel = new Product({ name: "i-Phone 7s Plus" })
@@ -158,8 +158,8 @@ describe("Integration Test", () => {
         let ParentProduct = test.createModel<ParentMultiChildModel>("ParentMultiChild")
 
         await Promise.all([
-            Product.remove((x:any) => { }),
-            ParentProduct.remove((x:any) => { })
+            Product.remove((x:any) => { }).exec(),
+            ParentProduct.remove((x:any) => { }).exec()
         ])
 
         let iphoneModel = new Product({ name: "i-Phone 7s Plus" })

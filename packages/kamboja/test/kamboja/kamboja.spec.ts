@@ -32,7 +32,8 @@ class MyIdResolver implements Core.IdentifierResolver {
 }
 
 class MyDependencyResolver implements Core.DependencyResolver {
-    resolve<T>(qualifiedClassName: string) {
+    resolve<T>(qualifiedClassName: string) : T {
+        return <any>undefined
     }
 }
 
