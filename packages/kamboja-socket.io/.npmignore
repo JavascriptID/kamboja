@@ -1,0 +1,8 @@
+test
+src
+.vscode
+.npmignore
+*.ts
+!*.d.ts
+tsconfig.json
+gulpfile.js

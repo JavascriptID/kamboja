@@ -11,7 +11,14 @@
     "type": "git",
     "url": "git+https://github.com/kambojajs/kamboja.git"
   },
-  "keywords": [],
+  "keywords": [
+    "kamboja",
+    "mongoose",
+    "typescript",
+    "decorator",
+    "async",
+    "await"
+  ],
   "author": "Ketut Sandiarsa <ktutnik@gmail.com>",
   "license": "MIT",
   "bugs": {

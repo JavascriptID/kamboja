@@ -4,7 +4,12 @@
   "description": "Javascript transformer to Type Metadata",
   "main": "src/index.js",
   "types": "src/index.ts",
-  "keywords": [],
+  "keywords": [
+    "reflection",
+    "type",
+    "introspection",
+    "meta-data"
+  ],
   "author": "Ketut Sandiarsa <ktutnik@gmail.com>",
   "license": "MIT",
   "bugs": {

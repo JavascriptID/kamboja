@@ -11,7 +11,17 @@
     "type": "git",
     "url": "git+https://github.com/kambojajs/kamboja.git"
   },
-  "keywords": [],
+  "keywords": [
+    "kamboja",
+    "mvc",
+    "framework",
+    "rails",
+    "express",
+    "typescript",
+    "decorator",
+    "async",
+    "await"
+  ],
   "author": "Ketut Sandiarsa <ktutnik@gmail.com>",
   "license": "MIT",
   "bugs": {
