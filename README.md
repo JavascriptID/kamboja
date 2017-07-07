@@ -73,5 +73,6 @@ PATCH   /api/v1/items/:id
 
 Refer to [ApiController](http://kambojajs.com/reference/api-controller) for more information
 
-
+## Examples
+KambojaJS has several example for you to start with, from a simple Hello world to a complex restful api using dependency injection, check it out https://github.com/kambojajs/kamboja-examples/tree/master/packages 
 
