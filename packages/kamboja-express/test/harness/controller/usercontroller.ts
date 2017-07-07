@@ -39,7 +39,7 @@ export class UserController extends Controller {
     }
 
     setHeader() {
-        let result = new Core.ActionResult({})
+        let result = new Core.HttpActionResult({})
         result.header = { Accept: "text/xml" }
         return result;
     }

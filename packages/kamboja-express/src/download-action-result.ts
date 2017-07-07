@@ -1,7 +1,7 @@
 import { Core } from "kamboja"
 import { ResponseAdapter } from "./response-adapter"
 
-export class DownloadActionResult extends Core.ActionResult {
+export class DownloadActionResult extends Core.HttpActionResult {
     constructor(public path:string){
         super(undefined)
     }

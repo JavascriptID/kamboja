@@ -5,9 +5,9 @@ import { DecoratorBinder } from "./decorator-binder"
 import { DefaultBinder } from "./default-binder"
 import { ValTypeBinder } from "./val-type-binder"
 
-export class ParameterBinder {
+export class ParameterBinder implements Core.ParameterBinder {
     private commands: BinderBase[] = []
-    constructor(private routeInfo: Core.RouteInfo, private request: Core.HttpRequest, private pathResolver:Core.PathResolver) {
+    constructor(private routeInfo: Core.RouteInfo, private pathResolver:Core.PathResolver) {
         //priorities
         this.commands = [
             new DecoratorBinder(),
@@ -17,20 +17,20 @@ export class ParameterBinder {
         ]
     }
 
-    getParameters(): Array<any> {
+    getParameters(context:any): Array<any> {
         if (!this.routeInfo.methodMetaData!.parameters
             || this.routeInfo.methodMetaData!.parameters.length == 0)
             return []
         let result = []
         for (let par of this.routeInfo.methodMetaData!.parameters) {
-            result.push(this.bind(par.name))
+            result.push(this.bind(par.name, context))
         }
         return result
     }
 
-    private bind(parameterName: string) {
+    private bind(parameterName: string, request:any) {
         for (let cmd of this.commands) {
-            let result = cmd.bind(this.routeInfo, parameterName, this.request)
+            let result = cmd.bind(this.routeInfo, parameterName, request)
             if (result.type == "Exit") return result.value;
         }
     }

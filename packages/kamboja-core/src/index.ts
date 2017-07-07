@@ -173,8 +173,23 @@ export interface Validator {
 }
 
 export interface BaseController {
-    request: HttpRequest;
+    context:any
     validator: Validator;
+}
+
+export class HttpController implements BaseController {
+    context: HttpRequest;
+    validator: Validator;
+}
+
+export class SocketController implements BaseController {
+    context: Socket;
+    validator: Validator;
+}
+
+export interface Socket{
+    header: any,
+    id: string,
 }
 
 export interface HttpRequest {
@@ -240,12 +255,28 @@ export class HttpError {
 export abstract class Invocation {
     abstract proceed(): Promise<ActionResult>
     parameters: any[]
-    controllerInfo?: ControllerInfo
+    controllerInfo?: RouteInfo
     middlewares?: Middleware[]
 }
 
+export interface ControllerExecutor{
+    execute(context:any):Promise<ActionResult>
+}
+
+export interface ParameterBinder{
+    getParameters(context:any):any[]
+}
+
 export interface Middleware {
-    execute(request: HttpRequest, next: Invocation): any;
+    execute(context: any, next: Invocation): Promise<ActionResult>;
+}
+
+export abstract class HttpMiddleware {
+    abstract execute(context: HttpRequest, next:Invocation):any
+}
+
+export abstract class SocketMiddleware {
+    abstract execute(context: Socket, next:Invocation):any
 }
 
 export interface Facility{
@@ -273,7 +304,11 @@ export interface PathResolver {
     normalize(path: string):string
 }
 
-export class ActionResult {
+export interface ActionResult {
+    execute(...context:any[]):Promise<void>
+}
+
+export class HttpActionResult implements ActionResult {
     header: { [key: string]: string | string[] } = {}
     cookies?: Cookie[]
 

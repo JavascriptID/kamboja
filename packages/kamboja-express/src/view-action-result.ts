@@ -3,7 +3,7 @@ import { ResponseAdapter } from "./response-adapter"
 
 const ViewOutsideControllerError = "Relative view path can not be use inside middlewares"
 
-export class ViewActionResult extends Core.ActionResult {
+export class ViewActionResult extends Core.HttpActionResult {
     constructor(public model?:any, public viewName?: string) {
         super(null)
     }

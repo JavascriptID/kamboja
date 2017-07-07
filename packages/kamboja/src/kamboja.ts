@@ -9,7 +9,7 @@ import * as Chalk from "chalk"
 import { Logger } from "./logger"
 import * as Babylon from "babylon"
 import * as Kecubung from "kecubung"
-import { Validator } from "./index"
+import { Validator, Middleware } from "./index"
 
 
 /**
@@ -165,6 +165,14 @@ export class Kamboja implements Core.Application {
         return true;
     }
 
+    private resolveMiddlewares(option:Core.KambojaOption){
+        option.middlewares = Middleware.resolve(option.middlewares!, option.dependencyResolver!)
+    }
+
+    private resolveValidators(option:Core.KambojaOption){
+        option.validators = Validator.resolve(option.validators!, option.dependencyResolver!)
+    }
+    
     /**
      * Initialize KambojaJS application 
      * @returns Http Callback handler returned by KambojaJS Engine implementation
@@ -173,6 +181,8 @@ export class Kamboja implements Core.Application {
         if (!this.isFolderProvided()) throw new Error("Fatal error")
         this.storage.load(this.options.controllerPaths!, "Controller")
         this.storage.load(this.options.modelPath!, "Model")
+        this.resolveMiddlewares(this.options)
+        this.resolveValidators(this.options)
         let routeInfos = this.generateRoutes(this.storage.getFiles("Controller"))
         if (routeInfos.length == 0) throw new Error("Fatal error")
         if (!this.analyzeRoutes(routeInfos)) throw new Error("Fatal Error")

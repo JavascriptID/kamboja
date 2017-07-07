@@ -4,11 +4,31 @@ import { MiddlewareDecorator, MiddlewareIdMetadataKey, MiddlewareMetadataKey } f
 export { Authorize } from "./authorize"
 export { MiddlewareDecorator }
 
-export function getMiddlewares(target:any, methodName?: string) {
+export function getMiddlewares(target: any, methodName?: string) {
     return Core.MetaDataHelper.get<(Core.Middleware | string)>(MiddlewareMetadataKey, target, methodName)
 }
 
-export function getId(target:any) {
+export function resolve(middlewares: (string | Core.Middleware)[], resolver: Core.DependencyResolver) {
+    let result: Core.Middleware[] = []
+    for (let i = middlewares.length - 1; i >= 0; i--) {
+        let middleware = middlewares[i]
+        if (typeof middleware == "string") {
+            try {
+                let instance = resolver.resolve<Core.Middleware>(middleware)
+                result.push(instance)
+            }
+            catch (e) {
+                throw new Error(`Can not instantiate middleware [${middleware}] in global middlewares`)
+            }
+        }
+        else {
+            result.push(middleware)
+        }
+    }
+    return result;
+}
+
+export function getId(target: any) {
     let result = Core.MetaDataHelper.get<string>(MiddlewareIdMetadataKey, target)
     return result ? result[0] : undefined
 }

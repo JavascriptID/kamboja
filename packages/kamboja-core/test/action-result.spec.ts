@@ -15,7 +15,7 @@ describe("ActionResult", () => {
     })
 
     it("Should fill response properties properly", async () => {
-        let result = new Core.ActionResult("Halo", 400, "application/json")
+        let result = new Core.HttpActionResult("Halo", 400, "application/json")
         result.cookies = [{ key: "Halo", value: "Hello" }]
         result.header = { Accept: "text/*, application/json" }
         await result.execute(request, response, undefined)
@@ -27,13 +27,13 @@ describe("ActionResult", () => {
     })
 
     it("Should give 200 if status not provided", async () => {
-        let result = new Core.ActionResult("Halo")
+        let result = new Core.HttpActionResult("Halo")
         await result.execute(request, response, undefined)
         Chai.expect(response.status).eq(200)
     })
 
     it("Should give text/plain if type not provided", async () => {
-        let result = new Core.ActionResult("Halo")
+        let result = new Core.HttpActionResult("Halo")
         await result.execute(request, response, undefined)
         Chai.expect(response.type).eq("text/plain")
     })

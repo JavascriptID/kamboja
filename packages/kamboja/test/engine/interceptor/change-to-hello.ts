@@ -5,6 +5,6 @@ import { id } from "./interceptor-identifier"
 @id("ChangeToHello")
 export class ChangeToHello implements Core.Middleware {
     async execute(request:Core.HttpRequest, invocation: Core.Invocation) {
-        return "Hello world!"
+        return new Core.HttpActionResult("Hello world!")
     }
 }

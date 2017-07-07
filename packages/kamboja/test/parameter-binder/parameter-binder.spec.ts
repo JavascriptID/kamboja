@@ -36,8 +36,8 @@ describe("ParameterBinder", () => {
             let infos = Transformer.transform(meta)
             getParamStub.withArgs("par1").returns("param1")
             getParamStub.withArgs("par2").returns("param2")
-            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "myMethod")[0], HttpRequest, pathResolver);
-            let result = binder.getParameters();
+            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "myMethod")[0], pathResolver);
+            let result = binder.getParameters(HttpRequest)
             Chai.expect(result).deep.eq(["param1", "param2"])
         })
 
@@ -47,8 +47,8 @@ describe("ParameterBinder", () => {
             let infos = Transformer.transform(meta)
             getParamStub.withArgs("par1").returns("20")
             getParamStub.withArgs("par2").returns("30")
-            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "myMethod")[0], HttpRequest, pathResolver);
-            let result = binder.getParameters();
+            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "myMethod")[0], pathResolver);
+            let result = binder.getParameters(HttpRequest)
             Chai.expect(result).deep.eq([20, 30])
         })
 
@@ -58,8 +58,8 @@ describe("ParameterBinder", () => {
             let infos = Transformer.transform(meta)
             getParamStub.withArgs("par1").returns("false")
             getParamStub.withArgs("par2").returns("True")
-            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "myMethod")[0], HttpRequest, pathResolver);
-            let result = binder.getParameters();
+            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "myMethod")[0], pathResolver);
+            let result = binder.getParameters(HttpRequest)
             Chai.expect(result).deep.eq([false, true])
         })
 
@@ -69,8 +69,8 @@ describe("ParameterBinder", () => {
             let infos = Transformer.transform(meta)
             getParamStub.withArgs("par1").returns("false")
             getParamStub.withArgs("par2").returns("True")
-            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "noParam")[0], HttpRequest, pathResolver);
-            let result = binder.getParameters();
+            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "noParam")[0], pathResolver);
+            let result = binder.getParameters(HttpRequest)
             Chai.expect(result).deep.eq([])
         })
 
@@ -80,8 +80,8 @@ describe("ParameterBinder", () => {
             let infos = Transformer.transform(meta)
             getParamStub.withArgs("par1").returns("false")
             getParamStub.withArgs("par2").returns("True")
-            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "noParam")[0], HttpRequest, pathResolver);
-            let result = binder.getParameters();
+            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "noParam")[0], pathResolver);
+            let result = binder.getParameters(HttpRequest)
             Chai.expect(result).deep.eq([])
         })
 
@@ -94,8 +94,8 @@ describe("ParameterBinder", () => {
             getParamStub.withArgs("sname").returns("name")
             getParamStub.withArgs("iage").returns("30")
             getParamStub.withArgs("bisdirty").returns("True")
-            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "conventionConversion")[0], HttpRequest, pathResolver);
-            let result = binder.getParameters();
+            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "conventionConversion")[0], pathResolver);
+            let result = binder.getParameters(HttpRequest);
             Chai.expect(result).deep.eq(["name", 30, true, "name", 30, true])
         })
     })
@@ -109,8 +109,8 @@ describe("ParameterBinder", () => {
             getParamStub.withArgs("offset").returns(1)
             getParamStub.withArgs("pageWidth").returns(10)
 
-            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "list")[0], HttpRequest, pathResolver);
-            let result = binder.getParameters();
+            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "list")[0], pathResolver);
+            let result = binder.getParameters(HttpRequest)
             Chai.expect(result).deep.eq([1, 10])
         })
 
@@ -118,8 +118,8 @@ describe("ParameterBinder", () => {
             //dummy       
             let meta = H.fromFile("controller/parameter-binder-controller.js", pathResolver)
             let infos = Transformer.transform(meta)
-            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "add")[0], HttpRequest, pathResolver);
-            let result = binder.getParameters();
+            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "add")[0], pathResolver);
+            let result = binder.getParameters(HttpRequest)
             Chai.expect(result).deep.eq([{ data: "Hello!" }])
         })
 
@@ -127,9 +127,9 @@ describe("ParameterBinder", () => {
             //dummy/id     
             let meta = H.fromFile("controller/parameter-binder-controller.js", pathResolver)
             let infos = Transformer.transform(meta)
-            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "modify")[0], HttpRequest, pathResolver);
+            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "modify")[0], pathResolver);
             getParamStub.withArgs("id").returns(1)
-            let result = binder.getParameters();
+            let result = binder.getParameters(HttpRequest)
             Chai.expect(result).deep.eq([1, { data: "Hello!" }])
         })
 
@@ -152,8 +152,8 @@ describe("ParameterBinder", () => {
             let infos = Transformer.transform(meta)
             getCookie.withArgs("age").returns(9)
 
-            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "decoratorBinder")[0], HttpRequest, pathResolver);
-            let result = binder.getParameters();
+            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "decoratorBinder")[0], pathResolver);
+            let result = binder.getParameters(HttpRequest)
             Chai.expect(result).deep.eq([{ data: "Hello!" }, { "name": "Nobita", "age": "9" }, 9])
         })
     })
@@ -163,8 +163,8 @@ describe("ParameterBinder", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", pathResolver)
             let infos = Transformer.transform(meta)
 
-            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "typeBinder")[0], HttpRequest, pathResolver);
-            let result = binder.getParameters();
+            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "typeBinder")[0], pathResolver);
+            let result = binder.getParameters(HttpRequest)
             Chai.expect(result).deep.eq([{ data: "Hello!" }])
         })
 
@@ -172,8 +172,8 @@ describe("ParameterBinder", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", pathResolver)
             let infos = Transformer.transform(meta)
 
-            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "typeBinderWithBind")[0], HttpRequest, pathResolver);
-            let result = binder.getParameters();
+            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "typeBinderWithBind")[0], pathResolver);
+            let result = binder.getParameters(HttpRequest)
             Chai.expect(result).deep.eq([undefined, { data: "Hello!" }])
         })
 
@@ -181,8 +181,8 @@ describe("ParameterBinder", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", pathResolver)
             let infos = Transformer.transform(meta)
 
-            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "typeBinderWithOtherType")[0], HttpRequest, pathResolver);
-            let result = binder.getParameters();
+            let binder = new ParameterBinder(infos.filter(x => x.methodMetaData!.name == "typeBinderWithOtherType")[0], pathResolver);
+            let result = binder.getParameters(HttpRequest)
             Chai.expect(result).deep.eq([undefined, { data: "Hello!" }])
         })
     })

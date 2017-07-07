@@ -6,10 +6,10 @@ let middleware = new Middleware.MiddlewareDecorator()
 export class ConcatInterceptor implements Core.Middleware {
     constructor(private msg: string) { }
 
-    async execute(request:Core.HttpRequest, invocation: Core.Invocation) {
-        let invocationResult = await invocation.proceed();
+    async execute(request: Core.HttpRequest, invocation: Core.Invocation) {
+        let invocationResult = <Core.HttpActionResult>await invocation.proceed();
         let result = invocationResult.body;
-        return this.msg + ", " + result
+        return new Core.HttpActionResult(this.msg + ", " + result)
     }
 }
 

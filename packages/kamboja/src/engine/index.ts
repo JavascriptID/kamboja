@@ -1,1 +1,1 @@
-export { RequestHandler } from "./request-handler"
+export { RequestHandler } from "./http/request-handler"

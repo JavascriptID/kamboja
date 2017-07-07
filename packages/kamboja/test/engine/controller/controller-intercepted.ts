@@ -8,7 +8,7 @@ let middleware = new Middleware.MiddlewareDecorator()
 @id("ChangeValueToHelloWorld")
 export class ChangeValueToHelloWorld implements Core.Middleware {
     async execute(request:Core.HttpRequest, invocation: Core.Invocation) {
-       return "Hello world!"
+       return new Core.HttpActionResult("Hello world!")
     }
 }
 
@@ -19,6 +19,6 @@ export class DummyApi extends Controller {
     @middleware.use("DefaultInterceptor, interceptor/default-interceptor")
     @middleware.use(new ChangeValueToHelloWorld())
     returnView() {
-        return "Helow"
+        return new Core.HttpActionResult("Helow")
     }
 }

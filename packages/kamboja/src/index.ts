@@ -10,10 +10,10 @@ export { Core }
 export { Resolver }
 export { RouteGenerator }
 export { Middleware }
-export { ApiController, Controller, HttpStatusError } from "./controller"
+export { ApiController, Controller, HttpStatusError, Controllers } from "./controller"
 export { Kamboja } from "./kamboja"
 export { MetaDataLoader } from "./metadata-loader/metadata-loader"
-export { RequestHandler } from "./engine/request-handler"
+export { RequestHandler } from "./engine"
 
 //decorators
 const middleware: Middleware.MiddlewareDecorator = new Middleware.MiddlewareDecorator()
