@@ -21,7 +21,7 @@ export class ParameterBinder implements Core.ParameterBinder {
         if (!this.routeInfo.methodMetaData!.parameters
             || this.routeInfo.methodMetaData!.parameters.length == 0)
             return []
-        let result = []
+        let result:any[] = []
         for (let par of this.routeInfo.methodMetaData!.parameters) {
             result.push(this.bind(par.name, context))
         }

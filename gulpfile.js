@@ -100,9 +100,9 @@ function compile(opt) {
     var name = "compiling: " + opt.src;
     if (!opt.declaration) opt.declaration = false;
     if (!opt.dest) opt.dest = opt.src;
-    var tsProject = tsc.createProject("tsconfig.json", {
+    if (!opt.tsconfig) opt.tsconfig = "tsconfig.json"
+    var tsProject = tsc.createProject(opt.tsconfig, {
         declaration: opt.declaration,
-        noResolve: false,
         typescript: require("typescript")
     });
 
@@ -122,8 +122,8 @@ gulp.task("build", function(cb) {
     var buildSequence = []
     for (var i = 0; i < PACKAGES.length; i++) {
         var pack = PACKAGES[i];
-        buildSequence.push(compile({ src: pack + "/src" }))
-        buildSequence.push(compile({ src: pack + "/test" }))
+        buildSequence.push(compile({ src: pack + "/src", tsconfig: "tsconfig-es5.json" }))
+        buildSequence.push(compile({ src: pack + "/test", tsconfig: "tsconfig-es5.json" }))
     }
     buildSequence.push(cb)
     runSequence.apply(null, buildSequence)
@@ -136,7 +136,7 @@ gulp.task("prepublish", function(cb) {
     var buildSequence = []
     for (var i = 0; i < PACKAGES.length; i++) {
         var pack = PACKAGES[i];
-        buildSequence.push(compile({ src: pack + "/src", dest: pack + "/lib", declaration: true }))
+        buildSequence.push(compile({ src: pack + "/src", dest: pack + "/lib", declaration: true, tsconfig: "tsconfig-es5.json" }))
         buildSequence.push(fixPackageJson(pack, function(json) {
             json.main = "lib/index.js";
             json.types = "lib/index.d.ts"

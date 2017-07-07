@@ -10,8 +10,8 @@ export function getMiddlewares(target: any, methodName?: string) {
 
 export function resolve(middlewares: (string | Core.Middleware)[], resolver: Core.DependencyResolver) {
     let result: Core.Middleware[] = []
-    for (let i = middlewares.length - 1; i >= 0; i--) {
-        let middleware = middlewares[i]
+    if(!middlewares) return result;
+    for (let middleware of middlewares) {
         if (typeof middleware == "string") {
             try {
                 let instance = resolver.resolve<Core.Middleware>(middleware)

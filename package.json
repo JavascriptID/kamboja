@@ -27,7 +27,7 @@
     "gulp-json-editor": "^2.2.1",
     "gulp-mocha": "^3.0.1",
     "gulp-sourcemaps": "^2.6.0",
-    "gulp-typescript": "^3.1.7",
+    "gulp-typescript": "^3.2.0",
     "lerna": "^2.0.0-rc.5",
     "lodash": "^4.17.4",
     "mocha": "^3.4.2",

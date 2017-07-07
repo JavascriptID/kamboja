@@ -1,5 +1,4 @@
 import { SyntaxKind, MetaData, AnalysisType, ValueMetaData, ValueMetaDataType, PrimitiveValueMetaData, ObjectValueMetaData, ArrayValueMetaData } from "../../core"
-import * as Analyzer from "../../analyzers"
 
 /**
  * require CallExpression.callee

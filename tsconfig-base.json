@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "sourceMap": false,
+        "declaration": false,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "strictNullChecks": true
+    },
+    "exclude": [
+        "./node_modules",
+        "./packages/*/node_modules"
+    ]
+}

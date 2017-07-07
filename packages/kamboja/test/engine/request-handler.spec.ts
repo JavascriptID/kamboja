@@ -8,6 +8,8 @@ import { ConcatInterceptor } from "./controller/interception-order-controller"
 import { DefaultPathResolver } from "../../src/resolver"
 import { HttpStatusError } from "../../src/controller"
 import { ErrorHandlerMiddleware } from "./interceptor/error-handler"
+import { ChangeToHello } from "./interceptor/change-to-hello"
+import { ErrorInterceptor } from "./interceptor/error-interceptor"
 import * as Test from "kamboja-testing"
 
 describe("RequestHandler", () => {
@@ -33,7 +35,7 @@ describe("RequestHandler", () => {
 
         it("Should allow global interceptor work with request without controller", async () => {
             facade.middlewares = [
-                "ChangeToHello, interceptor/change-to-hello"
+                new ChangeToHello()
             ]
             let executor = new RequestHandler(facade, request, response)
             await executor.execute()
@@ -367,7 +369,7 @@ describe("RequestHandler", () => {
             let meta = H.fromFile("controller/api-controller.js", new DefaultPathResolver(__dirname))
             let infos = Transformer.transform(meta)
             facade.middlewares = [
-                "ChangeToHello, interceptor/change-to-hello"
+                new ChangeToHello()
             ]
             //returnTheParam
             let info = infos.filter(x => x.methodMetaData!.name == "returnTheParam")[0]
@@ -437,7 +439,7 @@ describe("RequestHandler", () => {
 
         it("Should handle error from middleware error", async () => {
             facade.middlewares = [
-                "ErrorInterceptor, interceptor/error-interceptor"
+                new ErrorInterceptor()
             ]
             let executor = new RequestHandler(facade, request, response)
             await executor.execute()
@@ -472,9 +474,7 @@ describe("RequestHandler", () => {
         it("Should handle error from global error", async () => {
             let info = H.getRouteInfo(facade, "controller/controller.js", "returnActionResult")
             facade.routeInfos = [info]
-            facade.middlewares = [
-                "ErrorHandlerMiddleware, interceptor/error-handler"
-            ]
+            facade.middlewares = [new ErrorHandlerMiddleware()]
             let executor = new RequestHandler(facade, request, response, new HttpStatusError(400))
             await executor.execute()
             Chai.expect(response.status).eq(501)
@@ -483,7 +483,7 @@ describe("RequestHandler", () => {
 
         it("Should handle error from controller error", async () => {
             facade.middlewares = [
-                "ErrorHandlerMiddleware, interceptor/error-handler"
+                new ErrorHandlerMiddleware()
             ]
             let info = H.getRouteInfo(facade, "controller/controller.js", "throwError")
             let executor = new RequestHandler(facade, request, response, info)
@@ -494,8 +494,8 @@ describe("RequestHandler", () => {
 
         it("Should handle error from middleware error", async () => {
             facade.middlewares = [
-                "ErrorHandlerMiddleware, interceptor/error-handler",
-                "ErrorInterceptor, interceptor/error-interceptor"
+                new ErrorHandlerMiddleware(),
+                new ErrorInterceptor()
             ]
             let executor = new RequestHandler(facade, request, response)
             await executor.execute()
@@ -505,7 +505,7 @@ describe("RequestHandler", () => {
 
         it("Should handle HttpStatusError properly on controller when return non ActionResult", async () => {
             facade.middlewares = [
-                "ErrorHandlerMiddleware, interceptor/error-handler"
+                new ErrorHandlerMiddleware()
             ]
             let info = H.getRouteInfo(facade, "controller/controller.js", "throwStatusError")
             let executor = new RequestHandler(facade, request, response, info)

@@ -173,17 +173,17 @@ export interface Validator {
 }
 
 export interface BaseController {
-    context:any
+    [key:string]: any
     validator: Validator;
 }
 
 export class HttpController implements BaseController {
-    context: HttpRequest;
+    request: HttpRequest;
     validator: Validator;
 }
 
 export class SocketController implements BaseController {
-    context: Socket;
+    socket: Socket;
     validator: Validator;
 }
 

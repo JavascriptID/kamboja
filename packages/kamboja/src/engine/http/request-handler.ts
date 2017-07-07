@@ -16,15 +16,18 @@ export class RequestHandler {
         let invoker = new Invoker(this.option)
         try {
             let invocation: Core.Invocation;
+            let routeInfo: Core.RouteInfo | undefined;
             if (!this.data) 
-                invocation = new ErrorInvocation(new HttpStatusError(404, "Requested page is not found"))
+                invocation = new ErrorInvocation(new HttpStatusError(404, "Requested url not found"))
             else if (this.data instanceof Error) 
                 invocation = new ErrorInvocation(this.data)
-            else 
-                invocation = new ControllerInvocation(this.option, this.data)
+            else {
+                routeInfo = this.data;
+                invocation = new ControllerInvocation(this.option, this.request, routeInfo)
+            }
 
             let result = await invoker.invoke(this.request, invocation)
-            await result.execute(this.request, this.response)
+            await result.execute(this.request, this.response, routeInfo)
         }
         catch (e) {
             this.response.body = e.message

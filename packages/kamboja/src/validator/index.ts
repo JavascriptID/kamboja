@@ -8,6 +8,7 @@ import * as Core from "kamboja-core"
 
 export function resolve(commands: (string | Core.ValidatorCommand)[], resolver:Core.DependencyResolver) {
     let validators:Core.ValidatorCommand[] = []
+    if(!commands) return validators;
     commands.forEach(x => {
         if (typeof x == "string") {
             try {

@@ -15,14 +15,15 @@ export class Invoker {
     }
 
     private getMiddlewares(routeInfo?: Core.RouteInfo) {
+        let globalMiddlewares = (<Core.Middleware[]>this.option.middlewares! || []).reverse()
         if (routeInfo) {
             let controller = Controllers.resolve(routeInfo, this.option.dependencyResolver!)
             let middlewares = Middleware.resolve(Middleware.getMiddlewares(controller), this.option.dependencyResolver!)
-            middlewares = <Core.Middleware[]>this.option.middlewares!.concat(middlewares)
+            middlewares = globalMiddlewares.concat(middlewares)
             return middlewares.concat(Middleware.resolve(Middleware.getMiddlewares(controller, routeInfo.methodMetaData!.name), this.option.dependencyResolver!))
         }
         else {
-            return <Core.Middleware[]>this.option.middlewares!;
+            return globalMiddlewares;
         }
     }
 }

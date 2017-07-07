@@ -1,16 +1,6 @@
 {
+    "extends": "./tsconfig-base",
     "compilerOptions": {
-        "lib": ["dom", "es6"],
-        "module": "commonjs",
-        "target": "es5",
-        "sourceMap": false,
-        "declaration": false,
-        "experimentalDecorators": true,
-        "importHelpers": true,
-        "strict":true
-    },
-    "exclude": [
-        "./node_modules",
-        "./packages/*/node_modules"
-    ]
+        "target": "es6"
+    }
 }
