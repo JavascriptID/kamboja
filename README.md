@@ -35,6 +35,7 @@ Above code by default will generate a GET url below
 
 Refer to [controller](http://kambojajs.com/reference/controller) reference for more information
 
+## RESTful API support
 For more advanced use, KambojaJS provide a convention for creating Restful API by using [ApiController](http://kambojajs.com/reference/api-controller)
 
 Example controller below will create Restful API url for you
