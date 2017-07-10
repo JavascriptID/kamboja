@@ -12,7 +12,7 @@ import { ChangeToHello } from "./interceptor/change-to-hello"
 import { ErrorInterceptor } from "./interceptor/error-interceptor"
 import * as Test from "kamboja-testing"
 
-describe.only("RequestHandler", () => {
+describe("RequestHandler", () => {
     let request: Core.HttpRequest & Test.Mockable<Core.HttpRequest, Sinon.SinonStub>
     let response: Core.Response & Test.Mockable<Core.Response, Sinon.SinonSpy>
     let facade: Core.Facade
