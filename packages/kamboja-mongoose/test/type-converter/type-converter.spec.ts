@@ -59,7 +59,7 @@ describe("TypeConverter", () => {
         let test = new TypeConverter(new Resolver.DefaultPathResolver(__dirname), classes)
         Chai.expect(() =>
             test.convert("ModelWhichIsNotExists, models/models", "Type, the/path"))
-            .throw("Model [ModelWhichIsNotExists, models/models] used in @val.type is not exists in [Type, the/path]")
+            .throw("Model [ModelWhichIsNotExists, models/models] used in @type is not exists in [Type, the/path]")
     })
 
     it("Should provide qualified class name array", () => {

@@ -1,24 +1,24 @@
-import { val } from "kamboja"
+import { val, type } from "kamboja"
 import { mongoose } from "../../../src"
 
 @mongoose.shortid()
 export class ShortModel {
-    @val.type("string")
+    @type("string")
     name:string
 }
 
 export class DefaultIdModel{
-    @val.type("string")
+    @type("string")
     name:string
 }
 
 export class ParentModel {
-    @val.type("string")
+    @type("string")
     name:string
 
-    @val.type("ShortModel, models/models")
+    @type("ShortModel, models/models")
     short:ShortModel
 
-    @val.type("DefaultIdModel, models/models")
+    @type("DefaultIdModel, models/models")
     defaultId:DefaultIdModel
 }

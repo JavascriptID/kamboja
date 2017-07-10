@@ -2,11 +2,6 @@ import * as Kecubung from "kecubung"
 import { BaseConverter, ConverterResult } from "./base-converter"
 import {getRouteDetail, ValidationTypesAccepted} from "kamboja-core"
 
-/*
-@val.type("string")
-@val.type("number")
-@val.type("boolean")
-*/
 
 export class DecoratedValueConverter extends BaseConverter {
 
@@ -17,7 +12,7 @@ export class DecoratedValueConverter extends BaseConverter {
         if (typeof value == "undefined" || value == null) return this.exit(value);
         let type = this.getParameter(decorators[0]);
         if (typeof value == "object" && !Array.isArray(value)) 
-            throw new Error(`Expected parameter type of [@val.type('${type}') ${meta.name}] but got object in ${getRouteDetail(this.routeInfo)}`)
+            throw new Error(`Expected parameter type of [@type('${type}') ${meta.name}] but got object in ${getRouteDetail(this.routeInfo)}`)
         switch (type) {
             case "string":
                 return this.exit(value.toString())

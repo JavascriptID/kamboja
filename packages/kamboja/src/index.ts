@@ -19,6 +19,7 @@ export { RequestHandler } from "./engine"
 const middleware: Middleware.MiddlewareDecorator = new Middleware.MiddlewareDecorator()
 export const val: Validator.ValidatorDecorator = new Validator.ValidatorDecorator();
 export const internal = new Core.Decorator().internal;
+export const type = new Core.Decorator().type;
 
 /**
  * @deprecated use route

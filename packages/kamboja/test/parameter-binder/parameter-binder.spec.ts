@@ -158,7 +158,7 @@ describe("ParameterBinder", () => {
         })
     })
 
-    describe("@val.type() decorator binder", () => {
+    describe("@type() decorator binder", () => {
         it("Should bind body properly", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", pathResolver)
             let infos = Transformer.transform(meta)
@@ -177,7 +177,7 @@ describe("ParameterBinder", () => {
             Chai.expect(result).deep.eq([undefined, { data: "Hello!" }])
         })
 
-        it("Should not bind @val.type() with non qualified class name", () => {
+        it("Should not bind @type() with non qualified class name", () => {
             let meta = H.fromFile("controller/parameter-binder-controller.js", pathResolver)
             let infos = Transformer.transform(meta)
 

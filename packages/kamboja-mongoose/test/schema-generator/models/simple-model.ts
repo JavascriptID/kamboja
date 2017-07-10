@@ -1,34 +1,34 @@
-import { val } from "kamboja"
+import { val, type } from "kamboja"
 
 export class ReferenceEntityWithArray {
-    @val.type("SimpleEntity[], models/simple-model")
+    @type("SimpleEntity[], models/simple-model")
     children: SimpleEntity[]
 }
 
 export class ReferenceEntity {
-    @val.type("SimpleEntity, models/simple-model")
+    @type("SimpleEntity, models/simple-model")
     children: SimpleEntity
 }
 
 export class SimpleEntity {
-    @val.type("string")
+    @type("string")
     name: string
-    @val.type("number")
+    @type("number")
     id: number
-    @val.type("date")
+    @type("date")
     createdOn:Date
-    @val.type("boolean")
+    @type("boolean")
     running:boolean
 }
 
 export class EntityWithArray{
-    @val.type("string[]")
+    @type("string[]")
     name: string[]
-    @val.type("number[]")
+    @type("number[]")
     id: number[]
-    @val.type("date[]")
+    @type("date[]")
     createdOn:Date[]
-    @val.type("boolean[]")
+    @type("boolean[]")
     running:boolean[]
 }
 
@@ -38,12 +38,12 @@ export class EntityWithoutDecorator{
 }
 
 export class EntityMultipleDecorated{
-    @val.type("number")
-    @val.type("string")
+    @type("number")
+    @type("string")
     age:number
 }
 
 export class EntityWithUnsupportedType{
-    @val.type("integer")
+    @type("integer")
     age:number
 }

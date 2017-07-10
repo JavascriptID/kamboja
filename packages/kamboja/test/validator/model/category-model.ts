@@ -1,10 +1,10 @@
-import { val } from "../../../src"
+import { val, type } from "../../../src"
 import { ItemModel } from "./item-model"
 
 export class CategoryModel {
     @val.required()
     name: string
 
-    @val.type("ItemModel[], model/item-model")
+    @type("ItemModel[], model/item-model")
     items: ItemModel[]
 }

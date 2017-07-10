@@ -7,12 +7,12 @@ export class TypeConverter {
 
     convert(type: string, typeName: string): any {
         let checker = new TypeChecker(type, this.pathResolver);
-        if (!checker.isValid()) throw new Error(`Invalid type used in @val.type in [${typeName}]`)
+        if (!checker.isValid()) throw new Error(`Invalid type used in @type in [${typeName}]`)
         let conversion;
         if (checker.isQualifiedName()) {
             let qualifiedName = new Resolver.QualifiedName(type, this.pathResolver)
             let clazz = this.classes.filter(x => qualifiedName.equals(x.qualifiedClassName))[0]
-            if (!clazz) throw new Error(`Model [${type}] used in @val.type is not exists in [${typeName}]`)
+            if (!clazz) throw new Error(`Model [${type}] used in @type is not exists in [${typeName}]`)
             let isShortId = clazz.decorators && clazz.decorators.some(x => x.name == "shortid")
             conversion = {
                 type: isShortId ? String : Mongoose.Schema.Types.ObjectId,

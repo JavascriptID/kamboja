@@ -88,7 +88,7 @@ describe("SchemaGenerator", () => {
         let test = new SchemaGenerator(resolver, converter)
         Chai.expect(() => {
             test.generate(clazz)
-        }).throw("Multiple @val.type found in [EntityMultipleDecorated]")
+        }).throw("Multiple @type found in [EntityMultipleDecorated]")
     })
 
     it("Should throw unsupported type found", () => {
@@ -99,6 +99,6 @@ describe("SchemaGenerator", () => {
         let test = new SchemaGenerator(resolver, converter)
         Chai.expect(() => {
             test.generate(clazz)
-        }).throw("Invalid type used in @val.type in [EntityWithUnsupportedType]")
+        }).throw("Invalid type used in @type in [EntityWithUnsupportedType]")
     })
 })

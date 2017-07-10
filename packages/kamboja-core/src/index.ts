@@ -16,6 +16,7 @@ export type MiddlewareFactory = (opt: KambojaOption) => MiddlewaresType
 
 export class Decorator {
     internal() { return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => { }; }
+    type(typ:string) { return (...target: any[]) => { }; }
 }
 
 export class HttpDecorator {

@@ -26,7 +26,7 @@ export class SchemaGenerator {
 
     private getType(property: Kecubung.PropertyMetaData, typeName:string) {
         let decorators = property.decorators!.filter(x => x.name == "type");
-        if (decorators.length > 1) throw new Error(`Multiple @val.type found in [${typeName}]`)
+        if (decorators.length > 1) throw new Error(`Multiple @type found in [${typeName}]`)
         let decorator = decorators[0]
         let parameter = <Kecubung.PrimitiveValueMetaData>decorator.parameters[0]
         let type: string = parameter.value;

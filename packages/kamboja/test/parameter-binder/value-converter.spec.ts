@@ -96,7 +96,7 @@ describe("Value Converter", () => {
             let info = infos.filter(x => x.methodMetaData!.name == "decoratedConversion")[0]
             let parameterMeta = info.methodMetaData!.parameters[0]
             Chai.expect(() => convert(info, parameterMeta.name, { data: "Hello" }))
-                .throw("Expected parameter type of [@val.type('string') str] but got object in [DummyApi.decoratedConversion controller/parameter-binder-controller.js]")
+                .throw("Expected parameter type of [@type('string') str] but got object in [DummyApi.decoratedConversion controller/parameter-binder-controller.js]")
         })
 
         it("Should ignore string[]", () => {
@@ -220,7 +220,7 @@ describe("Value Converter", () => {
 
     })
 
-    it("Should prioritize @val.type decorator vs naming convention", () => {
+    it("Should prioritize @type decorator vs naming convention", () => {
         let meta = H.fromFile("controller/parameter-binder-controller.js", new DefaultPathResolver(__dirname))
         let infos = Transformer.transform(meta)
         let info = infos.filter(x => x.methodMetaData!.name == "priority")[0]

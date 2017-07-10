@@ -9,7 +9,7 @@ export { ExpressMiddlewareAdapter } from "./express-middleware-adapter"
 export {
     ApiController, authorize, Controller, Core, http, HttpStatusError,
     internal, MetaDataLoader, Middleware, RequestHandler, Resolver, RouteGenerator, val, 
-    Validator, bind
+    Validator, bind, type
 } from "kamboja"
 
 import {ActionResults} from "./action-results"

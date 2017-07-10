@@ -163,7 +163,7 @@ describe("TypeValidator", () => {
         Chai.expect(result).undefined
     })
 
-    it("Should not error if provided @val.type('string')", () => {
+    it("Should not error if provided @type('string')", () => {
         let clazz = storage.get("UserController, controller/user-controller")
         let model = <UserModel> {
             displayName: "Nobita Nobi",
@@ -179,7 +179,7 @@ describe("TypeValidator", () => {
         Chai.expect(result).undefined
     })
 
-    it("Should not error if provided @val.type('number')", () => {
+    it("Should not error if provided @type('number')", () => {
         let clazz = storage.get("UserController, controller/user-controller")
         let model = <UserModel> {
             displayName: "Nobita Nobi",
@@ -195,7 +195,7 @@ describe("TypeValidator", () => {
         Chai.expect(result).undefined
     })
 
-    it("Should not error if provided @val.type('boolean')", () => {
+    it("Should not error if provided @type('boolean')", () => {
         let clazz = storage.get("UserController, controller/user-controller")
         let model = <UserModel> {
             displayName: "Nobita Nobi",
@@ -222,7 +222,7 @@ describe("TypeValidator", () => {
             classInfo: <Kecubung.ClassMetaData>clazz,
             decoratorArgs: method.parameters[0].decorators![0].parameters,
             field: "user"
-        })).throw("Class [UserModel, not/valid/path] in @val.type is no found in [UserController]")
+        })).throw("Class [UserModel, not/valid/path] in @type is no found in [UserController]")
     })
 
     it("Should give correct error information if model name not found on nested model", () => {
@@ -239,7 +239,7 @@ describe("TypeValidator", () => {
             classInfo: <Kecubung.ClassMetaData>clazz,
             decoratorArgs: method.parameters[0].decorators![0].parameters,
             field: "user"
-        })).throw("Class [ItemModel, not/valid/item/path] in @val.type is no found in [UserModel]")
+        })).throw("Class [ItemModel, not/valid/item/path] in @type is no found in [UserModel]")
     })
 
     it("Should give correct error information if class name is not specified", () => {
@@ -253,7 +253,7 @@ describe("TypeValidator", () => {
             classInfo: <Kecubung.ClassMetaData>clazz,
             decoratorArgs: method.parameters[0].decorators![0].parameters,
             field: "user"
-        })).throw("Qualified class name should be specified in @val.type in [UserController]")
+        })).throw("Qualified class name should be specified in @type in [UserController]")
     })
 
     it("Should give correct error information in invalid class name provided", () => {
@@ -267,6 +267,6 @@ describe("TypeValidator", () => {
             classInfo: clazz,
             decoratorArgs: method.parameters[0].decorators![0].parameters,
             field: "user"
-        })).throw("Invalid qualified class name [NonValidClassName] in @val.type decorator in [UserController]")
+        })).throw("Invalid qualified class name [NonValidClassName] in @type decorator in [UserController]")
     })
 })

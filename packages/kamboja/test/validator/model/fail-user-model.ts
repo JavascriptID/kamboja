@@ -1,4 +1,4 @@
-import { val } from "../../../src"
+import { val, type } from "../../../src"
 import { ItemModel } from "./item-model"
 export class UserModel {
     @val.email()
@@ -8,6 +8,6 @@ export class UserModel {
     @val.required()
     displayName: string
 
-    @val.type("ItemModel, not/valid/item/path")
+    @type("ItemModel, not/valid/item/path")
     item: ItemModel 
 }

@@ -41,8 +41,6 @@ describe("RequestHandler", () => {
             await executor.execute()
             Chai.expect(response.body).eq("Hello world!")
         })
-
-
     })
 
     describe("ApiController Functions", () => {

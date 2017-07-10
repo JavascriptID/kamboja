@@ -23,7 +23,7 @@ export class ValidatorDecorator {
      * @deprecated use type instead of val.type
      * @param qualifiedName 
      */
-    type(qualifiedName: string) { console.log("@val.type() is deprecated now, use @type()"); return parameterDecorator; }
+    type(qualifiedName: string) { console.log("@type() is deprecated now, use @type()"); return parameterDecorator; }
     email(message?: string) { return parameterDecorator; }
 }
 
