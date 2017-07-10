@@ -2,6 +2,7 @@ import * as Core from "kamboja-core"
 import * as Url from "url"
 
 export class HttpRequest implements Core.HttpRequest {
+    contextType: "HttpRequest"
     httpVersion: string
     httpMethod: Core.HttpMethod
     headers: { [key: string]: string }

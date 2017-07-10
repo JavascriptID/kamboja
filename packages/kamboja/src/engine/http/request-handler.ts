@@ -9,7 +9,7 @@ import { ErrorInvocation } from "../invocations"
 export class RequestHandler {
     constructor(private option: Core.Facade,
         private request: Core.HttpRequest,
-        private response: Core.HttpResponse,
+        private response: Core.Response,
         private data?: Core.RouteInfo | Error) { }
 
     async execute() {

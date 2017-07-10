@@ -1,7 +1,7 @@
 import { Core } from "kamboja"
 import { ResponseAdapter } from "./response-adapter"
 
-export class JsonActionResult extends Core.HttpActionResult {
+export class JsonActionResult extends Core.ActionResult {
     constructor(body:any, status?:number){
         super(body, status)
     }

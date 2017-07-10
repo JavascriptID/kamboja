@@ -182,6 +182,6 @@ describe("Integration Test", () => {
         })
         .apply(new MongooseFacility())
 
-        Chai.expect(kamboja.get("validators").length).eq(2)
+        Chai.expect(kamboja.get<Core.ValidatorCommand[]>("validators").length).eq(2)
     })
 })

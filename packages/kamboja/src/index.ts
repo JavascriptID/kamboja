@@ -19,7 +19,12 @@ export { RequestHandler } from "./engine"
 const middleware: Middleware.MiddlewareDecorator = new Middleware.MiddlewareDecorator()
 export const val: Validator.ValidatorDecorator = new Validator.ValidatorDecorator();
 export const internal = new Core.Decorator().internal;
+
+/**
+ * @deprecated use route
+ */
 export const http = new Core.HttpDecorator();
+export const route = new Core.HttpDecorator();
 export const bind = new Core.BinderDecorator();
 export function authorize(role?: string | string[]) {
     return middleware.use(new Middleware.Authorize(role!))

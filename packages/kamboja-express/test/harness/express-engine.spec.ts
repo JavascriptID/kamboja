@@ -14,6 +14,8 @@ import { ErrorHandler } from "../harness/interceptor/error-handler"
 import * as Path from "path"
 import { ConcatMiddleware } from "./interceptor/concat-middleware"
 import { LoginUser } from "../../src/login-user"
+import {Server} from "http"
+
 describe("Integration", () => {
     describe("General", () => {
         it("Should be able to add facility", () => {
@@ -21,7 +23,7 @@ describe("Integration", () => {
                 .apply("BasicFacility, facility/basic-facility")
             Chai.expect(app.get("showLog")).eq("None")
             Chai.expect(app.get("skipAnalysis")).true;
-            Chai.expect(app.get("facilities").length).eq(1)
+            Chai.expect(app.get<Kamboja.Core.Facility[]>("facilities").length).eq(1)
         })
 
         it("Should be able to set kamboja option", () => {
@@ -50,7 +52,7 @@ describe("Integration", () => {
     })
 
     describe("Controller", () => {
-        let app: Express.Application
+        let app: Server
         beforeEach(() => {
             app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
                 .set("views", Path.join(__dirname, "view"))
@@ -203,7 +205,7 @@ describe("Integration", () => {
     })
 
     describe("ApiController With @http.root() logic", () => {
-        let app: Express.Application;
+        let app: Server;
         beforeEach(() => {
             app = new KambojaApplication({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
                 .use(BodyParser.json())

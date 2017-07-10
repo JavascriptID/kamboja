@@ -1,4 +1,4 @@
-import { Middleware, Invocation, ActionResult, HttpRequest } from "kamboja-core"
+import { Middleware, Invocation, BaseActionResult, HttpRequest } from "kamboja-core"
 import { MiddlewareDecorator } from "./middleware-decorator"
 
 let middleware = new MiddlewareDecorator()
@@ -7,7 +7,7 @@ let middleware = new MiddlewareDecorator()
 export class Authorize implements Middleware {
     constructor(public role: (string | string[])) { }
 
-    execute(request: HttpRequest, invocation: Invocation):Promise<ActionResult> {
+    execute(request: HttpRequest, invocation: Invocation):Promise<BaseActionResult> {
         return invocation.proceed()
     }
 }

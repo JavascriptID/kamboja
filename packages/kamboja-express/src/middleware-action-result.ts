@@ -3,7 +3,7 @@ import { RequestHandler } from "express"
 import { ResponseAdapter } from "./response-adapter"
 import { RequestAdapter } from "./request-adapter"
 
-export class MiddlewareActionResult extends Core.HttpActionResult {
+export class MiddlewareActionResult extends Core.ActionResult {
     /**
      * Action result adapter for express middleware 
      * @param middleware Express middleware

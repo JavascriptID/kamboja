@@ -7,9 +7,9 @@ export class ConcatInterceptor implements Core.Middleware {
     constructor(private msg: string) { }
 
     async execute(request: Core.HttpRequest, invocation: Core.Invocation) {
-        let invocationResult = <Core.HttpActionResult>await invocation.proceed();
+        let invocationResult = <Core.ActionResult>await invocation.proceed();
         let result = invocationResult.body;
-        return new Core.HttpActionResult(this.msg + ", " + result)
+        return new Core.ActionResult(this.msg + ", " + result)
     }
 }
 

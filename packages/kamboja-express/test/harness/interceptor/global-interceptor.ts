@@ -5,7 +5,7 @@ import { middleware } from "../../../src"
 export class GlobalInterceptor implements Core.Middleware {
     async execute(request: Core.HttpRequest, next: Core.Invocation) {
         if (request.url.pathname == "/unhandled/url") {
-            return new Core.HttpActionResult("HELLOW!!")
+            return new Core.ActionResult("HELLOW!!")
         }
         return next.proceed()
     }

@@ -2,6 +2,7 @@ import { MetaData, ParentMetaData, MetadataType, MethodMetaData, ClassMetaData }
 import * as Kecubung from "kecubung"
 import * as Url from "url"
 import "reflect-metadata"
+import * as Http from "http"
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
 export type TransformStatus = "ExitWithResult" | "Next" | "Exit"
@@ -24,6 +25,7 @@ export class HttpDecorator {
     put(route?: string) { return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => { }; }
     patch(route?: string) { return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => { }; }
     delete(route?: string) { return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => { }; }
+    event(route: string) { return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => { }; }
 }
 
 export class BinderDecorator {
@@ -128,7 +130,7 @@ export interface FieldValidatorArg {
 }
 
 export interface ValidatorCommand {
-    validate(args: FieldValidatorArg):ValidationError[]| undefined
+    validate(args: FieldValidatorArg): ValidationError[] | undefined
 }
 
 export interface Facade {
@@ -140,7 +142,7 @@ export interface Facade {
     middlewares?: (Middleware | string)[]
     autoValidation?: boolean
     routeInfos?: RouteInfo[]
-    facilities?:Facility[]
+    facilities?: Facility[]
 }
 
 export interface KambojaOption extends Facade {
@@ -149,6 +151,13 @@ export interface KambojaOption extends Facade {
     modelPath?: string
     rootPath: string
     showLog?: LogType
+    socketEngine?: Engine
+
+    //socket callback instance based on socket engine implementation
+    socketApp?: any
+
+    //http callback instance based on http engine implementation
+    httpApp?: any
 }
 
 export interface MetaDataStorage {
@@ -173,7 +182,7 @@ export interface Validator {
 }
 
 export interface BaseController {
-    [key:string]: any
+    [key: string]: any
     validator: Validator;
 }
 
@@ -187,12 +196,19 @@ export class SocketController implements BaseController {
     validator: Validator;
 }
 
-export interface Socket{
-    header: any,
-    id: string,
+export interface Socket {
+    contextType: "Socket"
+    header: any
+    id: string
+    rooms: string[]
+    join(roomName: string): Promise<void>;
+    leave(roomName: string): Promise<void>;
+    leaveAll(): Promise<void>
+    send(msg:any, recipients?:SocketRecipient[]):Promise<void>
 }
 
 export interface HttpRequest {
+    contextType: "HttpRequest"
     httpVersion: string
     httpMethod: HttpMethod
     headers: { [key: string]: string }
@@ -202,11 +218,10 @@ export interface HttpRequest {
     body: any
     referrer: string
     url: Url.Url
-    getHeader(key: string): string|undefined
-    getCookie(key: string): string|undefined
-    getParam(key: string): string|undefined
+    getHeader(key: string): string | undefined
+    getCookie(key: string): string | undefined
+    getParam(key: string): string | undefined
     getAccepts(key: string | string[]): string | boolean
-    //isAccept(mime: string): boolean
     isAuthenticated(): boolean
     getUserRole(): string
     route: string
@@ -236,91 +251,92 @@ export interface CookieOptions {
     secure?: boolean | "auto";
 }
 
-export interface HttpResponse {
+export interface Response {
     body: any
     type: string
     status: number
     header: { [key: string]: string | string[] }
     cookies: Cookie[]
-    send():void
+    send(): void
 }
 
 export class HttpError {
     constructor(public status: number,
-        public error:any,
+        public error: any,
         public request: HttpRequest,
-        public response: HttpResponse) { }
+        public response: Response) { }
 }
 
 export abstract class Invocation {
-    abstract proceed(): Promise<ActionResult>
+    abstract proceed(): Promise<BaseActionResult>
     parameters: any[]
     controllerInfo?: RouteInfo
     middlewares?: Middleware[]
 }
 
-export interface ControllerExecutor{
-    execute(context:any):Promise<ActionResult>
-}
-
-export interface ParameterBinder{
-    getParameters(context:any):any[]
-}
-
 export interface Middleware {
-    execute(context: any, next: Invocation): Promise<ActionResult>;
+    execute(context: Socket | HttpRequest, next: Invocation): Promise<BaseActionResult>;
 }
 
-export abstract class HttpMiddleware {
-    abstract execute(context: HttpRequest, next:Invocation):any
-}
-
-export abstract class SocketMiddleware {
-    abstract execute(context: Socket, next:Invocation):any
-}
-
-export interface Facility{
-    apply(app:Application):void
+export interface Facility {
+    apply(app: Application): void
 }
 
 export interface Application {
-    use(middleware: MiddlewaresType):Application
-    set(key: keyof KambojaOption, value:any):Application
-    get(key: keyof KambojaOption):any
+    use(middleware: MiddlewaresType): Application
+    set(key: keyof KambojaOption, value: any): Application
+    get(key: keyof KambojaOption): any
 }
 
 export interface DependencyResolver {
-    resolve<T>(qualifiedClassName: string):T;
+    resolve<T>(qualifiedClassName: string): T;
 }
 
 export interface IdentifierResolver {
-    getClassId(qualifiedClassName: string):string
-    getClassName(classId: string):string
+    getClassId(qualifiedClassName: string): string
+    getClassName(classId: string): string
 }
 
 export interface PathResolver {
-    resolve(path: string):string
-    relative(absolute: string):string
-    normalize(path: string):string
+    resolve(path: string): string
+    relative(absolute: string): string
+    normalize(path: string): string
 }
 
-export interface ActionResult {
-    execute(...context:any[]):Promise<void>
+export interface BaseActionResult {
+    execute(...context: any[]): Promise<void>
 }
 
-export class HttpActionResult implements ActionResult {
+export interface SocketFeedback {
+    status:number;
+    message:any;
+    send():void;
+}
+
+export interface SocketRecipient {
+    type: "Room" | "SocketId" | "Broadcast"
+    id: string
+}
+
+export class ActionResult {
     header: { [key: string]: string | string[] } = {}
     cookies?: Cookie[]
 
-    constructor(public body:any, public status?: number, public type?: string) { }
+    constructor(public body: any, public status?: number, public type?: string) { }
 
-    async execute(request: HttpRequest, response: HttpResponse, routeInfo?: RouteInfo) {
+    async execute(context: HttpRequest | Socket, response: Response, routeInfo?: RouteInfo) {
         response.body = this.body
         response.cookies = this.cookies || []
         response.status = this.status || 200
         response.type = this.type || "text/plain"
         response.header = this.header
         response.send()
+    }
+}
+
+export class RealTimeActionResult extends ActionResult {
+    constructor(public body:any, public recipients?:SocketRecipient[], status?:number){
+        super(body, status, "application/json")
     }
 }
 
@@ -362,7 +378,7 @@ export namespace MetaDataHelper {
     }
 }
 
-export function reflect(obj:any){
+export function reflect(obj: any) {
     //dynamic
     let dynamicProperties = Object.getOwnPropertyNames(obj)
     let staticProperties = Object.getOwnPropertyNames(Object.getPrototypeOf(obj))

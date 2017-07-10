@@ -5,7 +5,7 @@ import { DecoratorBinder } from "./decorator-binder"
 import { DefaultBinder } from "./default-binder"
 import { ValTypeBinder } from "./val-type-binder"
 
-export class ParameterBinder implements Core.ParameterBinder {
+export class ParameterBinder  {
     private commands: BinderBase[] = []
     constructor(private routeInfo: Core.RouteInfo, private pathResolver:Core.PathResolver) {
         //priorities

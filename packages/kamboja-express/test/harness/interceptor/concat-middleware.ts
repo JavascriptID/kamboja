@@ -4,7 +4,7 @@ import {middleware, HttpStatusError} from "../../../src"
 export class ConcatMiddleware implements Core.Middleware{
     constructor(public order:string){}
     async execute(request:Core.HttpRequest, next:Core.Invocation){
-        let actionResult = <Core.HttpActionResult>await next.proceed()
+        let actionResult = <Core.ActionResult>await next.proceed()
         actionResult.body = this.order + " " + actionResult.body
         return actionResult;
     }

@@ -7,6 +7,7 @@ import * as Url from "url"
 
 
 export class RequestAdapter implements Core.HttpRequest {
+    contextType: "HttpRequest"
     httpVersion: string
     httpMethod: Core.HttpMethod
     headers: { [key: string]: string }

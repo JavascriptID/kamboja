@@ -1,7 +1,8 @@
 import { Kamboja, Core } from "kamboja"
 import { ExpressEngine } from "./express-engine"
 import { ExpressMiddlewareAdapter } from "./express-middleware-adapter"
-import { RequestHandler, Application } from "express"
+import { RequestHandler } from "express"
+import {Server} from "http"
 
 export type KambojaOptionKeys = keyof Core.KambojaOption
 export type ExpressOptionKeys = "case sensitive routing" | "env" | "etag"
@@ -39,8 +40,8 @@ export class KambojaApplication {
         return this;
     }
 
-    get(setting: keyof Core.KambojaOption) {
-        return this.kamboja.get(setting)
+    get<T>(setting: keyof Core.KambojaOption) {
+        return this.kamboja.get<T>(setting)
     }
 
     apply(facility: Core.Facility | string) {
@@ -58,7 +59,7 @@ export class KambojaApplication {
         return this;
     }
 
-    init(): Application {
+    init(): Server {
         return this.kamboja.init();
     }
 }

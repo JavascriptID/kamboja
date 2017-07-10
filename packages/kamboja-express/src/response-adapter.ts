@@ -1,7 +1,7 @@
 import { Core } from "kamboja"
 import * as Express from "express"
 
-export class ResponseAdapter implements Core.HttpResponse {
+export class ResponseAdapter implements Core.Response {
     body: any
     type: string
     status: number

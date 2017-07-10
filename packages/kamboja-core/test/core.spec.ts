@@ -5,7 +5,7 @@ import { HttpRequest, HttpResponse } from "./helper"
 
 class Invocation extends Core.Invocation{
     async proceed() {
-        return new Core.HttpActionResult({});
+        return new Core.ActionResult({});
     }
 }
 

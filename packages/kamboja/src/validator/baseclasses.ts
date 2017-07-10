@@ -19,7 +19,11 @@ export function parameterDecorator(...params: any[]) { }
 export class ValidatorDecorator {
     required(message?: string) { return parameterDecorator; }
     range(min: number, max?: number, message?: string) { return parameterDecorator; }
-    type(qualifiedName: string) { return parameterDecorator; }
+    /**
+     * @deprecated use type instead of val.type
+     * @param qualifiedName 
+     */
+    type(qualifiedName: string) { console.log("@val.type() is deprecated now, use @type()"); return parameterDecorator; }
     email(message?: string) { return parameterDecorator; }
 }
 

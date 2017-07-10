@@ -10,7 +10,7 @@ import { Logger } from "./logger"
 import * as Babylon from "babylon"
 import * as Kecubung from "kecubung"
 import { Validator, Middleware } from "./index"
-
+import * as Http from "http"
 
 /**
  * Create instance of KambojaJS application
@@ -65,8 +65,8 @@ export class Kamboja implements Core.Application {
         return this;
     }
 
-    get(key: keyof Core.KambojaOption) {
-        return <any>this.options[key];
+    get<T>(key: keyof Core.KambojaOption) {
+        return <T>this.options[key];
     }
 
     /**
@@ -186,7 +186,17 @@ export class Kamboja implements Core.Application {
         let routeInfos = this.generateRoutes(this.storage.getFiles("Controller"))
         if (routeInfos.length == 0) throw new Error("Fatal error")
         if (!this.analyzeRoutes(routeInfos)) throw new Error("Fatal Error")
-        let app = this.engine.init(routeInfos, this.options)
-        return app;
+        let httpControllers = routeInfos.filter(x => x.classMetaData!.baseClass == "ApiController" ||
+            x.classMetaData!.baseClass == "Controller")
+        let httpApp = this.engine.init(httpControllers, this.options)
+        this.set("httpApp", httpApp)
+        let server = Http.createServer(httpApp)
+        if(this.options.socketEngine){
+            let socketControllers = routeInfos.filter(x => x.classMetaData!.baseClass == "SocketController")
+            let socketApp = this.options.socketEngine.init(socketControllers, this.options);
+            this.set("socketApp", socketApp)
+            socketApp.listen(server)
+        }
+        return server;
     }
 }

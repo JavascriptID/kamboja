@@ -355,7 +355,7 @@ describe("Kamboja", () => {
         kamboja.apply(new BasicFacility());
         Chai.expect(kamboja.get("showLog")).eq("None")
         Chai.expect(kamboja.get("skipAnalysis")).true;
-        Chai.expect(kamboja.get("facilities").length).eq(1)
+        Chai.expect(kamboja.get<Core.Facility[]>("facilities").length).eq(1)
     })
 
     it("Should be able to set facility using qualified name", () => {
@@ -363,7 +363,7 @@ describe("Kamboja", () => {
         kamboja.apply("BasicFacility, facility/basic-facility");
         Chai.expect(kamboja.get("showLog")).eq("None")
         Chai.expect(kamboja.get("skipAnalysis")).true;
-        Chai.expect(kamboja.get("facilities").length).eq(1)
+        Chai.expect(kamboja.get<Core.Facility[]>("facilities").length).eq(1)
     })
 
     it("Should throw exception if provide invalid facility qualified name", () => {

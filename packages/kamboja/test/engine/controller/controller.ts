@@ -8,11 +8,11 @@ export function customValidation() {
 export class DummyApi extends Controller {
 
     returnActionResult() {
-        return new Core.HttpActionResult("/go/go/kamboja.js");
+        return new Core.ActionResult("/go/go/kamboja.js");
     }
 
     returnPromisedActionResult() {
-        return Promise.resolve(new Core.HttpActionResult("/go/go/kamboja.js"));
+        return Promise.resolve(new Core.ActionResult("/go/go/kamboja.js"));
     }
 
     returnPromisedValue(){
@@ -26,7 +26,7 @@ export class DummyApi extends Controller {
     returnVoid(){}
 
     setTheCookie() {
-        let result = new Core.HttpActionResult("/go/go/kamboja.js");
+        let result = new Core.ActionResult("/go/go/kamboja.js");
         result.cookies = [{ key: "TheKey", value: "TheValue", options: { expires: true } }]
         return result;
     }

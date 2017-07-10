@@ -7,7 +7,7 @@ export class MiddlewareInvocation extends Core.Invocation {
         this.middlewares = invocation.middlewares
     }
 
-    async proceed(): Promise<Core.ActionResult> {
+    async proceed(): Promise<Core.BaseActionResult> {
         return this.middleware.execute(this.context, this.invocation)
     }
 }
@@ -16,7 +16,7 @@ export class MiddlewareInvocation extends Core.Invocation {
 export class ErrorInvocation extends Core.Invocation {
     constructor(private error: any) { super() }
 
-    async proceed(): Promise<Core.ActionResult> {
+    async proceed(): Promise<Core.BaseActionResult> {
         throw this.error
     }
 }

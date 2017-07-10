@@ -2,6 +2,7 @@ import * as Core from "../src"
 import * as Url from "url"
 
 export class HttpRequest implements Core.HttpRequest {
+    contextType: "HttpRequest"
     httpVersion: string
     httpMethod: Core.HttpMethod
     headers: { [key: string]: string }
@@ -22,7 +23,7 @@ export class HttpRequest implements Core.HttpRequest {
     route: string
 }
 
-export class HttpResponse implements Core.HttpResponse {
+export class HttpResponse implements Core.Response {
     body: any
     type: string
     status: number
