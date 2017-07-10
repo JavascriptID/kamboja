@@ -1,4 +1,15 @@
 import * as Core from "kamboja-core"
+import { Validator, Controllers } from "../../"
+import { ParameterBinder } from "../parameter-binder"
+
+function createController(option: Core.Facade, controllerInfo: Core.ControllerInfo, context: Core.HttpRequest | Core.Socket, parameters: any[]) {
+    let validator = new Validator.ValidatorImpl(option.metaDataStorage!, <Core.ValidatorCommand[]>option.validators!)
+    validator.setValue(parameters, controllerInfo.classMetaData!, controllerInfo.methodMetaData!.name)
+    let controller = Controllers.resolve(controllerInfo, option.dependencyResolver!)
+    controller.validator = validator;
+    controller.request = context;
+    return controller;
+}
 
 export class MiddlewareInvocation extends Core.Invocation {
     constructor(private invocation: Core.Invocation, private context: any, private middleware: Core.Middleware) {
@@ -18,5 +29,60 @@ export class ErrorInvocation extends Core.Invocation {
 
     async proceed(): Promise<Core.BaseActionResult> {
         throw this.error
+    }
+}
+
+export class HttpControllerInvocation extends Core.Invocation {
+
+    constructor(private option: Core.Facade, private request: Core.HttpRequest, public controllerInfo: Core.ControllerInfo) { super() }
+
+    proceed(): Promise<Core.BaseActionResult> {
+        let binder = new ParameterBinder(this.controllerInfo, this.option.pathResolver!)
+        let parameters = binder.getParameters(this.request);
+        let controller = createController(this.option, this.controllerInfo, this.request, parameters)
+        let method = controller[this.controllerInfo.methodMetaData!.name]
+        let result;
+        if (this.option.autoValidation && !controller.validator.isValid())
+            result = new Core.ActionResult(controller.validator.getValidationErrors(), 400, "application/json")
+        else
+            result = method.apply(controller, parameters);
+        return this.createResult(result)
+    }
+
+    private async createResult(result: any) {
+        let awaitedResult = await Promise.resolve(result)
+        if (awaitedResult instanceof Core.ActionResult)
+            return awaitedResult
+        if (this.controllerInfo.classMetaData!.baseClass == "ApiController") {
+            return new Core.ActionResult(awaitedResult, 200, "application/json")
+        }
+        else return new Core.ActionResult(awaitedResult, 200, "text/html")
+    }
+}
+
+export class SocketControllerInvocation extends Core.Invocation {
+
+    constructor(private option: Core.Facade, 
+        private socket: Core.Socket, 
+        public controllerInfo: Core.ControllerInfo,
+        private msg:any) { super() }
+
+    proceed(): Promise<Core.ActionResult> {
+        let controller = createController(this.option, this.controllerInfo, this.socket, this.msg)
+        let method = controller[this.controllerInfo.methodMetaData!.name]
+        let result;
+        if (this.option.autoValidation && !controller.validator.isValid())
+            result = new Core.RealTimeActionResult(controller.validator.getValidationErrors(), undefined, 400)
+        else
+            result = method.apply(controller, this.msg);
+        return this.createResult(result)
+    }
+
+    private async createResult(result: any) {
+        let awaitedResult = await Promise.resolve(result)
+        if (awaitedResult instanceof Core.RealTimeActionResult)
+            return awaitedResult;
+        else
+            return new Core.RealTimeActionResult(result)
     }
 }
