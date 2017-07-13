@@ -16,14 +16,16 @@ export class RequestHandler {
         try {
             let invocation: Core.Invocation;
             let routeInfo: Core.RouteInfo | undefined;
-            if (!this.target)
-                invocation = new ErrorInvocation(new HttpStatusError(404, "Requested url not found"))
+            if (!this.target) {
+                let msg = this.context.contextType == "HttpRequest" ? "Requested url not found" : "Invalid event"
+                invocation = new ErrorInvocation(new HttpStatusError(404, msg))
+            }
             else if (this.target instanceof Error)
                 invocation = new ErrorInvocation(this.target)
             else {
                 routeInfo = this.target;
                 if (this.context.contextType == "Socket")
-                    invocation = new SocketControllerInvocation(this.option, this.context, routeInfo, this.params)
+                    invocation = new SocketControllerInvocation(this.option, this.context, routeInfo, this.params || [])
                 else
                     invocation = new HttpControllerInvocation(this.option, this.context, routeInfo)
             }

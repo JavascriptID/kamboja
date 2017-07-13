@@ -41,7 +41,8 @@ export function checkForAnalysis(meta: Kecubung.ClassMetaData) {
     //check if class inherrited from Controler or ApiController
     if (!meta.baseClass ||
         !(meta.baseClass == "Controller"
-            || meta.baseClass == "ApiController"))
+            || meta.baseClass == "ApiController"
+            || meta.baseClass == "SocketController"))
         return <Core.RouteInfo>{
             analysis: [Core.RouteAnalysisCode.ClassNotInheritedFromController],
             qualifiedClassName: meta.name,

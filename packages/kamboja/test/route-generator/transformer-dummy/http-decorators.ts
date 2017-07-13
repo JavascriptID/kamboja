@@ -1,20 +1,23 @@
-import { internal, http } from "../../../src"
-import {Controller, ApiController} from "../../../src/controller"
+import { internal, route } from "../../../src"
+import { Controller, ApiController } from "../../../src/controller"
 
 export class SimpleController extends Controller {
-    
-    @http.get("/this/get/got/different")
-    getMethod(){}
 
-    @http.post("/this/post/got/different")
-    postMethod(){}
+    @route.get("/this/get/got/different")
+    getMethod() { }
 
-    @http.put("/this/put/got/different")
-    putMethod(){}
+    @route.post("/this/post/got/different")
+    postMethod() { }
 
-    @http.delete("/this/delete/got/different")
-    deleteMethod(){}
+    @route.put("/this/put/got/different")
+    putMethod() { }
 
-    @http.patch("/this/patch/got/different")
-    patchMethod(){}
+    @route.delete("/this/delete/got/different")
+    deleteMethod() { }
+
+    @route.patch("/this/patch/got/different")
+    patchMethod() { }
+
+    @route.event("/this/event/got/different")
+    eventMethod() { }
 }

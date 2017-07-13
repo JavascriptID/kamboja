@@ -29,5 +29,6 @@ export class HttpResponse implements Core.Response {
     status: number
     header: { [key: string]: string | string[] }
     cookies: Core.Cookie[]
+    events: Core.EventEmitted[]
     send() { }
 };

@@ -9,6 +9,9 @@ import { ConventionFailDecoratorAnalyzer } from "./convention-fail"
 import { ClassNotInherritedFromControllerAnalyzer } from "./class-not-controller"
 import { ClassNotExportedControllerAnalyzer } from "./class-not-exported"
 import { ReservedWordUsedAnalyzer } from "./reserved-word-used"
+import { HttpMethodInSocketController } from "./http-method-in-socket-controller"
+import { EventInHttpController } from "./event-in-http-controller"
+import { EventWithQueryParameters } from "./event-with-query-parameters"
 
 export class RouteAnalyzer {
     private commands: Index.AnalyzerCommand[];
@@ -23,6 +26,9 @@ export class RouteAnalyzer {
             new ClassNotInherritedFromControllerAnalyzer(),
             new ClassNotExportedControllerAnalyzer(),
             new ReservedWordUsedAnalyzer(),
+            new HttpMethodInSocketController(),
+            new EventInHttpController(),
+            new EventWithQueryParameters()
         ]
     }
 

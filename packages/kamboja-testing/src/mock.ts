@@ -10,6 +10,9 @@ export interface Mockable<T, TResult> {
     MOCKS: Mock<T, TResult>
 }
 
+export type Spy<T> = T & Mockable<T, Sinon.SinonSpy>
+export type Stub<T> = T & Mockable<T, Sinon.SinonStub>
+
 function mock<T, TResult>(obj: T, sinon: (obj: any, key: string) => TResult): (T & Mockable<T, TResult>) {
     let mocks: Mock<T, TResult> = <any>{}
     for (let key of reflect(obj)) {
@@ -21,10 +24,10 @@ function mock<T, TResult>(obj: T, sinon: (obj: any, key: string) => TResult): (T
 }
 
 
-export function spy<T>(obj: T) {
+export function spy<T>(obj: T):Spy<T> {
     return mock(obj, Sinon.spy);
 }
 
-export function stub<T>(obj: T) {
+export function stub<T>(obj: T):Stub<T> {
     return mock(obj, Sinon.stub)
 }

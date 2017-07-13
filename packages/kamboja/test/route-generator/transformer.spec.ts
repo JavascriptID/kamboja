@@ -101,7 +101,7 @@ describe("Transformer", () => {
             Chai.expect(info.length).eq(0);
         })
 
-        it("Should detect conflict @internal and @http.<any>()", () => {
+        it("Should detect conflict @internal and @route.<any>()", () => {
             let meta = H.fromFile("./transformer-dummy/internal-conflict.js", new DefaultPathResolver(__dirname))
             let result = Transformer.transform(meta);
             let clean = H.cleanUp(result)
@@ -112,7 +112,7 @@ describe("Transformer", () => {
     })
 
     describe("Http Decorator", () => {
-        it("Should transform @http decorator", () => {
+        it("Should transform @route decorator", () => {
             let meta = H.fromFile("./transformer-dummy/http-decorators.js", new DefaultPathResolver(__dirname))
             let result = Transformer.transform(meta);
             Chai.expect(result[0].route).eq("/this/get/got/different")
@@ -125,6 +125,8 @@ describe("Transformer", () => {
             Chai.expect(result[3].httpMethod).eq("DELETE")
             Chai.expect(result[4].route).eq("/this/patch/got/different")
             Chai.expect(result[4].httpMethod).eq("PATCH")
+            Chai.expect(result[5].route).eq("/this/event/got/different")
+            Chai.expect(result[5].httpMethod).eq("EVENT")
         })
 
         it("Should identify parameter association issue", () => {
@@ -294,7 +296,7 @@ describe("Transformer", () => {
             Chai.expect(info.length).eq(0)
         })
 
-        it("Should prioritized @http.<any> decorators", () => {
+        it("Should prioritized @route.<any> decorators", () => {
             let meta = H.fromFile("./transformer-dummy/api-convention-with-http-decorator.js", new DefaultPathResolver(__dirname))
             let result = Transformer.transform(meta);
             Chai.expect(result[0].route).eq("/simple/getbypage")
@@ -336,7 +338,7 @@ describe("Transformer", () => {
     })
 
     describe("Root Decorator", () => {
-        it("Should transform @http decorator", () => {
+        it("Should transform @route decorator", () => {
             let meta = H.fromFile("./transformer-dummy/root-decorator.js", new DefaultPathResolver(__dirname))
             let result = Transformer.transform(meta);
             let clean = H.cleanUp(result)

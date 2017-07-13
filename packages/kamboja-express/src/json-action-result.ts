@@ -11,6 +11,7 @@ export class JsonActionResult extends Core.ActionResult {
         response.cookies = this.cookies!
         response.status = this.status || 200
         response.header = this.header
+        response.events = this.events;
         response.json()
     }
 }

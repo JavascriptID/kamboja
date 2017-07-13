@@ -259,7 +259,7 @@ describe("Analyzer", () => {
         let result = Analyzer.analyze(info);
         Chai.expect(result).deep.eq([{
             code: Core.RouteAnalysisCode.ClassNotInheritedFromController,
-            message: "Class not inherited from ApiController or Controller in [MyClass, example-file.js]",
+            message: "Class not inherited from Controller, ApiController or SocketController in [MyClass, example-file.js]",
             type: 'Warning'
         }])
     })
@@ -282,6 +282,81 @@ describe("Analyzer", () => {
             code: Core.RouteAnalysisCode.ClassNotExported,
             message: "Can not generate route because class is not exported [MyClass, example-file.js]",
             type: 'Warning'
+        }])
+    })
+
+    it("Should analyze issue when @route.event() used in Controller", () => {
+        let meta = H.fromCode(`
+        var MyController = (function (_super) {
+            tslib_1.__extends(MyController, _super);
+            function MyController() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            MyController.prototype.index = function (model) { };
+            return MyController;
+        }(controller_1.Controller));
+        tslib_1.__decorate([
+            src_1.route.event("relative"),
+        ], MyController.prototype, "index", null);
+        exports.MyController = MyController;
+        `, "example-file.js")
+
+        let info = Transformer.transform(meta);
+        let result = Analyzer.analyze(info);
+        Chai.expect(result).deep.eq([{
+            code: Core.RouteAnalysisCode.DecoratorNotAllowed,
+            message: "@route.event is not allowed when used inside ApiController or Controller in [MyController.index example-file.js]",
+            type: 'Error'
+        }])
+    })
+
+    it("Should analyze issue when @route.event() used in ApiController", () => {
+        let meta = H.fromCode(`
+        var MyController = (function (_super) {
+            tslib_1.__extends(MyController, _super);
+            function MyController() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            MyController.prototype.index = function (model) { };
+            return MyController;
+        }(controller_1.ApiController));
+        tslib_1.__decorate([
+            src_1.route.event("relative"),
+        ], MyController.prototype, "index", null);
+        exports.MyController = MyController;
+        `, "example-file.js")
+
+        let info = Transformer.transform(meta);
+        let result = Analyzer.analyze(info);
+        Chai.expect(result).deep.eq([{
+            code: Core.RouteAnalysisCode.DecoratorNotAllowed,
+            message: "@route.event is not allowed when used inside ApiController or Controller in [MyController.index example-file.js]",
+            type: 'Error'
+        }])
+    })
+
+    it("Should analyze issue when @route.event() has query parameters", () => {
+        let meta = H.fromCode(`
+        var MyController = (function (_super) {
+            tslib_1.__extends(MyController, _super);
+            function MyController() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            MyController.prototype.index = function (model) { };
+            return MyController;
+        }(controller_1.SocketController));
+        tslib_1.__decorate([
+            src_1.route.event("relative/:id"),
+        ], MyController.prototype, "index", null);
+        exports.MyController = MyController;
+        `, "example-file.js")
+
+        let info = Transformer.transform(meta);
+        let result = Analyzer.analyze(info);
+        Chai.expect(result).deep.eq([{
+            code: Core.RouteAnalysisCode.QueryParameterNotAllowed,
+            message: "Query parameters in @route.event() is not allowed in [MyController.index example-file.js]",
+            type: 'Error'
         }])
     })
 })

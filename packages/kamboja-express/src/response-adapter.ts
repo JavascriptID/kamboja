@@ -7,6 +7,7 @@ export class ResponseAdapter implements Core.Response {
     status: number
     cookies: Core.Cookie[]
     header: { [key: string]: string | string[] }
+    events: Core.EventEmitted[]
     constructor(public nativeResponse: Express.Response, public nativeNextFunction: Express.NextFunction) { }
 
     private setup() {

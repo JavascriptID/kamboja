@@ -12,13 +12,13 @@ function createController(option: Core.Facade, controllerInfo: Core.ControllerIn
 }
 
 export class MiddlewareInvocation extends Core.Invocation {
-    constructor(private invocation: Core.Invocation, private context: any, private middleware: Core.Middleware) {
+    constructor(private invocation: Core.Invocation, private context: Core.HttpRequest | Core.Socket, private middleware: Core.Middleware) {
         super()
         this.controllerInfo = invocation.controllerInfo
         this.middlewares = invocation.middlewares
     }
 
-    async proceed(): Promise<Core.BaseActionResult> {
+    async proceed(): Promise<Core.ActionResult> {
         return this.middleware.execute(this.context, this.invocation)
     }
 }
@@ -27,7 +27,7 @@ export class MiddlewareInvocation extends Core.Invocation {
 export class ErrorInvocation extends Core.Invocation {
     constructor(private error: any) { super() }
 
-    async proceed(): Promise<Core.BaseActionResult> {
+    async proceed(): Promise<Core.ActionResult> {
         throw this.error
     }
 }
@@ -36,7 +36,7 @@ export class HttpControllerInvocation extends Core.Invocation {
 
     constructor(private option: Core.Facade, private request: Core.HttpRequest, public controllerInfo: Core.ControllerInfo) { super() }
 
-    proceed(): Promise<Core.BaseActionResult> {
+    proceed(): Promise<Core.ActionResult> {
         let binder = new ParameterBinder(this.controllerInfo, this.option.pathResolver!)
         let parameters = binder.getParameters(this.request);
         let controller = createController(this.option, this.controllerInfo, this.request, parameters)
@@ -72,17 +72,17 @@ export class SocketControllerInvocation extends Core.Invocation {
         let method = controller[this.controllerInfo.methodMetaData!.name]
         let result;
         if (this.option.autoValidation && !controller.validator.isValid())
-            result = new Core.RealTimeActionResult(controller.validator.getValidationErrors(), undefined, 400)
+            result = new Core.ActionResult(controller.validator.getValidationErrors(), 400)
         else
-            result = method.apply(controller, this.msg);
+            result = method.apply(controller, [this.msg]);
         return this.createResult(result)
     }
 
     private async createResult(result: any) {
         let awaitedResult = await Promise.resolve(result)
-        if (awaitedResult instanceof Core.RealTimeActionResult)
+        if (awaitedResult instanceof Core.ActionResult)
             return awaitedResult;
         else
-            return new Core.RealTimeActionResult(result)
+            return new Core.ActionResult(result)
     }
 }

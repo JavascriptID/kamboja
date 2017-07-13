@@ -12,9 +12,10 @@ import { ChangeToHello } from "./interceptor/change-to-hello"
 import { ErrorInterceptor } from "./interceptor/error-interceptor"
 import * as Test from "kamboja-testing"
 
+
 describe("RequestHandler", () => {
-    let request: Core.HttpRequest & Test.Mockable<Core.HttpRequest, Sinon.SinonStub>
-    let response: Core.Response & Test.Mockable<Core.Response, Sinon.SinonSpy>
+    let request: Test.Stub<Core.HttpRequest>
+    let response: Test.Spy<Core.Response>
     let facade: Core.Facade
 
     beforeEach(() => {
@@ -339,6 +340,79 @@ describe("RequestHandler", () => {
             Chai.expect(response.body).eq("Not found action")
             Chai.expect(response.status).eq(404)
             Chai.expect(response.MOCKS.send.called).true
+        })
+    })
+
+    describe("Socket Controller Functions", () => {
+        let socket: Test.Stub<Core.Socket>
+
+        beforeEach(() => {
+            socket = Test.stub(new Test.Socket())
+        })
+
+        it("Should send response body properly", async () => {
+            let info = H.getRouteInfo(facade, "controller/socket-controller.js", "sendActionResult")
+            let executor = new RequestHandler(facade, socket, response, info)
+            await executor.execute()
+            Chai.expect(response.body).eq("Hello")
+            Chai.expect(response.status).eq(200)
+        })
+
+        it("Should pass parameter properly", async () => {
+            let info = H.getRouteInfo(facade, "controller/socket-controller.js", "sendWithParam")
+            let executor = new RequestHandler(facade, socket, response, info, { message: "Hello" })
+            await executor.execute()
+            Chai.expect(response.body).deep.eq({message: "Hello"})
+            Chai.expect(response.status).eq(200)
+        })
+
+        it("Should able to send status", async () => {
+            let info = H.getRouteInfo(facade, "controller/socket-controller.js", "sendWithStatus")
+            let executor = new RequestHandler(facade, socket, response, info)
+            await executor.execute()
+            Chai.expect(response.body).eq("Hello")
+            Chai.expect(response.status).eq(400)
+        })
+
+        it("Should able to emit event", async () => {
+            let info = H.getRouteInfo(facade, "controller/socket-controller.js", "sendAndEmit")
+            let executor = new RequestHandler(facade, socket, response, info, { message: "Hello" })
+            await executor.execute()
+            Chai.expect(response.body).deep.eq({message: "Hello"})
+            Chai.expect(response.events).deep.eq([{name: "chat/event", recipients: [{ type: "SocketId", id: "200" }]}])
+            Chai.expect(response.status).eq(200)
+        })
+
+        it("Should return 404 if provided undefined target", async () => {
+            let info = H.getRouteInfo(facade, "controller/socket-controller.js", "sendAndEmit")
+            let executor = new RequestHandler(facade, socket, response, undefined, { message: "Hello" })
+            await executor.execute()
+            Chai.expect(response.body).eq("Invalid event")
+            Chai.expect(response.status).eq(404)
+        })
+
+        it("Should be able to return error", async () => {
+            let info = H.getRouteInfo(facade, "controller/socket-controller.js", "sendAndEmit")
+            let executor = new RequestHandler(facade, socket, response, new Error("FATAL ERROR"), { message: "Hello" })
+            await executor.execute()
+            Chai.expect(response.body).eq("FATAL ERROR")
+            Chai.expect(response.status).eq(500)
+            Chai.expect(response.events).undefined
+        })
+
+        it("Should be able to throw error from controller", async () => {
+            let info = H.getRouteInfo(facade, "controller/socket-controller.js", "throwError")
+            let executor = new RequestHandler(facade, socket, response, info)
+            await executor.execute()
+            Chai.expect(response.body).eq("FATAL ERROR")
+            Chai.expect(response.status).eq(500)
+        })
+
+        it("Should not emit event if error occur", async () => {
+            let info = H.getRouteInfo(facade, "controller/socket-controller.js", "throwError")
+            let executor = new RequestHandler(facade, socket, response, info)
+            await executor.execute()
+            Chai.expect(response.events).undefined
         })
     })
 

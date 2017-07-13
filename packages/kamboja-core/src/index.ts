@@ -4,7 +4,7 @@ import * as Url from "url"
 import "reflect-metadata"
 import * as Http from "http"
 
-export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
+export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "EVENT"
 export type TransformStatus = "ExitWithResult" | "Next" | "Exit"
 export type TransformerName = "DefaultAction" | "IndexAction" | "HttpMethodDecorator" | "ApiConvention" | "InternalDecorator" | "Controller" | "ControllerWithDecorator" | "Module"
 export type MetaDataLoaderCategory = "Controller" | "Model"
@@ -16,7 +16,7 @@ export type MiddlewareFactory = (opt: KambojaOption) => MiddlewaresType
 
 export class Decorator {
     internal() { return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => { }; }
-    type(typ:string) { return (...target: any[]) => { }; }
+    type(typ: string) { return (...target: any[]) => { }; }
 }
 
 export class HttpDecorator {
@@ -74,7 +74,8 @@ export namespace RouteAnalysisCode {
     export const DuplicateRoutes = 8
 
     export const DuplicateParameterName = 9
-
+    export const QueryParameterNotAllowed = 10
+    export const DecoratorNotAllowed = 11
 }
 
 export interface AnalysisMessage {
@@ -192,11 +193,6 @@ export class HttpController implements BaseController {
     validator: Validator;
 }
 
-export class SocketController implements BaseController {
-    socket: Socket;
-    validator: Validator;
-}
-
 export interface Socket {
     contextType: "Socket"
     header: any
@@ -205,7 +201,7 @@ export interface Socket {
     join(roomName: string): Promise<void>;
     leave(roomName: string): Promise<void>;
     leaveAll(): Promise<void>
-    send(msg:any, recipients?:SocketRecipient[]):Promise<void>
+    emit(event:string, msg: any, recipients?: SocketRecipient[]): Promise<void>
 }
 
 export interface HttpRequest {
@@ -258,6 +254,7 @@ export interface Response {
     status: number
     header: { [key: string]: string | string[] }
     cookies: Cookie[]
+    events?: EventEmitted[]
     send(): void
 }
 
@@ -269,14 +266,14 @@ export class HttpError {
 }
 
 export abstract class Invocation {
-    abstract proceed(): Promise<BaseActionResult>
+    abstract proceed(): Promise<ActionResult>
     parameters: any[]
     controllerInfo?: RouteInfo
     middlewares?: Middleware[]
 }
 
 export interface Middleware {
-    execute(context: Socket | HttpRequest, next: Invocation): Promise<BaseActionResult>;
+    execute(context: Socket | HttpRequest, next: Invocation): Promise<ActionResult>;
 }
 
 export interface Facility {
@@ -304,26 +301,39 @@ export interface PathResolver {
     normalize(path: string): string
 }
 
-export interface BaseActionResult {
-    execute(...context: any[]): Promise<void>
-}
-
 export interface SocketFeedback {
-    status:number;
-    message:any;
-    send():void;
+    status: number;
+    message: any;
+    send(): void;
 }
 
 export interface SocketRecipient {
     type: "Room" | "SocketId" | "Broadcast"
-    id: string
+    id?: string
+}
+
+export interface EventEmitted {
+    name: string, 
+    recipients: SocketRecipient[], 
+    payload?: any
 }
 
 export class ActionResult {
     header: { [key: string]: string | string[] } = {}
     cookies?: Cookie[]
+    events: EventEmitted[] = []
 
     constructor(public body: any, public status?: number, public type?: string) { }
+
+    emit(event: string, recipient: SocketRecipient | SocketRecipient[], payload?: any) {
+        let recs: SocketRecipient[] = []
+        if (Array.isArray(recipient)) {
+            recs.push(...recipient)
+        }
+        else recs.push(recipient)
+        this.events.push({ name: event, recipients: recs })
+        return this
+    }
 
     async execute(context: HttpRequest | Socket, response: Response, routeInfo?: RouteInfo) {
         response.body = this.body
@@ -331,13 +341,8 @@ export class ActionResult {
         response.status = this.status || 200
         response.type = this.type || "text/plain"
         response.header = this.header
+        response.events = this.events
         response.send()
-    }
-}
-
-export class RealTimeActionResult extends ActionResult {
-    constructor(public body:any, public recipients?:SocketRecipient[], status?:number){
-        super(body, status, "application/json")
     }
 }
 

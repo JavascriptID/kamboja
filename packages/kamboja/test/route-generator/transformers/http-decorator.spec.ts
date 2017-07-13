@@ -7,7 +7,7 @@ import { DefaultPathResolver } from "../../../src/resolver"
 import { HttpDecoratorTransformer } from "../../../src/route-generator/transformers/http-decorator"
 
 describe("Http Decorator", () => {
-    it("Should pass to next transformer if provide @http.get()", () => {
+    it("Should pass to next transformer if provide @route.get()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -18,7 +18,7 @@ describe("Http Decorator", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.http.get(),
+            src_1.route.get(),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -28,7 +28,7 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].httpMethod).eq("GET")
     })
 
-    it("Should pass to next transformer if provide @http.post()", () => {
+    it("Should pass to next transformer if provide @route.post()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -39,7 +39,7 @@ describe("Http Decorator", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.http.post(),
+            src_1.route.post(),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -49,7 +49,7 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].httpMethod).eq("POST")
     })
 
-    it("Should pass to next transformer if provide @http.put()", () => {
+    it("Should pass to next transformer if provide @route.put()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -60,7 +60,7 @@ describe("Http Decorator", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.http.put(),
+            src_1.route.put(),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -70,7 +70,7 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].httpMethod).eq("PUT")
     })
 
-    it("Should pass to next transformer if provide @http.patch()", () => {
+    it("Should pass to next transformer if provide @route.patch()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -81,7 +81,7 @@ describe("Http Decorator", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.http.patch(),
+            src_1.route.patch(),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -91,7 +91,7 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].httpMethod).eq("PATCH")
     })
 
-    it("Should pass to next transformer if provide @http.delete()", () => {
+    it("Should pass to next transformer if provide @route.delete()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -102,7 +102,7 @@ describe("Http Decorator", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.http.delete(),
+            src_1.route.delete(),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -112,7 +112,7 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].httpMethod).eq("DELETE")
     })
 
-    it("Should able to change route with relative @http.get()", () => {
+    it("Should able to change route with relative @route.get()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -123,7 +123,7 @@ describe("Http Decorator", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.http.get("relative"),
+            src_1.route.get("relative"),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -133,7 +133,7 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].route).eq("/user/relative")
     })
 
-    it("Should able to change route with absolute @http.get()", () => {
+    it("Should able to change route with absolute @route.get()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -144,7 +144,7 @@ describe("Http Decorator", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.http.get("/absolute/relative"),
+            src_1.route.get("/absolute/relative"),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -154,7 +154,7 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].route).eq("/absolute/relative")
     })
 
-    it("Should able to change route with relative @http.post()", () => {
+    it("Should able to change route with relative @route.post()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -165,7 +165,7 @@ describe("Http Decorator", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.http.post("relative"),
+            src_1.route.post("relative"),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -175,7 +175,7 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].route).eq("/user/relative")
     })
 
-    it("Should able to change route with absolute @http.post()", () => {
+    it("Should able to change route with absolute @route.post()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -186,7 +186,7 @@ describe("Http Decorator", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.http.post("/absolute/relative"),
+            src_1.route.post("/absolute/relative"),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -196,7 +196,7 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].route).eq("/absolute/relative")
     })
 
-    it("Should able to change route with relative @http.patch()", () => {
+    it("Should able to change route with relative @route.patch()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -207,7 +207,7 @@ describe("Http Decorator", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.http.patch("relative"),
+            src_1.route.patch("relative"),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -217,7 +217,7 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].route).eq("/user/relative")
     })
 
-    it("Should able to change route with absolute @http.patch()", () => {
+    it("Should able to change route with absolute @route.patch()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -228,7 +228,7 @@ describe("Http Decorator", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.http.patch("/absolute/relative"),
+            src_1.route.patch("/absolute/relative"),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -238,7 +238,7 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].route).eq("/absolute/relative")
     })
 
-    it("Should able to change route with relative @http.put()", () => {
+    it("Should able to change route with relative @route.put()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -249,7 +249,7 @@ describe("Http Decorator", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.http.put("relative"),
+            src_1.route.put("relative"),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -259,7 +259,7 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].route).eq("/user/relative")
     })
 
-    it("Should able to change route with absolute @http.put()", () => {
+    it("Should able to change route with absolute @route.put()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -270,7 +270,7 @@ describe("Http Decorator", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.http.put("/absolute/relative"),
+            src_1.route.put("/absolute/relative"),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -280,7 +280,7 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].route).eq("/absolute/relative")
     })
 
-    it("Should able to change route with relative @http.delete()", () => {
+    it("Should able to change route with relative @route.delete()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -291,7 +291,7 @@ describe("Http Decorator", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.http.delete("relative"),
+            src_1.route.delete("relative"),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -301,7 +301,7 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].route).eq("/user/relative")
     })
 
-    it("Should able to change route with absolute @http.delete()", () => {
+    it("Should able to change route with absolute @route.delete()", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -312,7 +312,7 @@ describe("Http Decorator", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.http.delete("/absolute/relative"),
+            src_1.route.delete("/absolute/relative"),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -322,6 +322,48 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].route).eq("/absolute/relative")
     })
 
+    it("Should able to change route with relative @route.event()", () => {
+        let meta = H.fromCode(`
+        var MyController = (function (_super) {
+            tslib_1.__extends(MyController, _super);
+            function MyController() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            MyController.prototype.index = function (model) { };
+            return MyController;
+        }(controller_1.SocketController));
+        tslib_1.__decorate([
+            src_1.route.event("relative"),
+        ], MyController.prototype, "index", null);
+        exports.MyController = MyController;
+        `, "controller/user-controller.js")
+        let test = new HttpDecoratorTransformer()
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
+        Chai.expect(result.info![0].httpMethod).eq("EVENT")
+        Chai.expect(result.info![0].route).eq("/user/relative")
+    })
+
+    it("Should able to change route with absolute @route.event()", () => {
+        let meta = H.fromCode(`
+        var MyController = (function (_super) {
+            tslib_1.__extends(MyController, _super);
+            function MyController() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            MyController.prototype.index = function (model) { };
+            return MyController;
+        }(controller_1.SocketController));
+        tslib_1.__decorate([
+            src_1.route.event("/absolute/relative"),
+        ], MyController.prototype, "index", null);
+        exports.MyController = MyController;
+        `, "controller/user-controller.js")
+        let test = new HttpDecoratorTransformer()
+        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
+        Chai.expect(result.info![0].httpMethod).eq("EVENT")
+        Chai.expect(result.info![0].route).eq("/absolute/relative")
+    })
+    
     it("Should pass to next transformer if not contains decorator", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {

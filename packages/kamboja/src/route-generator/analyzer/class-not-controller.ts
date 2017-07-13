@@ -7,7 +7,7 @@ export class ClassNotInherritedFromControllerAnalyzer implements AnalyzerCommand
             return [{
                 code: RouteAnalysisCode.ClassNotInheritedFromController,
                 type: "Warning",
-                message: `Class not inherited from ApiController or Controller in [${route.qualifiedClassName}]`
+                message: `Class not inherited from Controller, ApiController or SocketController in [${route.qualifiedClassName}]`
             }]
         }
     }

@@ -4,7 +4,7 @@ import { TransformerBase, when } from "./transformer-base"
 
 
 export class HttpDecoratorTransformer extends TransformerBase {
-    decorators: Core.DecoratorType[] = ["get", "post", "put", "delete", "patch"]
+    decorators: Core.DecoratorType[] = ["get", "post", "put", "delete", "patch", "event"]
 
     @when("Method")
     transform(meta: Kecubung.MethodMetaData, parent: string, prevResult: Core.RouteInfo[]): Core.TransformResult {
@@ -28,7 +28,7 @@ export class HttpDecoratorTransformer extends TransformerBase {
         else return this.next()
     }
 
-    private createInfo(meta: Kecubung.MethodMetaData, decorator: Kecubung.DecoratorMetaData, parent:string) {
+    private createInfo(meta: Kecubung.MethodMetaData, decorator: Kecubung.DecoratorMetaData, parent: string) {
         let method = <Core.HttpMethod>decorator.name.toUpperCase();
         //if decorator doesn't contains parameter (url) then 
         //left the url empty and pass to the next transformer
@@ -36,58 +36,68 @@ export class HttpDecoratorTransformer extends TransformerBase {
             return <Core.RouteInfo>{
                 initiator: "HttpMethodDecorator",
                 httpMethod: method,
-                methodMetaData:meta,
+                methodMetaData: meta,
                 overrideRequest: Core.OverrideRequest.Route
             };
         }
         else {
-            let route:string = (<Kecubung.PrimitiveValueMetaData>decorator.parameters[0]).value;
+            let route: string = (<Kecubung.PrimitiveValueMetaData>decorator.parameters[0]).value;
             //if route is relative add with parent
-            if(route.charAt(0) != "/") route = parent + "/" + route;
+            if (route.charAt(0) != "/") route = parent + "/" + route;
             let analysis: number[] = []
 
-            let routeAnalysis = this.checkMissingActionParameters(meta, route)
+            let routeAnalysis = this.checkMissingActionParameters(meta, route, method)
             if (routeAnalysis) analysis.push(routeAnalysis)
 
             routeAnalysis = this.checkMissingRouteParameters(meta, route, method)
             if (routeAnalysis) analysis.push(routeAnalysis)
 
-            routeAnalysis = this.checkUnAssociatedParameters(meta, route);
+            routeAnalysis = this.checkUnAssociatedParameters(meta, route, method);
             if (routeAnalysis) analysis.push(routeAnalysis)
-            
+
+            routeAnalysis = this.checkIfQueryParameterNotAllowed(route, method)
+            if (routeAnalysis) analysis.push(routeAnalysis)
+
             let result = <Core.RouteInfo>{
                 initiator: "HttpMethodDecorator",
                 httpMethod: method,
                 methodMetaData: meta,
                 route: route,
             };
-            if(analysis.length > 0) result.analysis = analysis
+            if (analysis.length > 0) result.analysis = analysis
             return result;
         }
 
     }
 
-    private checkMissingActionParameters(meta: Kecubung.MethodMetaData, route: string) {
+    private checkIfQueryParameterNotAllowed(route: string, method: string) {
+        if (method == "EVENT") {
+            let routeParameters = route.split("/").filter(x => x.charAt(0) == ":");
+            if(routeParameters.length > 0) return Core.RouteAnalysisCode.QueryParameterNotAllowed
+        }
+    }
+
+    private checkMissingActionParameters(meta: Kecubung.MethodMetaData, route: string, method: string) {
         //analyse if route contains parameter but method without parameter
         let routeParameters = route.split("/").filter(x => x.charAt(0) == ":");
         if (routeParameters.length > 0 && meta.parameters.length == 0) {
             return Core.RouteAnalysisCode.MissingActionParameters
         }
-        return;
     }
 
     private checkMissingRouteParameters(meta: Kecubung.MethodMetaData, route: string, method: string) {
         //analyse if method contains parameter but route without parameter
         //this check only work for GET method, because other method can pass a BODY to the parameter
+        if(method == "EVENT") return
         let routeParameters = route.split("/").filter(x => x.charAt(0) == ":");
         if (method == "GET" && routeParameters.length == 0 && meta.parameters.length > 0) {
             return Core.RouteAnalysisCode.MissingRouteParameters
         }
-        return;
     }
 
-    private checkUnAssociatedParameters(meta: Kecubung.MethodMetaData, route: string) {
+    private checkUnAssociatedParameters(meta: Kecubung.MethodMetaData, route: string, method: string) {
         //analyse if provided has associated parameter
+        if(method == "EVENT") return
         let parameters = meta.parameters.map(x => x.name);
         let routeParameters = route.split("/").filter(x => x.charAt(0) == ":");
         for (let x of routeParameters) {
@@ -96,6 +106,5 @@ export class HttpDecoratorTransformer extends TransformerBase {
                 return Core.RouteAnalysisCode.UnAssociatedParameters
             }
         }
-        return;
     }
 }
