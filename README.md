@@ -1,5 +1,6 @@
 # KambojaJs
 
+[![Twitter Follow](https://img.shields.io/twitter/follow/espadrine.svg?style=social&label=Follow&style=flat-square)](https://twitter.com/kambojajs)
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/KambojaJS/lobby)
 [![npm version](https://badge.fury.io/js/kamboja.svg)](https://badge.fury.io/js/kamboja)
 [![Build Status](https://travis-ci.org/kambojajs/kamboja.svg?branch=master)](https://travis-ci.org/kambojajs/kamboja)
@@ -35,6 +36,7 @@ Above code by default will generate a GET url below
 
 Refer to [controller](http://kambojajs.com/reference/controller) reference for more information
 
+## RESTful API support
 For more advanced use, KambojaJS provide a convention for creating Restful API by using [ApiController](http://kambojajs.com/reference/api-controller)
 
 Example controller below will create Restful API url for you
