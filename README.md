@@ -78,3 +78,33 @@ Refer to [ApiController](http://kambojajs.com/reference/api-controller) for more
 ## Examples
 KambojaJS has several example for you to start with, from a simple Hello world to a complex restful api using dependency injection, check it out https://github.com/kambojajs/kamboja-examples/tree/master/packages 
 
+## Local Environtment Setup
+KambojaJS using Lerna as package management and gulp as the custom build, you need to install them globally.
+
+```ssh
+$ npm install -g lerna gulp
+```
+
+Clone the repository 
+
+```ssh
+$ git clone git@github.com:kambojajs/kamboja.git
+```
+
+Install root dependency
+
+```ssh
+$ npm install
+```
+
+Bootstrap packages using lerna
+
+```ssh
+$ lerna bootstrap
+```
+
+Compile/Run unit tests 
+
+```ssh
+$ gulp
+```
