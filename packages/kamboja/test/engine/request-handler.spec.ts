@@ -414,6 +414,22 @@ describe("RequestHandler", () => {
             await executor.execute()
             Chai.expect(response.events).undefined
         })
+
+        it("Should able to validate packet in action parameter", async () => {
+            let info = H.getRouteInfo(facade, "controller/socket-controller.js", "withValidation")
+            let executor = new RequestHandler(facade, socket, response, info)
+            await executor.execute()
+            Chai.expect(response.body).deep.eq([ { field: 'name', message: '[name] is required' } ])
+            Chai.expect(response.status).eq(400)
+        })
+
+        it("Should able to send primitive value from within SocketController", async () => {
+            let info = H.getRouteInfo(facade, "controller/socket-controller.js", "sendValue")
+            let executor = new RequestHandler(facade, socket, response, info)
+            await executor.execute()
+            Chai.expect(response.body).eq(1996)
+            Chai.expect(response.status).eq(200)
+        })
     })
 
     describe("Validation Functions", () => {

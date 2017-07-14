@@ -201,7 +201,6 @@ export interface Socket {
     join(roomName: string): Promise<void>;
     leave(roomName: string): Promise<void>;
     leaveAll(): Promise<void>
-    emit(event:string, msg: any, recipients?: SocketRecipient[]): Promise<void>
 }
 
 export interface HttpRequest {

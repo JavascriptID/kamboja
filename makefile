@@ -10,5 +10,5 @@ canary:
 publish:
 	lerna clean --yes && lerna bootstrap && gulp && gulp prepublish && lerna publish && gulp fix-package.json
 
-clean:
+setup:
 	lerna clean --yes && lerna bootstrap && gulp clean

@@ -4,12 +4,14 @@ import { ResponseAdapter } from "./response-adapter"
 import { SocketAdapter } from "./socket-adapter"
 
 export class SocketIoEngine implements Core.Engine {
+    constructor(private server:SocketIO.Server){}
+
     init(routes: Core.RouteInfo[], option: Core.KambojaOption) {
-        let io = SocketIo();
         let connectionEvents = routes.filter(x => x.route == "connection")
         let errorEvents = routes.filter(x => x.route == "error")
         let socketEvents = routes.filter(x => x.route != "error" && x.route != "connection")
-        io.on("connection", socket => {
+        
+        this.server.on("connection", socket => {
             connectionEvents.forEach(route => {
                 let requestHandler = new RequestHandler(option,
                     new SocketAdapter(socket),
@@ -18,14 +20,14 @@ export class SocketIoEngine implements Core.Engine {
             })
 
             socketEvents.forEach(route => {
-                io.on(route.route!, (msg: any, callback: (body: any) => void) => {
+                this.server.on(route.route!, (msg: any, callback: (body: any) => void) => {
                     let handler = new RequestHandler(option, new SocketAdapter(socket),
                         new ResponseAdapter(socket, callback), route, msg)
                     handler.execute()
                 })
             })
 
-            io.on("error", (err:any) => {
+            this.server.on("error", (err:any) => {
                 errorEvents.forEach(route => {
                     let requestHandler = new RequestHandler(option,
                         new SocketAdapter(socket),

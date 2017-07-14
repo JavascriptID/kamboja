@@ -31,9 +31,4 @@ export class SocketAdapter implements Core.Socket {
     async leaveAll(): Promise<void> {
         this.nativeSocket.leaveAll()
     }
-
-    async emit(msg: any, recipients?: Core.SocketRecipient[]): Promise<void> {
-        
-    }
-
 }

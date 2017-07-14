@@ -9,9 +9,13 @@ let engine = {
     init: () => { }
 }
 
+let socketEngine = {
+    init: () => { return { listen: () => { } } }
+}
+
 class FakeValidator extends Validator.ValidatorBase {
     validate(arg: Core.FieldValidatorArg): Core.ValidationError[] | undefined {
-        return ;
+        return;
     }
 }
 
@@ -32,7 +36,7 @@ class MyIdResolver implements Core.IdentifierResolver {
 }
 
 class MyDependencyResolver implements Core.DependencyResolver {
-    resolve<T>(qualifiedClassName: string) : T {
+    resolve<T>(qualifiedClassName: string): T {
         return <any>undefined
     }
 }
@@ -307,6 +311,67 @@ describe("Kamboja", () => {
         Chai.expect((<any>kamboja).options.middlewares.length).eq(4)
     })
 
+    it("Should resolve middlewares on init", () => {
+        let opt: Core.KambojaOption = {
+            rootPath: __dirname,
+            showLog: "None"
+        }
+        let kamboja = new Kamboja(engine, opt)
+        kamboja.use(["FakeMiddleware, middleware/fake-middleware"])
+            .init()
+        let middlewares = kamboja.get<Core.Middleware[]>("middlewares");
+        Chai.expect(typeof middlewares[0]).eq("object")
+        Chai.expect(middlewares.length).eq(1)
+    })
+
+    it("Should throw appropriate error if provided invalid middleware name", () => {
+        let opt: Core.KambojaOption = {
+            rootPath: __dirname,
+            showLog: "None"
+        }
+        let kamboja = new Kamboja(engine, opt)
+        Chai.expect(() => {
+            kamboja.use(["InvalidName, path/of/nowhere"])
+                .init()
+        }).throw("Can not instantiate middleware [InvalidName, path/of/nowhere] in global middlewares")
+    })
+
+    it("Should resolve validators on init", () => {
+        let opt: Core.KambojaOption = {
+            rootPath: __dirname,
+            showLog: "None"
+        }
+        let kamboja = new Kamboja(engine, opt)
+        kamboja.set("validators", ["CustomValidation, validators/fake-validator"])
+            .init()
+        let validators = kamboja.get<Core.ValidatorCommand[]>("validators");
+        Chai.expect(typeof validators[0]).eq("object")
+        Chai.expect(validators.length).eq(1)
+    })
+
+    it("Should throw appropriate error if provided invalid validators name", () => {
+        let opt: Core.KambojaOption = {
+            rootPath: __dirname,
+            showLog: "None"
+        }
+        let kamboja = new Kamboja(engine, opt)
+        Chai.expect(() => {
+            kamboja.set("validators", ["InvalidName, path/of/nowhere"])
+                .init()
+        }).throw("Can not instantiate custom validator [InvalidName, path/of/nowhere]")
+    })
+
+    it("Should return empty array if no validator were provided", () => {
+        let opt: Core.KambojaOption = {
+            rootPath: __dirname,
+            showLog: "None"
+        }
+        let kamboja = new Kamboja(engine, opt)
+            kamboja.init()
+        let validators = kamboja.get<Core.ValidatorCommand[]>("validators");
+        Chai.expect(validators.length).eq(0)            
+    })
+
     it("Should provide facade properly before init", () => {
         let kamboja = new Kamboja(engine, {
             rootPath: __dirname,
@@ -373,4 +438,8 @@ describe("Kamboja", () => {
         }).throw("Unable to instantiate AdvancedFacility, facility/basic-facility as Facility")
     })
 
+    it("Should able to add socket engine", () => {
+        let kamboja = new Kamboja(engine, __dirname);
+        kamboja.set("socketEngine", socketEngine).init()
+    })
 })

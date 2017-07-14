@@ -359,4 +359,129 @@ describe("Analyzer", () => {
             type: 'Error'
         }])
     })
+
+    it("Should analyze issue when @route.get() used in SocketController", () => {
+        let meta = H.fromCode(`
+        var MyController = (function (_super) {
+            tslib_1.__extends(MyController, _super);
+            function MyController() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            MyController.prototype.index = function (model) { };
+            return MyController;
+        }(controller_1.SocketController));
+        tslib_1.__decorate([
+            src_1.route.get(),
+        ], MyController.prototype, "index", null);
+        exports.MyController = MyController;
+        `, "example-file.js")
+
+        let info = Transformer.transform(meta);
+        let result = Analyzer.analyze(info);
+        Chai.expect(result).deep.eq([{
+            code: Core.RouteAnalysisCode.DecoratorNotAllowed,
+            message: "@route.get() is not allowed when used inside SocketController in [MyController.index example-file.js]",
+            type: 'Error'
+        }])
+    })
+
+    it("Should analyze issue when @route.delete() used in SocketController", () => {
+        let meta = H.fromCode(`
+        var MyController = (function (_super) {
+            tslib_1.__extends(MyController, _super);
+            function MyController() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            MyController.prototype.index = function (model) { };
+            return MyController;
+        }(controller_1.SocketController));
+        tslib_1.__decorate([
+            src_1.route.delete(),
+        ], MyController.prototype, "index", null);
+        exports.MyController = MyController;
+        `, "example-file.js")
+
+        let info = Transformer.transform(meta);
+        let result = Analyzer.analyze(info);
+        Chai.expect(result).deep.eq([{
+            code: Core.RouteAnalysisCode.DecoratorNotAllowed,
+            message: "@route.delete() is not allowed when used inside SocketController in [MyController.index example-file.js]",
+            type: 'Error'
+        }])
+    })
+
+    it("Should analyze issue when @route.post() used in SocketController", () => {
+        let meta = H.fromCode(`
+        var MyController = (function (_super) {
+            tslib_1.__extends(MyController, _super);
+            function MyController() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            MyController.prototype.index = function (model) { };
+            return MyController;
+        }(controller_1.SocketController));
+        tslib_1.__decorate([
+            src_1.route.post(),
+        ], MyController.prototype, "index", null);
+        exports.MyController = MyController;
+        `, "example-file.js")
+
+        let info = Transformer.transform(meta);
+        let result = Analyzer.analyze(info);
+        Chai.expect(result).deep.eq([{
+            code: Core.RouteAnalysisCode.DecoratorNotAllowed,
+            message: "@route.post() is not allowed when used inside SocketController in [MyController.index example-file.js]",
+            type: 'Error'
+        }])
+    })
+
+    it("Should analyze issue when @route.put() used in SocketController", () => {
+        let meta = H.fromCode(`
+        var MyController = (function (_super) {
+            tslib_1.__extends(MyController, _super);
+            function MyController() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            MyController.prototype.index = function (model) { };
+            return MyController;
+        }(controller_1.SocketController));
+        tslib_1.__decorate([
+            src_1.route.put(),
+        ], MyController.prototype, "index", null);
+        exports.MyController = MyController;
+        `, "example-file.js")
+
+        let info = Transformer.transform(meta);
+        let result = Analyzer.analyze(info);
+        Chai.expect(result).deep.eq([{
+            code: Core.RouteAnalysisCode.DecoratorNotAllowed,
+            message: "@route.put() is not allowed when used inside SocketController in [MyController.index example-file.js]",
+            type: 'Error'
+        }])
+    })
+
+    it("Should analyze issue when @route.patch() used in SocketController", () => {
+        let meta = H.fromCode(`
+        var MyController = (function (_super) {
+            tslib_1.__extends(MyController, _super);
+            function MyController() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            MyController.prototype.index = function (model) { };
+            return MyController;
+        }(controller_1.SocketController));
+        tslib_1.__decorate([
+            src_1.route.patch(),
+        ], MyController.prototype, "index", null);
+        exports.MyController = MyController;
+        `, "example-file.js")
+
+        let info = Transformer.transform(meta);
+        let result = Analyzer.analyze(info);
+        Chai.expect(result).deep.eq([{
+            code: Core.RouteAnalysisCode.DecoratorNotAllowed,
+            message: "@route.patch() is not allowed when used inside SocketController in [MyController.index example-file.js]",
+            type: 'Error'
+        }])
+    })
 })

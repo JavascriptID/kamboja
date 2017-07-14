@@ -1,4 +1,4 @@
-import { SocketController, Core } from "../../../src"
+import { SocketController, Core, val } from "../../../src"
 
 export class MyRealTimeController extends SocketController {
     sendActionResult() {
@@ -20,5 +20,13 @@ export class MyRealTimeController extends SocketController {
 
     throwError(){
         throw new Error("FATAL ERROR")
+    }
+
+    withValidation(@val.required() name:string){
+        throw new Error("FATAL ERROR")
+    }
+
+    sendValue(){
+        return 1996
     }
 }
