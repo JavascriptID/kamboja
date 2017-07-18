@@ -7,11 +7,6 @@ export class JsonActionResult extends Core.ActionResult {
     }
 
     async execute(request: Core.HttpRequest, response: ResponseAdapter, routeInfo: Core.RouteInfo): Promise<void> {
-        response.body = this.body
-        response.cookies = this.cookies!
-        response.status = this.status || 200
-        response.header = this.header
-        response.events = this.events;
-        response.json()
+        response.json(this)
     }
 }

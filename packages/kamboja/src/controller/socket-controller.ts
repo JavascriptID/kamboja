@@ -1,6 +1,6 @@
-import { Socket, Validator, BaseController } from "kamboja-core"
+import { Handshake, Validator, BaseController } from "kamboja-core"
 
 export class SocketController implements BaseController {
-    socket: Socket;
+    socket: Handshake;
     validator: Validator;
 }

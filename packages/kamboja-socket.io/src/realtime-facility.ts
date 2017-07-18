@@ -1,20 +1,27 @@
 import { Core } from "kamboja"
 import { SocketIoEngine } from "./socket-io-engine"
 import { RealTimeMiddleware } from "./realtime-middleware"
-import { SocketAdapter } from "./socket-adapter"
-import { ResponseAdapter } from "./response-adapter"
+import { SocketIoHandshake } from "./socket-handshake"
+import { SocketResponse } from "./socket-response"
+import {InMemorySocketRegistry} from "./inmemory-socket-registry"
 import * as SocketIo from "socket.io"
 
+export interface RealTimeFacilityOption {
+    registry?:Core.SocketRegistry, 
+    server?:SocketIO.Server
+}
+
 export class RealTimeFacility implements Core.Facility {
+    option:RealTimeFacilityOption
+    constructor( option: RealTimeFacilityOption){
+        this.option = Object.assign({
+            registry: new InMemorySocketRegistry(),
+            server: SocketIo()
+        })
+    }
+    
     apply(app: Core.Application): void {
-        let io = SocketIo()
-        app.set("socketEngine", new SocketIoEngine(io))
-        let nativeSocket = {
-            to: io.to,
-            broadcast: {
-                emit: io.sockets.emit
-            }
-        }
-        app.use(new RealTimeMiddleware(new SocketAdapter(<any>nativeSocket), new ResponseAdapter(<any>nativeSocket)))
+        app.set("socketEngine", new SocketIoEngine(this.option.server!, this.option.registry!))
+        app.use(new RealTimeMiddleware(this.option.server!, this.option.registry!))
     }
 }

@@ -6,7 +6,7 @@ import { ErrorInvocation, SocketControllerInvocation, HttpControllerInvocation }
 
 export class RequestHandler {
     constructor(private option: Core.Facade,
-        private context: Core.HttpRequest | Core.Socket,
+        private context: Core.HttpRequest | Core.Handshake,
         private response: Core.Response,
         private target?: Core.RouteInfo | Error,
         private params?: any) { }
@@ -24,7 +24,7 @@ export class RequestHandler {
                 invocation = new ErrorInvocation(this.target)
             else {
                 routeInfo = this.target;
-                if (this.context.contextType == "Socket")
+                if (this.context.contextType == "Handshake")
                     invocation = new SocketControllerInvocation(this.option, this.context, routeInfo, this.params || [])
                 else
                     invocation = new HttpControllerInvocation(this.option, this.context, routeInfo)
@@ -34,9 +34,7 @@ export class RequestHandler {
             await result.execute(this.context, this.response, routeInfo)
         }
         catch (e) {
-            this.response.body = e.message
-            this.response.status = e.status || 500
-            this.response.send()
+            this.response.send({ body: e.message, status: e.status || 500 })
         }
     }
 }

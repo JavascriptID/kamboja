@@ -2,62 +2,58 @@ import { Core } from "kamboja"
 import * as Express from "express"
 
 export class ResponseAdapter implements Core.Response {
-    body: any
-    type: string
-    status: number
-    cookies: Core.Cookie[]
-    header: { [key: string]: string | string[] }
-    events: Core.EventEmitted[]
     constructor(public nativeResponse: Express.Response, public nativeNextFunction: Express.NextFunction) { }
 
-    private setup() {
-        this.nativeResponse.set(this.header)
-        this.nativeResponse.status(this.status || 200)
-        if (this.cookies) {
-            this.cookies.forEach(x => {
+    private setup(result:Core.ResponseResult) {
+        result.status = result.status || 200;
+        result.type = result.type || "text/plain"
+        if(result.header) this.nativeResponse.set(result.header)
+        this.nativeResponse.status(result.status)
+        if (result.cookies) {
+            result.cookies.forEach(x => {
                 this.nativeResponse.cookie(x.key, x.value, x.options!)
             })
         }
     }
 
-    json(){
-        this.setup()
-        this.nativeResponse.status(this.status).json(this.body)
+    json(result:Core.ResponseResult){
+        this.setup(result)
+        this.nativeResponse.status(result.status!).json(result.body)
     }
 
-    redirect(path:string){
-        this.setup()
+    redirect(result:Core.ResponseResult, path:string){
+        this.setup(result)
         this.nativeResponse.redirect(path)
     }
 
-    download(path:string){
-        this.setup()
+    download(result:Core.ResponseResult, path:string){
+        this.setup(result)
         this.nativeResponse.download(path)
     }
 
-    file(path:string){
-        this.setup()
+    file(result:Core.ResponseResult, path:string){
+        this.setup(result)
         this.nativeResponse.sendFile(path)
     }
 
-    render(viewName:string, model:any){
-        this.setup()
+    render(result:Core.ResponseResult, viewName:string, model:any){
+        this.setup(result)
         this.nativeResponse.render(viewName, model)
     }
 
-    send() {
-        this.setup()
-        this.nativeResponse.contentType(this.type || "text/plain")
-        switch (typeof this.body) {
+    send(result:Core.ResponseResult) {
+        this.setup(result)
+        this.nativeResponse.contentType(result.type || "text/plain")
+        switch (typeof result.body) {
             case "number":
             case "boolean":
-                this.nativeResponse.send(this.body.toString());
+                this.nativeResponse.send(result.body.toString());
                 break
             case "undefined":
                 this.nativeResponse.end()
                 break
             default:
-                this.nativeResponse.send(this.body);
+                this.nativeResponse.send(result.body);
         }
     }
 }

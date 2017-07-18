@@ -2,17 +2,16 @@ import * as Core from "kamboja-core"
 import { Validator, Controllers } from "../../"
 import { ParameterBinder } from "../parameter-binder"
 
-function createController(option: Core.Facade, controllerInfo: Core.ControllerInfo, context: Core.HttpRequest | Core.Socket, parameters: any[]) {
+function createController(option: Core.Facade, controllerInfo: Core.ControllerInfo, context: Core.HttpRequest | Core.Handshake, parameters: any[]) {
     let validator = new Validator.ValidatorImpl(option.metaDataStorage!, <Core.ValidatorCommand[]>option.validators!)
     validator.setValue(parameters, controllerInfo.classMetaData!, controllerInfo.methodMetaData!.name)
     let controller = Controllers.resolve(controllerInfo, option.dependencyResolver!)
     controller.validator = validator;
-    controller.request = context;
     return controller;
 }
 
 export class MiddlewareInvocation extends Core.Invocation {
-    constructor(private invocation: Core.Invocation, private context: Core.HttpRequest | Core.Socket, private middleware: Core.Middleware) {
+    constructor(private invocation: Core.Invocation, private context: Core.HttpRequest | Core.Handshake, private middleware: Core.Middleware) {
         super()
         this.controllerInfo = invocation.controllerInfo
         this.middlewares = invocation.middlewares
@@ -39,7 +38,8 @@ export class HttpControllerInvocation extends Core.Invocation {
     proceed(): Promise<Core.ActionResult> {
         let binder = new ParameterBinder(this.controllerInfo, this.option.pathResolver!)
         let parameters = binder.getParameters(this.request);
-        let controller = createController(this.option, this.controllerInfo, this.request, parameters)
+        let controller = <any>createController(this.option, this.controllerInfo, this.request, parameters)
+        controller.request = this.request
         let method = controller[this.controllerInfo.methodMetaData!.name]
         let result;
         if (this.option.autoValidation && !controller.validator.isValid())
@@ -63,12 +63,13 @@ export class HttpControllerInvocation extends Core.Invocation {
 export class SocketControllerInvocation extends Core.Invocation {
 
     constructor(private option: Core.Facade, 
-        private socket: Core.Socket, 
+        private socket: Core.Handshake, 
         public controllerInfo: Core.ControllerInfo,
         private msg:any) { super() }
 
     proceed(): Promise<Core.ActionResult> {
-        let controller = createController(this.option, this.controllerInfo, this.socket, this.msg)
+        let controller = <any>createController(this.option, this.controllerInfo, this.socket, this.msg)
+        controller.socket = this.socket;
         let method = controller[this.controllerInfo.methodMetaData!.name]
         let result;
         if (this.option.autoValidation && !controller.validator.isValid())

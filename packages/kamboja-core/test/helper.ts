@@ -1,6 +1,7 @@
 import * as Core from "../src"
 import * as Url from "url"
 
+
 export class HttpRequest implements Core.HttpRequest {
     contextType: "HttpRequest"
     httpVersion: string
@@ -29,6 +30,6 @@ export class HttpResponse implements Core.Response {
     status: number
     header: { [key: string]: string | string[] }
     cookies: Core.Cookie[]
-    events: Core.EventEmitted[]
+    events: Core.SocketEvent[]
     send() { }
 };

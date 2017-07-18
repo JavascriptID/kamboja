@@ -8,5 +8,4 @@ export class Socket implements Core.Socket {
     async join(roomName: string): Promise<void> { }
     async leave(roomName: string): Promise<void> { }
     async leaveAll(): Promise<void> { }
-    async emit(msg: any, recipients?: Core.SocketRecipient[] | undefined): Promise<void> { }
 }

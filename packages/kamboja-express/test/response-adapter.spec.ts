@@ -10,11 +10,10 @@ describe("ResponseAdapter", () => {
     it("Should send body properly", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.body = "Halo"
-            adapter.send()
+            adapter.send({ body: "Halo" })
         }))
             .get("/")
-            .expect((response:Supertest.Response) => {
+            .expect((response: Supertest.Response) => {
                 Chai.expect(response.text).eq("Halo")
                 Chai.expect(response.type).eq("text/plain")
             })
@@ -24,12 +23,13 @@ describe("ResponseAdapter", () => {
     it("Should able to send number", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.body = 400
-            adapter.type = "application/json"
-            adapter.send()
+            adapter.send({
+                body: 400,
+                type: "application/json"
+            })
         }))
             .get("/")
-            .expect((response:Supertest.Response) => {
+            .expect((response: Supertest.Response) => {
                 Chai.expect(response.body).eq(400)
             })
             .expect(200)
@@ -38,12 +38,14 @@ describe("ResponseAdapter", () => {
     it("Should able to send boolean", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.body = false
-            adapter.type = "application/json"
-            adapter.send()
+
+            adapter.send({
+                body: false,
+                type: "application/json"
+            })
         }))
             .get("/")
-            .expect((response:Supertest.Response) => {
+            .expect((response: Supertest.Response) => {
                 Chai.expect(response.body).eq(false)
             })
             .expect(200)
@@ -52,12 +54,11 @@ describe("ResponseAdapter", () => {
     it("Should send cookie properly", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.cookies = [{ key: "Key", value: "Value" }]
-            adapter.send()
+            adapter.send({ body: undefined, cookies: [{ key: "Key", value: "Value" }] })
         }))
             .get("/")
-            .expect((response:Supertest.Response) => {
-                Chai.expect(response.header["set-cookie"]).deep.eq([ 'Key=Value; Path=/' ])
+            .expect((response: Supertest.Response) => {
+                Chai.expect(response.header["set-cookie"]).deep.eq(['Key=Value; Path=/'])
             })
             .expect(200)
     })
@@ -65,11 +66,10 @@ describe("ResponseAdapter", () => {
     it("Should able to send header properly", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.header = {Accept: "text/xml"}
-            adapter.send()
+            adapter.send({body:undefined, header: { Accept: "text/xml" }})
         }))
             .get("/")
-            .expect((response:Supertest.Response) => {
+            .expect((response: Supertest.Response) => {
                 Chai.expect(response.header["accept"]).eq("text/xml")
             })
             .expect(200)
@@ -78,8 +78,7 @@ describe("ResponseAdapter", () => {
     it("Should set status properly", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.status = 401
-            adapter.send()
+            adapter.send({body:undefined, status: 401})
         }))
             .get("/")
             .expect(401)
@@ -88,12 +87,13 @@ describe("ResponseAdapter", () => {
     it("Should set JSON properly", () => {
         return Supertest(Express().use(BodyParser.json()).use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.type = "application/json"
-            adapter.body = { message: "Hello" }
-            adapter.send()
+            adapter.send({
+                type: "application/json",
+                body: { message: "Hello" }
+            })
         }))
             .get("/")
-            .expect((response:Supertest.Response) => {
+            .expect((response: Supertest.Response) => {
                 Chai.expect(response.body).deep.eq({ message: "Hello" })
                 Chai.expect(response.type).eq("application/json")
             })

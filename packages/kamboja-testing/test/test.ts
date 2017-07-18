@@ -14,18 +14,18 @@ describe("Testing Utility", () => {
 
     it("Should provide HttpResponse properly", () => {
         let response = new HttpResponse();
-        response.send()
+        response.send({body:undefined})
     })
 
     it("Should provide stub properly", () => {
         let resp = stub(new HttpResponse());
-        resp.send();
+        resp.send({body:undefined});
         Chai.expect(resp.MOCKS.send.called).true
     })
 
     it("Should provide spy properly", () => {
         let resp = spy(new HttpResponse());
-        resp.send();
+        resp.send({body:undefined});
         Chai.expect(resp.MOCKS.send.called).true
     })
 })

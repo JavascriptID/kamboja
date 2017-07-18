@@ -183,24 +183,25 @@ export interface Validator {
     getValidationErrors(): ValidationError[] | undefined
 }
 
+export interface SocketRegistry {
+    register(id:string, alias:string):Promise<void>
+    lookup(alias:string):Promise<string>
+}
+
 export interface BaseController {
-    [key: string]: any
     validator: Validator;
 }
 
-export class HttpController implements BaseController {
-    request: HttpRequest;
-    validator: Validator;
+export interface AuthUser {
+    readonly id:string
 }
 
-export interface Socket {
-    contextType: "Socket"
+export interface Handshake {
+    contextType: "Handshake"
     header: any
     id: string
     rooms: string[]
-    join(roomName: string): Promise<void>;
-    leave(roomName: string): Promise<void>;
-    leaveAll(): Promise<void>
+    user:AuthUser
 }
 
 export interface HttpRequest {
@@ -210,7 +211,7 @@ export interface HttpRequest {
     headers: { [key: string]: string }
     cookies: { [key: string]: string }
     params: { [key: string]: string }
-    user: any
+    user: AuthUser
     body: any
     referrer: string
     url: Url.Url
@@ -248,13 +249,16 @@ export interface CookieOptions {
 }
 
 export interface Response {
+    send(result:ResponseResult): void
+}
+
+export interface ResponseResult {
     body: any
-    type: string
-    status: number
-    header: { [key: string]: string | string[] }
-    cookies: Cookie[]
-    events?: EventEmitted[]
-    send(): void
+    status?: number
+    type?: string
+    header?: { [key: string]: string | string[] }
+    cookies?: Cookie[]
+    events?: SocketEvent[]
 }
 
 export class HttpError {
@@ -272,7 +276,7 @@ export abstract class Invocation {
 }
 
 export interface Middleware {
-    execute(context: Socket | HttpRequest, next: Invocation): Promise<ActionResult>;
+    execute(context: Handshake | HttpRequest, next: Invocation): Promise<ActionResult>;
 }
 
 export interface Facility {
@@ -300,48 +304,28 @@ export interface PathResolver {
     normalize(path: string): string
 }
 
-export interface SocketFeedback {
-    status: number;
-    message: any;
-    send(): void;
+export interface SocketEvent {
+    type: "Broadcast" | "Private" | "Room"
+    name:string
+    id?:string
+    payload?:any
 }
 
-export interface SocketRecipient {
-    type: "Room" | "SocketId" | "Broadcast"
-    id?: string
-}
 
-export interface EventEmitted {
-    name: string, 
-    recipients: SocketRecipient[], 
-    payload?: any
-}
-
-export class ActionResult {
+export class ActionResult implements ResponseResult {
     header: { [key: string]: string | string[] } = {}
     cookies?: Cookie[]
-    events: EventEmitted[] = []
-
+    events: SocketEvent[] = []
+    
     constructor(public body: any, public status?: number, public type?: string) { }
 
-    emit(event: string, recipient: SocketRecipient | SocketRecipient[], payload?: any) {
-        let recs: SocketRecipient[] = []
-        if (Array.isArray(recipient)) {
-            recs.push(...recipient)
-        }
-        else recs.push(recipient)
-        this.events.push({ name: event, recipients: recs })
-        return this
+    emit(event: SocketEvent) {
+         this.events.push(event)
+         return this
     }
 
-    async execute(context: HttpRequest | Socket, response: Response, routeInfo?: RouteInfo) {
-        response.body = this.body
-        response.cookies = this.cookies || []
-        response.status = this.status || 200
-        response.type = this.type || "text/plain"
-        response.header = this.header
-        response.events = this.events
-        response.send()
+    async execute(context: HttpRequest | Handshake, response: Response, routeInfo?: RouteInfo) {
+        response.send(this)
     }
 }
 

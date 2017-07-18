@@ -6,7 +6,7 @@ import { Controllers } from "../../"
 export class Invoker {
     constructor(private option: Core.Facade) { }
 
-    invoke(context: Core.HttpRequest | Core.Socket, controllerInvocation: Core.Invocation) {
+    invoke(context: Core.HttpRequest | Core.Handshake, controllerInvocation: Core.Invocation) {
         let invocation: Core.Invocation = controllerInvocation
         this.getMiddlewares(controllerInvocation.controllerInfo!).forEach(middleware => {
             invocation = new MiddlewareInvocation(invocation, context, middleware)

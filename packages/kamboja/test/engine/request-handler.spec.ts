@@ -28,8 +28,8 @@ describe("RequestHandler", () => {
         it("Should handle 404 properly", async () => {
             let executor = new RequestHandler(facade, request, response)
             await executor.execute()
-            let result = response.status
-            let text = response.body
+            let result = response.MOCKS.send.getCall(0).args[0].status
+            let text = response.MOCKS.send.getCall(0).args[0].body
             Chai.expect(result).eq(404)
             Chai.expect(text).eq("Requested url not found")
         })
@@ -40,7 +40,7 @@ describe("RequestHandler", () => {
             ]
             let executor = new RequestHandler(facade, request, response)
             await executor.execute()
-            Chai.expect(response.body).eq("Hello world!")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Hello world!")
         })
     })
 
@@ -50,8 +50,8 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("id").returns("12345")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq(12345)
-            Chai.expect(response.type).eq("application/json")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq(12345)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].type).eq("application/json")
         })
 
         it("Should execute list(iOffset, iLimit) properly", async () => {
@@ -60,8 +60,8 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("iLimit").returns("10")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.type).eq("application/json")
-            Chai.expect(response.body).deep.eq({
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].type).eq("application/json")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq({
                 iOffset: 1,
                 iLimit: 10
             })
@@ -75,8 +75,8 @@ describe("RequestHandler", () => {
             }
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.type).eq("application/json")
-            Chai.expect(response.body).deep.eq({
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].type).eq("application/json")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq({
                 message: "HELLO!"
             })
         })
@@ -89,7 +89,7 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("id").returns("12345")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).deep.eq({
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq({
                 id: 12345,
                 data: {
                     message: "HELLO!"
@@ -105,7 +105,7 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("id").returns("12345")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).deep.eq({
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq({
                 id: 12345,
                 data: {
                     message: "HELLO!"
@@ -118,7 +118,7 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("id").returns("12345")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq(12345)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq(12345)
         })
 
         it("Should execute get(id, root) properly", async () => {
@@ -127,7 +127,7 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("root").returns("12345")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).deep.eq({
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq({
                 id: 12345, root: 12345
             })
         })
@@ -139,7 +139,7 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("root").returns("12345")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).deep.eq({
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq({
                 iOffset: 1,
                 iLimit: 10,
                 root: 12345
@@ -154,7 +154,7 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("root").returns("12345")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).deep.eq({
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq({
                 root: 12345,
                 data: {
                     message: "HELLO!"
@@ -171,7 +171,7 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("root").returns("12345")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).deep.eq({
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq({
                 id: 12345,
                 root: 12345,
                 data: {
@@ -189,7 +189,7 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("root").returns("12345")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).deep.eq({
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq({
                 id: 12345,
                 root: 12345,
                 data: {
@@ -204,7 +204,7 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("root").returns("12345")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).deep.eq({
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq({
                 id: 12345,
                 root: 12345
             })
@@ -215,14 +215,14 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("par1").returns("param1")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("param1")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("param1")
         })
 
         it("Should handle return VOID type of action", async () => {
             let info = H.getRouteInfo(facade, "controller/api-controller.js", "voidMethod")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).undefined
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).undefined
             Chai.expect(response.MOCKS.send.called).true
         })
 
@@ -231,10 +231,10 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("required").returns(undefined)
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).deep.eq([{ field: 'required', message: '[required] is required' }])
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq([{ field: 'required', message: '[required] is required' }])
             request.MOCKS.getParam.withArgs("required").returns(200)
             await executor.execute()
-            Chai.expect(response.body).eq("OK")
+            Chai.expect(response.MOCKS.send.getCall(1).args[0].body).eq("OK")
         })
 
 
@@ -244,7 +244,7 @@ describe("RequestHandler", () => {
                 request.MOCKS.getParam.withArgs("id").returns(undefined)
                 let executor = new RequestHandler(facade, request, response, info)
                 await executor.execute()
-                Chai.expect(response.body).deep.eq([{ field: 'id', message: '[id] is required' }])
+                Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq([{ field: 'id', message: '[id] is required' }])
             })
 
             it("Should require validate on `modify` action", async () => {
@@ -255,7 +255,7 @@ describe("RequestHandler", () => {
                 request.MOCKS.getParam.withArgs("id").returns(undefined)
                 let executor = new RequestHandler(facade, request, response, info)
                 await executor.execute()
-                Chai.expect(response.body).deep.eq([{ field: 'id', message: '[id] is required' }])
+                Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq([{ field: 'id', message: '[id] is required' }])
             })
 
             it("Should require validate on `replace` action", async () => {
@@ -266,7 +266,7 @@ describe("RequestHandler", () => {
                 request.MOCKS.getParam.withArgs("id").returns(undefined)
                 let executor = new RequestHandler(facade, request, response, info)
                 await executor.execute()
-                Chai.expect(response.body).deep.eq([{ field: 'id', message: '[id] is required' }])
+                Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq([{ field: 'id', message: '[id] is required' }])
             })
         })
     })
@@ -276,7 +276,7 @@ describe("RequestHandler", () => {
             let info = H.getRouteInfo(facade, "controller/controller.js", "setTheCookie")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.cookies).deep.eq([{ key: 'TheKey', value: 'TheValue', options: { expires: true } }])
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].cookies).deep.eq([{ key: 'TheKey', value: 'TheValue', options: { expires: true } }])
             Chai.expect(response.MOCKS.send.called).true
         })
 
@@ -284,9 +284,9 @@ describe("RequestHandler", () => {
             let info = H.getRouteInfo(facade, "controller/controller.js", "returnNonActionResult")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("This is dumb")
-            Chai.expect(response.type).eq("text/html")
-            Chai.expect(response.status).eq(200)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("This is dumb")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].type).eq("text/html")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(200)
             Chai.expect(response.MOCKS.send.called).true
         })
 
@@ -294,9 +294,9 @@ describe("RequestHandler", () => {
             let info = H.getRouteInfo(facade, "controller/controller.js", "returnPromisedValue")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("This is dumb")
-            Chai.expect(response.type).eq("text/html")
-            Chai.expect(response.status).eq(200)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("This is dumb")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].type).eq("text/html")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(200)
             Chai.expect(response.MOCKS.send.called).true
         })
 
@@ -304,7 +304,7 @@ describe("RequestHandler", () => {
             let info = H.getRouteInfo(facade, "controller/controller.js", "returnActionResult")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("/go/go/kamboja.js")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("/go/go/kamboja.js")
             Chai.expect(response.MOCKS.send.called).true
         })
 
@@ -312,7 +312,7 @@ describe("RequestHandler", () => {
             let info = H.getRouteInfo(facade, "controller/controller.js", "returnPromisedActionResult")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("/go/go/kamboja.js")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("/go/go/kamboja.js")
             Chai.expect(response.MOCKS.send.called).true
         })
 
@@ -320,7 +320,7 @@ describe("RequestHandler", () => {
             let info = H.getRouteInfo(facade, "controller/controller.js", "returnVoid")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).undefined
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).undefined
             Chai.expect(response.MOCKS.send.called).true
         })
 
@@ -328,8 +328,8 @@ describe("RequestHandler", () => {
             let info = H.getRouteInfo(facade, "controller/controller.js", "throwError")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("Internal error")
-            Chai.expect(response.status).eq(500)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Internal error")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(500)
             Chai.expect(response.MOCKS.send.called).true
         })
 
@@ -337,8 +337,8 @@ describe("RequestHandler", () => {
             let info = H.getRouteInfo(facade, "controller/controller.js", "throwStatusError")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("Not found action")
-            Chai.expect(response.status).eq(404)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Not found action")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(404)
             Chai.expect(response.MOCKS.send.called).true
         })
     })
@@ -354,81 +354,67 @@ describe("RequestHandler", () => {
             let info = H.getRouteInfo(facade, "controller/socket-controller.js", "sendActionResult")
             let executor = new RequestHandler(facade, socket, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("Hello")
-            Chai.expect(response.status).eq(200)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Hello")
         })
 
         it("Should pass parameter properly", async () => {
             let info = H.getRouteInfo(facade, "controller/socket-controller.js", "sendWithParam")
             let executor = new RequestHandler(facade, socket, response, info, { message: "Hello" })
             await executor.execute()
-            Chai.expect(response.body).deep.eq({message: "Hello"})
-            Chai.expect(response.status).eq(200)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq({message: "Hello"})
         })
 
         it("Should able to send status", async () => {
             let info = H.getRouteInfo(facade, "controller/socket-controller.js", "sendWithStatus")
             let executor = new RequestHandler(facade, socket, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("Hello")
-            Chai.expect(response.status).eq(400)
-        })
-
-        it("Should able to emit event", async () => {
-            let info = H.getRouteInfo(facade, "controller/socket-controller.js", "sendAndEmit")
-            let executor = new RequestHandler(facade, socket, response, info, { message: "Hello" })
-            await executor.execute()
-            Chai.expect(response.body).deep.eq({message: "Hello"})
-            Chai.expect(response.events).deep.eq([{name: "chat/event", recipients: [{ type: "SocketId", id: "200" }]}])
-            Chai.expect(response.status).eq(200)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Hello")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(400)
         })
 
         it("Should return 404 if provided undefined target", async () => {
-            let info = H.getRouteInfo(facade, "controller/socket-controller.js", "sendAndEmit")
             let executor = new RequestHandler(facade, socket, response, undefined, { message: "Hello" })
             await executor.execute()
-            Chai.expect(response.body).eq("Invalid event")
-            Chai.expect(response.status).eq(404)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Invalid event")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(404)
         })
 
         it("Should be able to return error", async () => {
-            let info = H.getRouteInfo(facade, "controller/socket-controller.js", "sendAndEmit")
             let executor = new RequestHandler(facade, socket, response, new Error("FATAL ERROR"), { message: "Hello" })
             await executor.execute()
-            Chai.expect(response.body).eq("FATAL ERROR")
-            Chai.expect(response.status).eq(500)
-            Chai.expect(response.events).undefined
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("FATAL ERROR")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(500)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].events).undefined
         })
 
         it("Should be able to throw error from controller", async () => {
             let info = H.getRouteInfo(facade, "controller/socket-controller.js", "throwError")
             let executor = new RequestHandler(facade, socket, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("FATAL ERROR")
-            Chai.expect(response.status).eq(500)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("FATAL ERROR")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(500)
         })
 
         it("Should not emit event if error occur", async () => {
             let info = H.getRouteInfo(facade, "controller/socket-controller.js", "throwError")
             let executor = new RequestHandler(facade, socket, response, info)
             await executor.execute()
-            Chai.expect(response.events).undefined
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].events).undefined
         })
 
         it("Should able to validate packet in action parameter", async () => {
             let info = H.getRouteInfo(facade, "controller/socket-controller.js", "withValidation")
             let executor = new RequestHandler(facade, socket, response, info)
             await executor.execute()
-            Chai.expect(response.body).deep.eq([ { field: 'name', message: '[name] is required' } ])
-            Chai.expect(response.status).eq(400)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq([ { field: 'name', message: '[name] is required' } ])
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(400)
         })
 
         it("Should able to send primitive value from within SocketController", async () => {
             let info = H.getRouteInfo(facade, "controller/socket-controller.js", "sendValue")
             let executor = new RequestHandler(facade, socket, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq(1996)
-            Chai.expect(response.status).eq(200)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq(1996)
         })
     })
 
@@ -439,7 +425,7 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("age").returns(undefined)
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            let result = response.body
+            let result = response.MOCKS.send.getCall(0).args[0].body
             Chai.expect(result[0].field).eq("age")
             Chai.expect(result[0].message).contain("required")
         })
@@ -448,7 +434,7 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("par1").returns("param1")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("param1")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("param1")
         })
     })
 
@@ -466,7 +452,7 @@ describe("RequestHandler", () => {
 
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("Hello world!")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Hello world!")
 
             //returnTheParamWithPromise
             info = infos.filter(x => x.methodMetaData!.name == "returnTheParamWithPromise")[0]
@@ -474,21 +460,21 @@ describe("RequestHandler", () => {
             request.MOCKS.getParam.withArgs("par1").returns("param1")
             executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("Hello world!")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Hello world!")
 
             //voidMethod
             info = infos.filter(x => x.methodMetaData!.name == "voidMethod")[0]
             info.classId = info.qualifiedClassName
             executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("Hello world!")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Hello world!")
 
             //internalError
             info = infos.filter(x => x.methodMetaData!.name == "internalError")[0]
             info.classId = info.qualifiedClassName
             executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("Hello world!")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Hello world!")
         })
 
         it("Should execute interception in proper order", async () => {
@@ -503,7 +489,7 @@ describe("RequestHandler", () => {
 
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.body).eq("0, 1, 2, 3, 4, 5, Hello")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("0, 1, 2, 3, 4, 5, Hello")
         })
     })
 
@@ -514,15 +500,15 @@ describe("RequestHandler", () => {
             request.route = "/dummyapi/returnactionresult"
             let executor = new RequestHandler(facade, request, response, new HttpStatusError(400))
             await executor.execute()
-            Chai.expect(response.status).eq(400)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(400)
         })
 
         it("Should handle error from controller error", async () => {
             let info = H.getRouteInfo(facade, "controller/controller.js", "throwError")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.status).eq(500)
-            Chai.expect(response.body).eq("Internal error")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(500)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Internal error")
         })
 
         it("Should handle error from middleware error", async () => {
@@ -531,8 +517,8 @@ describe("RequestHandler", () => {
             ]
             let executor = new RequestHandler(facade, request, response)
             await executor.execute()
-            Chai.expect(response.status).eq(500)
-            Chai.expect(response.body).eq("ERROR INSIDE INTERCEPTOR")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(500)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("ERROR INSIDE INTERCEPTOR")
         })
     })
 
@@ -565,8 +551,8 @@ describe("RequestHandler", () => {
             facade.middlewares = [new ErrorHandlerMiddleware()]
             let executor = new RequestHandler(facade, request, response, new HttpStatusError(400))
             await executor.execute()
-            Chai.expect(response.status).eq(501)
-            Chai.expect(response.body).eq("Error handled properly")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(501)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Error handled properly")
         })
 
         it("Should handle error from controller error", async () => {
@@ -576,8 +562,8 @@ describe("RequestHandler", () => {
             let info = H.getRouteInfo(facade, "controller/controller.js", "throwError")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.status).eq(501)
-            Chai.expect(response.body).eq("Error handled properly")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(501)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Error handled properly")
         })
 
         it("Should handle error from middleware error", async () => {
@@ -587,8 +573,8 @@ describe("RequestHandler", () => {
             ]
             let executor = new RequestHandler(facade, request, response)
             await executor.execute()
-            Chai.expect(response.status).eq(501)
-            Chai.expect(response.body).eq("Error handled properly")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(501)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Error handled properly")
         })
 
         it("Should handle HttpStatusError properly on controller when return non ActionResult", async () => {
@@ -598,8 +584,8 @@ describe("RequestHandler", () => {
             let info = H.getRouteInfo(facade, "controller/controller.js", "throwStatusError")
             let executor = new RequestHandler(facade, request, response, info)
             await executor.execute()
-            Chai.expect(response.status).eq(501)
-            Chai.expect(response.body).eq("Error handled properly")
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(501)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Error handled properly")
         })
     })
 })

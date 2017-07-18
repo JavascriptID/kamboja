@@ -8,10 +8,12 @@ import { HttpRequest, HttpResponse } from "./helper"
 describe("ActionResult", () => {
     let request: HttpRequest;
     let response: HttpResponse;
+    let sendSpy:Sinon.SinonSpy;
 
     beforeEach(() => {
         request = new HttpRequest()
         response = new HttpResponse()
+        sendSpy = Sinon.spy(response, "send")
     })
 
     it("Should fill response properties properly", async () => {
@@ -19,22 +21,10 @@ describe("ActionResult", () => {
         result.cookies = [{ key: "Halo", value: "Hello" }]
         result.header = { Accept: "text/*, application/json" }
         await result.execute(request, response, undefined)
-        Chai.expect(response.body).eq("Halo")
-        Chai.expect(response.status).eq(400)
-        Chai.expect(response.type).eq("application/json")
-        Chai.expect(response.cookies).deep.eq([{ key: "Halo", value: "Hello" }])
-        Chai.expect(response.header).deep.eq({ Accept: "text/*, application/json" })
-    })
-
-    it("Should give 200 if status not provided", async () => {
-        let result = new Core.ActionResult("Halo")
-        await result.execute(request, response, undefined)
-        Chai.expect(response.status).eq(200)
-    })
-
-    it("Should give text/plain if type not provided", async () => {
-        let result = new Core.ActionResult("Halo")
-        await result.execute(request, response, undefined)
-        Chai.expect(response.type).eq("text/plain")
+        Chai.expect(sendSpy.getCall(0).args[0].body).eq("Halo")
+        Chai.expect(sendSpy.getCall(0).args[0].status).eq(400)
+        Chai.expect(sendSpy.getCall(0).args[0].type).eq("application/json")
+        Chai.expect(sendSpy.getCall(0).args[0].cookies).deep.eq([{ key: "Halo", value: "Hello" }])
+        Chai.expect(sendSpy.getCall(0).args[0].header).deep.eq({ Accept: "text/*, application/json" })
     })
 })

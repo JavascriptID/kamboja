@@ -18,7 +18,8 @@ var PACKAGES = [
     "packages/kamboja-testing",
     "packages/kamboja",
     "packages/kamboja-express",
-    "packages/kamboja-mongoose"
+    "packages/kamboja-mongoose",
+    "packages/kamboja-socket.io"
 ]
 
 //********CLEAN ************

@@ -7,9 +7,6 @@ export class FileActionResult extends Core.ActionResult {
     }
 
     async execute(request: Core.HttpRequest, response: ResponseAdapter, routeInfo: Core.RouteInfo): Promise<void> {
-        response.cookies = this.cookies!
-        response.header = this.header
-        response.events = this.events;
-        response.file(this.path)
+        response.file(this, this.path)
     }
 }
