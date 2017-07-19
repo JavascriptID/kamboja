@@ -344,10 +344,10 @@ describe("RequestHandler", () => {
     })
 
     describe("Socket Controller Functions", () => {
-        let socket: Test.Stub<Core.Socket>
+        let socket: Test.Stub<Core.Handshake>
 
         beforeEach(() => {
-            socket = Test.stub(new Test.Socket())
+            socket = Test.stub(new Test.SocketHandshake())
         })
 
         it("Should send response body properly", async () => {

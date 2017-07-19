@@ -1,7 +1,13 @@
-import { Core, RequestHandler } from "kamboja"
+import { Core, RequestHandler, HttpStatusError } from "kamboja"
 import * as SocketIo from "socket.io"
 import { SocketResponse } from "./socket-response"
 import { SocketIoHandshake } from "./socket-handshake"
+
+export class OnConnectionInvocation extends Core.Invocation {
+    async proceed(): Promise<Core.ActionResult> {
+        return new Core.ActionResult({}, 200)
+    }
+}
 
 export class SocketIoEngine implements Core.Engine {
     constructor(private server:SocketIO.Server, private registry:Core.SocketRegistry){}
@@ -12,12 +18,28 @@ export class SocketIoEngine implements Core.Engine {
         let socketEvents = routes.filter(x => x.route != "error" && x.route != "connection")
         
         this.server.on("connection", socket => {
-            connectionEvents.forEach(route => {
+            /*
+            this handler will executed on each connection created
+            all route of type SocketController named "connection" 
+            will be called.
+            If no handler found it is required to execute the system 
+            once, to make sure authentication process in middlewares called.
+            */
+            if(connectionEvents.length == 0){
                 let requestHandler = new RequestHandler(option,
                     new SocketIoHandshake(socket),
-                    new SocketResponse(), route)
+                    new SocketResponse(), new HttpStatusError(400))
                 requestHandler.execute()
-            })
+            }
+            else {
+                connectionEvents.forEach(route => {
+                    let requestHandler = new RequestHandler(option,
+                        new SocketIoHandshake(socket),
+                        new SocketResponse(), route)
+                    requestHandler.execute()
+                })
+            }
+            
 
             socketEvents.forEach(route => {
                 this.server.on(route.route!, (msg: any, callback: (body: any) => void) => {

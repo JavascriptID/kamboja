@@ -13,13 +13,13 @@ export interface RealTimeFacilityOption {
 
 export class RealTimeFacility implements Core.Facility {
     option:RealTimeFacilityOption
-    constructor( option: RealTimeFacilityOption){
+    constructor( option?: RealTimeFacilityOption){
         this.option = Object.assign({
             registry: new InMemorySocketRegistry(),
             server: SocketIo()
-        })
+        }, option)
     }
-    
+
     apply(app: Core.Application): void {
         app.set("socketEngine", new SocketIoEngine(this.option.server!, this.option.registry!))
         app.use(new RealTimeMiddleware(this.option.server!, this.option.registry!))

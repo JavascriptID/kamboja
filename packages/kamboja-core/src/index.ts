@@ -143,6 +143,7 @@ export interface Facade {
     metaDataStorage?: MetaDataStorage
     middlewares?: (Middleware | string)[]
     autoValidation?: boolean
+    authUserStore?:AuthUserStore
     routeInfos?: RouteInfo[]
     facilities?: Facility[]
 }
@@ -192,16 +193,24 @@ export interface BaseController {
     validator: Validator;
 }
 
+export interface AuthUserStore {
+    save(user:AuthUser):Promise<void>
+    get(id:string):Promise<AuthUser>
+}
+
 export interface AuthUser {
     readonly id:string
 }
 
 export interface Handshake {
     contextType: "Handshake"
-    header: any
+    headers: any
     id: string
     rooms: string[]
     user:AuthUser
+    params: { [key: string]: string }
+    getHeader(key: string): string | undefined
+    getParam(key: string): string | undefined
 }
 
 export interface HttpRequest {
@@ -307,7 +316,7 @@ export interface PathResolver {
 export interface SocketEvent {
     type: "Broadcast" | "Private" | "Room"
     name:string
-    id?:string
+    id?:string | string[]
     payload?:any
 }
 

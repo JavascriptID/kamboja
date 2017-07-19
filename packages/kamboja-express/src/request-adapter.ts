@@ -7,7 +7,7 @@ import * as Url from "url"
 
 
 export class RequestAdapter implements Core.HttpRequest {
-    contextType: "HttpRequest"
+    contextType: "HttpRequest" = "HttpRequest"
     httpVersion: string
     httpMethod: Core.HttpMethod
     headers: { [key: string]: string }
@@ -41,6 +41,7 @@ export class RequestAdapter implements Core.HttpRequest {
     }
 
     private findCaseInsensitive(obj:any, key:string) {
+        if(!obj) return
         let keys = Object.keys(obj);
         for (let item of keys) {
             if (item.toLowerCase() == key.toLowerCase())
