@@ -22,7 +22,8 @@
     "@types/socket.io": "^1.4.29",
     "kamboja-core": "^0.3.2",
     "kamboja": "^0.3.2",
-    "socket.io": "^2.0.3"
+    "socket.io": "^2.0.3",
+    "tslib": "^1.7.1"
   },
   "devDependencies": {
     "@types/body-parser": "^1.16.4",
