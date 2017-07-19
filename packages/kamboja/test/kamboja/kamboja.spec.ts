@@ -439,7 +439,10 @@ describe("Kamboja", () => {
     })
 
     it("Should able to add socket engine", () => {
-        let kamboja = new Kamboja(engine, __dirname);
+        let kamboja = new Kamboja(engine, {
+            rootPath: __dirname,
+            showLog: "None"
+        });
         kamboja.set("socketEngine", socketEngine).init()
     })
 })

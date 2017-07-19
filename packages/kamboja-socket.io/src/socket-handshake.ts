@@ -1,7 +1,7 @@
 import { Core } from "kamboja"
 
 export class SocketIoHandshake implements Core.Handshake {
-    contextType: "Handshake"
+    contextType: "Handshake" = "Handshake"
     headers: any
     id: string
     rooms: string[]
@@ -12,8 +12,10 @@ export class SocketIoHandshake implements Core.Handshake {
         this.id = nativeSocket.id
         if (nativeSocket.rooms)
             this.rooms = Object.keys(nativeSocket.rooms)
-        if (nativeSocket.handshake)
+        if (nativeSocket.handshake){
             this.headers = nativeSocket.handshake.headers
+            this.params = nativeSocket.handshake.query
+        }
     }
 
     

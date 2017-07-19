@@ -1,4 +1,4 @@
-import { Core, RequestHandler, HttpStatusError } from "kamboja"
+import { Core, RequestHandler, HttpStatusError, Invoker } from "kamboja"
 import * as SocketIo from "socket.io"
 import { SocketResponse } from "./socket-response"
 import { SocketIoHandshake } from "./socket-handshake"
@@ -26,10 +26,12 @@ export class SocketIoEngine implements Core.Engine {
             once, to make sure authentication process in middlewares called.
             */
             if(connectionEvents.length == 0){
-                let requestHandler = new RequestHandler(option,
-                    new SocketIoHandshake(socket),
-                    new SocketResponse(), new HttpStatusError(400))
-                requestHandler.execute()
+                let invoker = new Invoker(option)
+                invoker.invoke(new SocketIoHandshake(socket), new OnConnectionInvocation())
+                    .catch(er => {
+                        new SocketResponse()
+                            .send({body: er.message, status: er.status || 500})
+                    })
             }
             else {
                 connectionEvents.forEach(route => {

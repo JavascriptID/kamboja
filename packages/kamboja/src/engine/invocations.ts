@@ -2,7 +2,7 @@ import * as Core from "kamboja-core"
 import { Validator, Controllers } from "../../"
 import { ParameterBinder } from "../parameter-binder"
 
-function createController(option: Core.Facade, controllerInfo: Core.ControllerInfo, context: Core.HttpRequest | Core.Handshake, parameters: any[]) {
+function createController(option: Core.Facade, controllerInfo: Core.ControllerInfo, parameters: any[]) {
     let validator = new Validator.ValidatorImpl(option.metaDataStorage!, <Core.ValidatorCommand[]>option.validators!)
     validator.setValue(parameters, controllerInfo.classMetaData!, controllerInfo.methodMetaData!.name)
     let controller = Controllers.resolve(controllerInfo, option.dependencyResolver!)
@@ -38,7 +38,7 @@ export class HttpControllerInvocation extends Core.Invocation {
     proceed(): Promise<Core.ActionResult> {
         let binder = new ParameterBinder(this.controllerInfo, this.option.pathResolver!)
         let parameters = binder.getParameters(this.request);
-        let controller = <any>createController(this.option, this.controllerInfo, this.request, parameters)
+        let controller = <any>createController(this.option, this.controllerInfo, parameters)
         controller.request = this.request
         let method = controller[this.controllerInfo.methodMetaData!.name]
         let result;
@@ -68,7 +68,7 @@ export class SocketControllerInvocation extends Core.Invocation {
         private msg:any) { super() }
 
     proceed(): Promise<Core.ActionResult> {
-        let controller = <any>createController(this.option, this.controllerInfo, this.socket, this.msg)
+        let controller = <any>createController(this.option, this.controllerInfo, this.msg)
         controller.socket = this.socket;
         let method = controller[this.controllerInfo.methodMetaData!.name]
         let result;

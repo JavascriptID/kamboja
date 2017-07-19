@@ -13,7 +13,7 @@ export { Middleware }
 export { ApiController, Controller, HttpStatusError, SocketController, Controllers } from "./controller"
 export { Kamboja } from "./kamboja"
 export { MetaDataLoader } from "./metadata-loader/metadata-loader"
-export { RequestHandler } from "./engine"
+export { RequestHandler, Invoker } from "./engine"
 
 //decorators
 const middleware: Middleware.MiddlewareDecorator = new Middleware.MiddlewareDecorator()

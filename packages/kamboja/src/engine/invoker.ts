@@ -15,7 +15,7 @@ export class Invoker {
     }
 
     private getMiddlewares(routeInfo?: Core.RouteInfo) {
-        let globalMiddlewares = (<Core.Middleware[]>this.option.middlewares! || []).reverse()
+        let globalMiddlewares = (<Core.Middleware[]>this.option.middlewares! || []).slice().reverse()
         if (routeInfo) {
             let controller = Controllers.resolve(routeInfo, this.option.dependencyResolver!)
             let middlewares = Middleware.resolve(Middleware.getMiddlewares(controller), this.option.dependencyResolver!)

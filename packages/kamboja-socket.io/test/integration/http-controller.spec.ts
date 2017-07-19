@@ -8,13 +8,14 @@ import * as Http from "http"
 
 function listen(client: SocketIOClient.Socket, event: string, callback: (msg: any) => void) {
     return new Promise<boolean>((resolve, reject) => {
-        setTimeout(function() {
+        let timer = setTimeout(function () {
             resolve(false)
         }, 500);
 
-        client.on("http/updated", (msg: string) => {
+        client.on(event, (msg: string) => {
             try {
                 callback(msg)
+                clearTimeout(timer)
                 resolve(true)
             }
             catch (e) {
@@ -33,7 +34,7 @@ class TokenAuthMiddleware implements Core.Middleware {
 }
 
 
-describe.only("HttpController with real time functionalities", () => {
+describe("HttpController with real time functionalities", () => {
     let app: Http.Server
     let firstClient: SocketIOClient.Socket;
     let secondClient: SocketIOClient.Socket;
@@ -74,8 +75,9 @@ describe.only("HttpController with real time functionalities", () => {
         Chai.expect(second).true;
     })
 
-    it.only("Should able to send event to specific user", async () => {
+    it("Should able to send event to specific user", async () => {
         app = new KambojaApplication(__dirname)
+            .set("showLog", "None")
             .use(BodyParser.json())
             .use(new TokenAuthMiddleware())
             .apply(new RealTimeFacility())
@@ -84,26 +86,25 @@ describe.only("HttpController with real time functionalities", () => {
         await new Promise(resolve => app.listen(5000, resolve))
 
         //create socket client and set identity to client 1
-        firstClient = SocketClient(HOST, { query: { token: "1" } }); 
+        firstClient = SocketClient(HOST, { query: { token: "1" } });
         //create socket client and set identity to client 2
-        secondClient = SocketClient(HOST, { query: { token: "2" } }) 
+        secondClient = SocketClient(HOST, { query: { token: "2" } })
 
         let [, first, second] = await Promise.all([
             //client 1 do a request to /http/send 
             Supertest(HOST)
                 //send notification to client 2 (see controller/http-controller)
-                .post("/http/send?to=2") 
+                .get("/http/send?to=2")
                 //set identity to client 1
-                .set("token", "1") 
-                .send({ data: "hello" })
+                .set("token", "1")
                 .expect((response: Supertest.Response) => {
-                    Chai.expect(response.body).eq("Success!")
+                    Chai.expect(response.body).eq("Hello this message from 1")
                 })
                 .expect(200),
             //expect notification received by client 1 (should not received, timeout and return false)
-            listen(firstClient, "http/updated", msg => Chai.expect(msg).eq("Hello this message from 1")),
+            listen(firstClient, "http/send", msg => Chai.expect(msg).eq("Hello this message from 1")),
             //expect notification received by client 2 (should received and return true)
-            listen(secondClient, "http/updated", msg => Chai.expect(msg).eq("Hello this message from 1"))
+            listen(secondClient, "http/send", msg => Chai.expect(msg).eq("Hello this message from 1"))
         ])
         //client 1 should not receive notification
         Chai.expect(first).false;
