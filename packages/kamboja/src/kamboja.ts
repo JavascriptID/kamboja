@@ -56,7 +56,6 @@ export class Kamboja implements Core.Application {
         }, override)
         this.options = options
         Kamboja.facade = options;
-        this.log = new Logger(this.options.showLog!)
         this.storage = <MetaDataLoader>this.options.metaDataStorage
     }
 
@@ -175,9 +174,10 @@ export class Kamboja implements Core.Application {
     
     /**
      * Initialize KambojaJS application 
-     * @returns Http Callback handler returned by KambojaJS Engine implementation
+     * @returns HttpServer 
      */
     init() {
+        this.log = new Logger(this.options.showLog!)
         if (!this.isFolderProvided()) throw new Error("Fatal error")
         this.storage.load(this.options.controllerPaths!, "Controller")
         this.storage.load(this.options.modelPath!, "Model")

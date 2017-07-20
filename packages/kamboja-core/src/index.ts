@@ -143,7 +143,7 @@ export interface Facade {
     metaDataStorage?: MetaDataStorage
     middlewares?: (Middleware | string)[]
     autoValidation?: boolean
-    authUserStore?:AuthUserStore
+    authUserStore?: AuthUserStore
     routeInfos?: RouteInfo[]
     facilities?: Facility[]
 }
@@ -185,8 +185,8 @@ export interface Validator {
 }
 
 export interface SocketRegistry {
-    register(id:string, alias:string):Promise<void>
-    lookup(alias:string):Promise<string>
+    register(id: string, alias: string): Promise<void>
+    lookup(alias: string): Promise<string>
 }
 
 export interface BaseController {
@@ -194,12 +194,12 @@ export interface BaseController {
 }
 
 export interface AuthUserStore {
-    save(user:AuthUser):Promise<void>
-    get(id:string):Promise<AuthUser>
+    save(user: AuthUser): Promise<void>
+    get(id: string): Promise<AuthUser>
 }
 
 export interface AuthUser {
-    readonly id:string
+    readonly id: string
 }
 
 export interface Handshake {
@@ -207,7 +207,7 @@ export interface Handshake {
     headers: any
     id: string
     rooms: string[]
-    user:AuthUser
+    user: AuthUser
     params: { [key: string]: string }
     getHeader(key: string): string | undefined
     getParam(key: string): string | undefined
@@ -258,7 +258,7 @@ export interface CookieOptions {
 }
 
 export interface Response {
-    send(result:ResponseResult): void
+    send(result: ResponseResult): void
 }
 
 export interface ResponseResult {
@@ -315,22 +315,23 @@ export interface PathResolver {
 
 export interface SocketEvent {
     type: "Broadcast" | "Private" | "Room"
-    name:string
-    id?:string | string[]
-    payload?:any
+    name: string
+    id?: string | string[]
+    payload?: any
 }
 
 
 export class ActionResult implements ResponseResult {
     header: { [key: string]: string | string[] } = {}
     cookies?: Cookie[]
-    events: SocketEvent[] = []
-    
+    events?: SocketEvent[]
+
     constructor(public body: any, public status?: number, public type?: string) { }
 
     emit(event: SocketEvent) {
-         this.events.push(event)
-         return this
+        if (!this.events) this.events = []
+        this.events.push(event)
+        return this
     }
 
     async execute(context: HttpRequest | Handshake, response: Response, routeInfo?: RouteInfo) {

@@ -25,16 +25,10 @@ export class SocketResponse implements Core.Response {
             this.callback({ status: result.status, body: result.body })
     }
 
-
     private async emit(id: string | string[], name: string, payload: any, lookup?: (id: string) => Promise<string>) {
-        if (Array.isArray(id)) {
-            for (let socketId of id) {
-                socketId = await (lookup ? lookup(socketId) : Promise.resolve(socketId))
-                this.socket!.to(socketId).emit(name, payload)
-            }
-        }
-        else {
-            let socketId = await (lookup ? lookup(id) : Promise.resolve(id))
+        let ids: string[] = Array.isArray(id) ? id : [id]
+        for (let socketId of ids) {
+            socketId = await (lookup ? lookup(socketId) : Promise.resolve(socketId))
             this.socket!.to(socketId).emit(name, payload)
         }
     }
