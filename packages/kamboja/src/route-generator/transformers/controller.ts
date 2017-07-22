@@ -5,6 +5,7 @@ import { ApiConventionTransformer } from "./api-convention"
 import { DefaultActionTransformer } from "./default-action"
 import { HttpDecoratorTransformer } from "./http-decorator"
 import { InternalDecoratorTransformer } from "./internal-decorator"
+import { EventDecoratorTransformer } from "./event-decorator"
 import { IndexActionTransformer } from "./index-action"
 
 function getName(meta: Kecubung.ClassMetaData) {
@@ -23,6 +24,7 @@ export function getTransformers(meta: Kecubung.ClassMetaData) {
         return [
             new InternalDecoratorTransformer(),
             new HttpDecoratorTransformer(),
+            new EventDecoratorTransformer(),
             new ApiConventionTransformer(),
             new DefaultActionTransformer()
         ]
@@ -31,6 +33,7 @@ export function getTransformers(meta: Kecubung.ClassMetaData) {
         return [
             new InternalDecoratorTransformer(),
             new HttpDecoratorTransformer(),
+            new EventDecoratorTransformer(),
             //new IndexActionTransformer(),
             new DefaultActionTransformer()
         ]
@@ -77,6 +80,12 @@ export class ControllerTransformer extends TransformerBase {
             x.classMetaData = meta
             if (!x.collaborator) x.collaborator = []
             x.collaborator.push("Controller")
+            if (x.classMetaData.baseClass == "SocketController") {
+                if (!x.methodMetaData!.decorators) {
+                    x.httpMethod = "EVENT"
+                    x.route = x.route!.substr(1)
+                }
+            }
         })
         return this.exit(result)
     }

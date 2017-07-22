@@ -15,6 +15,7 @@ export class SocketResponse implements Core.Response {
                     case "Room":
                         if (!event.id) throw new Error(`SocketEvent ID for Room type can't be empty`);
                         await this.emit(event.id, event.name, event.payload || result.body)
+                        break;
                     default:
                         this.socket.broadcast.emit(event.name, event.payload || result.body)
                         break;

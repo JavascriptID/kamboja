@@ -29,7 +29,7 @@ export class SocketIoEngine implements Core.Engine {
                 let invoker = new Invoker(option)
                 invoker.invoke(new SocketIoHandshake(socket), new OnConnectionInvocation())
                     .catch(er => {
-                        new SocketResponse()
+                        new SocketResponse(this.registry, socket)
                             .send({body: er.message, status: er.status || 500})
                     })
             }
@@ -37,14 +37,14 @@ export class SocketIoEngine implements Core.Engine {
                 connectionEvents.forEach(route => {
                     let requestHandler = new RequestHandler(option,
                         new SocketIoHandshake(socket),
-                        new SocketResponse(), route)
+                        new SocketResponse(this.registry, socket), route)
                     requestHandler.execute()
                 })
             }
             
 
             socketEvents.forEach(route => {
-                this.server.on(route.route!, (msg: any, callback: (body: any) => void) => {
+                socket.on(route.route!, (msg: any, callback: (body: any) => void) => {
                     let handler = new RequestHandler(option, new SocketIoHandshake(socket),
                         new SocketResponse(this.registry, socket, callback), route, msg)
                     handler.execute()
@@ -55,7 +55,7 @@ export class SocketIoEngine implements Core.Engine {
                 errorEvents.forEach(route => {
                     let requestHandler = new RequestHandler(option,
                         new SocketIoHandshake(socket),
-                        new SocketResponse(), err)
+                        new SocketResponse(this.registry, socket), err)
                     requestHandler.execute()
                 })
             })

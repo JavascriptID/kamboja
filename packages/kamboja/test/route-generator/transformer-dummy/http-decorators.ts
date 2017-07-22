@@ -17,7 +17,4 @@ export class SimpleController extends Controller {
 
     @route.patch("/this/patch/got/different")
     patchMethod() { }
-
-    @route.event("/this/event/got/different")
-    eventMethod() { }
 }

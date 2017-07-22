@@ -35,6 +35,4 @@ describe("ControllerTransformer", () => {
         let result = test.transform(<Kecubung.ClassMetaData>meta.children[0], "", [])
         Chai.expect(result.info![0].route).eq("/absoluteroot/index")
     })
-
-
 })

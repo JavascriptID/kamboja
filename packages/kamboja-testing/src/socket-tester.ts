@@ -7,14 +7,36 @@ export function socketTester(host: string, option?: SocketIOClient.ConnectOpts) 
 
 export class Builder {
     private client: SocketIOClient.Socket
-    constructor(host: string, option?: SocketIOClient.ConnectOpts) { this.client = SocketClient(host, option) }
+    constructor(host: string, option?: SocketIOClient.ConnectOpts) {
+        let opt = Object.assign({ autoConnect: false }, option)
+        this.client = SocketClient(host, opt)
+    }
+
     on(event: string) {
+        this.client.connect()
         return new Tester(this.client, event)
     }
 
-    emit(event: string, payload: any) {
+    wait(cb:() => Promise<any>) {
+        let promise = cb()
+        return new Awaitable(promise, this.client)
+    }
+}
+
+export class Awaitable {
+    constructor(private wait: Promise<any>, private client: SocketIOClient.Socket) { }
+
+    async connect() {
+        this.client.connect()
+        await this.wait;
+        this.client.close()
+    }
+
+    async emit(event: string, payload?: any) {
+        this.client.connect()
         this.client.emit(event, payload)
-        return this.client
+        await this.wait
+        this.client.close()
     }
 }
 
@@ -26,7 +48,6 @@ export class Tester {
             let timer = setTimeout(function () {
                 resolve(false)
             }, timeout);
-
             this.client.on(this.event, (msg: string) => {
                 try {
                     if (callback) callback(msg)
@@ -41,12 +62,12 @@ export class Tester {
     }
 
     async expect(msg: any) {
-        let result = await this.start(x => Chai.expect(x).eq(msg))
+        let result = await this.start(x => Chai.expect(x).deep.eq(msg))
         Chai.expect(result, `Expected '${this.event}' emitted, but timeout`).eq(true)
         this.client.close()
     }
 
-    async timeout(timeout?:number) {
+    async timeout(timeout?: number) {
         let result = await this.start(undefined, timeout)
         Chai.expect(result, `Expected timeout but '${this.event}' emitted`).eq(false)
         this.client.close()

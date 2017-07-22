@@ -37,12 +37,11 @@ describe("Socket tester", () => {
     after(done => app.close(done))
 
     it("Should test for message", async () => {
-        let result = socketTester(HOST)
-            .on("feedback")
-            .expect("hello")
-        let client = socketTester(HOST).emit("broadcast", "hello")
-        await result;
-        client.close()
+        await socketTester(HOST)
+            .wait(() => socketTester(HOST)
+                .on("feedback")
+                .expect("hello"))
+            .emit("broadcast", "hello")
     })
 
     it("Should test timeout", async () => {

@@ -321,48 +321,6 @@ describe("Http Decorator", () => {
         Chai.expect(result.info![0].httpMethod).eq("DELETE")
         Chai.expect(result.info![0].route).eq("/absolute/relative")
     })
-
-    it("Should able to change route with relative @route.event()", () => {
-        let meta = H.fromCode(`
-        var MyController = (function (_super) {
-            tslib_1.__extends(MyController, _super);
-            function MyController() {
-                return _super !== null && _super.apply(this, arguments) || this;
-            }
-            MyController.prototype.index = function (model) { };
-            return MyController;
-        }(controller_1.SocketController));
-        tslib_1.__decorate([
-            src_1.route.event("relative"),
-        ], MyController.prototype, "index", null);
-        exports.MyController = MyController;
-        `, "controller/user-controller.js")
-        let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
-        Chai.expect(result.info![0].httpMethod).eq("EVENT")
-        Chai.expect(result.info![0].route).eq("/user/relative")
-    })
-
-    it("Should able to change route with absolute @route.event()", () => {
-        let meta = H.fromCode(`
-        var MyController = (function (_super) {
-            tslib_1.__extends(MyController, _super);
-            function MyController() {
-                return _super !== null && _super.apply(this, arguments) || this;
-            }
-            MyController.prototype.index = function (model) { };
-            return MyController;
-        }(controller_1.SocketController));
-        tslib_1.__decorate([
-            src_1.route.event("/absolute/relative"),
-        ], MyController.prototype, "index", null);
-        exports.MyController = MyController;
-        `, "controller/user-controller.js")
-        let test = new HttpDecoratorTransformer()
-        let result = test.transform((<Kecubung.ClassMetaData>meta.children[0]).methods[0], "/user", <any>undefined)
-        Chai.expect(result.info![0].httpMethod).eq("EVENT")
-        Chai.expect(result.info![0].route).eq("/absolute/relative")
-    })
     
     it("Should pass to next transformer if not contains decorator", () => {
         let meta = H.fromCode(`

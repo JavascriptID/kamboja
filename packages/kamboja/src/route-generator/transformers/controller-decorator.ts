@@ -33,6 +33,12 @@ export class ControllerWithDecorator extends TransformerBase {
                 x.classMetaData = meta
                 if (!x.collaborator) x.collaborator = []
                 x.collaborator.push("ControllerWithDecorator")
+                if(x.classMetaData.baseClass == "SocketController"){
+                    if (!x.methodMetaData!.decorators) {
+                        x.httpMethod = "EVENT"
+                        x.route = x.route!.substr(1)
+                    }
+                }
             })
             return this.exit(result)
         }

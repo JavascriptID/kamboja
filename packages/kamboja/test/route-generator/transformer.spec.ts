@@ -125,8 +125,6 @@ describe("Transformer", () => {
             Chai.expect(result[3].httpMethod).eq("DELETE")
             Chai.expect(result[4].route).eq("/this/patch/got/different")
             Chai.expect(result[4].httpMethod).eq("PATCH")
-            Chai.expect(result[5].route).eq("/this/event/got/different")
-            Chai.expect(result[5].httpMethod).eq("EVENT")
         })
 
         it("Should identify parameter association issue", () => {
@@ -334,6 +332,36 @@ describe("Transformer", () => {
             let hasRequired = result.filter(x => x.methodMetaData!.name == "delete")
                 .some(x => x.methodMetaData!.parameters[0].decorators!.some(y => y.name == "required"))
             Chai.expect(hasRequired).true
+        })
+    })
+
+    describe("SocketController", () => {
+        it("Should transform properly", () => {
+            let meta = H.fromFile("./transformer-dummy/socket-controller.js", new DefaultPathResolver(__dirname))
+            let result = Transformer.transform(meta);
+            let clean = H.cleanUp(result)
+            Chai.expect(result[0].route).eq("connection")
+            Chai.expect(result[0].analysis).undefined
+            Chai.expect(result[0].httpMethod).eq("EVENT")
+            Chai.expect(result[0].methodMetaData!.name).eq("connection")
+            Chai.expect(result[1].route).eq("chat/send")
+            Chai.expect(result[1].analysis).undefined
+            Chai.expect(result[1].httpMethod).eq("EVENT")
+            Chai.expect(result[1].methodMetaData!.name).eq("send")
+        })
+
+        it("Should transform controller with @route.root()", () => {
+            let meta = H.fromFile("./transformer-dummy/socket-controller-with-root.js", new DefaultPathResolver(__dirname))
+            let result = Transformer.transform(meta);
+            let clean = H.cleanUp(result)
+            Chai.expect(result[0].route).eq("connection")
+            Chai.expect(result[0].analysis).undefined
+            Chai.expect(result[0].httpMethod).eq("EVENT")
+            Chai.expect(result[0].methodMetaData!.name).eq("connection")
+            Chai.expect(result[1].route).eq("hello/send")
+            Chai.expect(result[1].analysis).undefined
+            Chai.expect(result[1].httpMethod).eq("EVENT")
+            Chai.expect(result[1].methodMetaData!.name).eq("send")
         })
     })
 
