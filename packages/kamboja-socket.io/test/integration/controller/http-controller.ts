@@ -1,14 +1,12 @@
-import { ApiController, JsonActionResult, response } from "kamboja-express"
+import { ApiController, JsonActionResult, broadcast, emit, json } from "kamboja-express"
 import { BroadcastEvent, PrivateEvent } from "../../../src"
 export class HttpController extends ApiController {    
     broadcast(){
-        return new JsonActionResult("Success!")
-        .emit(new BroadcastEvent("message"))
+        return broadcast("message", "Success!")
     }
 
     private(to: number) {
-        return new JsonActionResult("Success!")
-            .emit(new PrivateEvent("message", { id: to.toString() }))
+        return emit("message", to.toString(), "Success!")
     }
 
     noEmit(){

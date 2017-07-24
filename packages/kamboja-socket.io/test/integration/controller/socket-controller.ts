@@ -1,20 +1,17 @@
-import { SocketController, JsonActionResult, route, Core } from "kamboja-express"
+import { SocketController, broadcast, emit, route, Core } from "kamboja-express"
 import { BroadcastEvent, PrivateEvent } from "../../../src"
 export class ChatController extends SocketController {
 
     @route.event("connection")
     connection() {
-        return new Core.ActionResult(this.socket.user)
-            .emit(new BroadcastEvent("presence"))
+        return broadcast("presence", this.socket.user)
     }
 
     broadcast() {
-        return new Core.ActionResult("Success!")
-            .emit(new BroadcastEvent("message"))
+        return broadcast("message","Success!")
     }
 
     private(msg: { to: string, msg: string }) {
-        return new Core.ActionResult("Success!")
-            .emit(new PrivateEvent("message", { id: msg.to }, msg.msg))
+        return emit("message", msg.to, "Success!")
     }
 }

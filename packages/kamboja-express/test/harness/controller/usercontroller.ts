@@ -3,7 +3,7 @@ import * as Model from "../model/user-model"
 import { Request, Response, NextFunction } from "express"
 import { MiddlewareActionResult, middleware, JsonActionResult } from "../../../src"
 import { Return400Middleware } from "../interceptor/400-middleware"
-import { response } from "../../../src"
+import { view } from "../../../src"
 import { authenticate } from "passport"
 
 let Middleware = (req: Request, res: Response, next: NextFunction) => {
@@ -13,7 +13,7 @@ let Middleware = (req: Request, res: Response, next: NextFunction) => {
 
 export class UserController extends Controller {
     index():Core.ActionResult  {
-        return response.view()
+        return view()
     }
 
     hasError() {
@@ -35,7 +35,7 @@ export class UserController extends Controller {
 
     @middleware.use(new Return400Middleware())
     withMiddleware():Core.ActionResult {
-        return response.view()
+        return view()
     }
 
     setHeader() {

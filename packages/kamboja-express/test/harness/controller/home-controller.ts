@@ -1,8 +1,8 @@
 import { internal, Controller, Core } from "kamboja"
-import {response} from "../../../src"
+import {view} from "../../../src"
 
 export class HomeController extends Controller {
     index():Core.ActionResult  {
-        return response.view()
+        return view()
     }
 }

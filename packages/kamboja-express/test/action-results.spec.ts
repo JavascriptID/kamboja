@@ -1,4 +1,4 @@
-import { ActionResults } from "../src/action-results"
+import * as action from "../src/action-results"
 import * as Chai from "chai"
 import * as Supertest from "supertest"
 import * as Express from "express"
@@ -11,7 +11,6 @@ describe("ActionResults", () => {
     it("Should able to response file download", () => {
         let app = Express()
         app.use((req, resp, next) => {
-            let action = new ActionResults()
             let result = action.download(Path.join(__dirname, "helper.js"))
             result.cookies = [{ key: "User", value: "Nobita" }]
             result.header = { "Access-Control-Allow-Origin": "*" }
@@ -20,6 +19,7 @@ describe("ActionResults", () => {
         return Supertest(app)
             .get("/")
             .expect((response:Supertest.Response) => {
+                console.log(response.header)
                 Chai.expect(response.header["access-control-allow-origin"]).eq("*")
                 Chai.expect(response.header["set-cookie"]).deep.eq(['User=Nobita; Path=/'])
                 Chai.expect(response.header["content-disposition"]).eq(`attachment; filename="helper.js"`)
@@ -30,7 +30,6 @@ describe("ActionResults", () => {
     it("Should able to response file", () => {
         let app = Express()
         app.use((req, resp, next) => {
-            let action = new ActionResults()
             let result = action.file(Path.join(__dirname, "helper.js"))
             result.cookies = [{ key: "User", value: "Nobita" }]
             result.header = { "Access-Control-Allow-Origin": "*" }
@@ -53,7 +52,6 @@ describe("ActionResults", () => {
         })
         app.use((req, resp, next) => {
             //resp.sendFile("test/helper.js")
-            let action = new ActionResults()
             let result = action.redirect("/user")
             result.cookies = [{ key: "User", value: "Nobita" }]
             result.header = { "Access-Control-Allow-Origin": "*" }
@@ -73,7 +71,6 @@ describe("ActionResults", () => {
         let app = Express()
         app.use((req, resp, next) => {
             //resp.sendFile("test/helper.js")
-            let action = new ActionResults()
             let result = action.json({ message: "Hello" })
             result.cookies = [{ key: "User", value: "Nobita" }]
             result.header = { "Access-Control-Allow-Origin": "*" }
@@ -93,7 +90,6 @@ describe("ActionResults", () => {
         let app = Express()
         app.use((req, resp, next) => {
             //resp.sendFile("test/helper.js")
-            let action = new ActionResults()
             let result = action.json({ message: "Hello" })
             result.status = 400
             result.header = { "Access-Control-Allow-Origin": "*" }

@@ -156,6 +156,7 @@ export class Kamboja implements Core.Application {
                 case "PATCH": method = "PATCH  "; break;
                 case "POST": method = "POST   "; break;
                 case "DELETE": method = "DELETE "; break;
+                case "EVENT": method = "EVENT  "; break;
             }
             this.log.info(`${method} ${x.route}`)
         })
@@ -164,14 +165,14 @@ export class Kamboja implements Core.Application {
         return true;
     }
 
-    private resolveMiddlewares(option:Core.KambojaOption){
+    private resolveMiddlewares(option: Core.KambojaOption) {
         option.middlewares = Middleware.resolve(option.middlewares!, option.dependencyResolver!)
     }
 
-    private resolveValidators(option:Core.KambojaOption){
+    private resolveValidators(option: Core.KambojaOption) {
         option.validators = Validator.resolve(option.validators!, option.dependencyResolver!)
     }
-    
+
     /**
      * Initialize KambojaJS application 
      * @returns HttpServer 
@@ -191,7 +192,7 @@ export class Kamboja implements Core.Application {
         let httpApp = this.engine.init(httpControllers, this.options)
         this.set("httpApp", httpApp)
         let server = Http.createServer(httpApp)
-        if(this.options.socketEngine){
+        if (this.options.socketEngine) {
             let socketControllers = routeInfos.filter(x => x.classMetaData!.baseClass == "SocketController")
             let socketApp = this.options.socketEngine.init(socketControllers, this.options);
             this.set("socketApp", socketApp)
