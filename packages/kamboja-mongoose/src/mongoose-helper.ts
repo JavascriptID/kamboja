@@ -25,10 +25,7 @@ export class MongooseHelper {
     }
 
     createModel<T>(name: string) {
-        if(Mongoose.modelNames().some(x => x == name))
-            return Mongoose.model<T & Mongoose.Document>(name)
-        else
-            return Mongoose.model<T & Mongoose.Document>(name, this.schemas[name])
+        return Mongoose.model<T & Mongoose.Document>(name)
     }
 
     private init(classes: Core.QualifiedClassMetaData[]) {
@@ -40,12 +37,13 @@ export class MongooseHelper {
             let option = optionBuilder.getOption(x)
             let name = H.getName(x.name);
             this.schemas[name] = new Mongoose.Schema(schema, option)
-            Mongoose.model(name, this.schemas[name])
+            if (!Mongoose.modelNames().some(x => x == name))
+                Mongoose.model(name, this.schemas[name])
         })
     }
 }
 
-export function model<T>(name:string){
+export function model<T>(name: string) {
     return MongooseHelper.getInstance()
         .createModel<T>(name)
 }
