@@ -38,7 +38,9 @@ export class MongooseHelper {
         classes.forEach(x => {
             let schema = generator.generate(x)
             let option = optionBuilder.getOption(x)
-            this.schemas[H.getName(x.name)] = new Mongoose.Schema(schema, option)
+            let name = H.getName(x.name);
+            this.schemas[name] = new Mongoose.Schema(schema, option)
+            Mongoose.model(name, this.schemas[name])
         })
     }
 }

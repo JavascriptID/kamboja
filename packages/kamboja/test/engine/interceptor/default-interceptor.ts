@@ -5,6 +5,6 @@ import { id } from "./interceptor-identifier"
 @id("DefaultInterceptor")
 export class DefaultInterceptor implements Core.Middleware{
     async execute(request:Core.HttpRequest, invocation:Core.Invocation) {
-        return await invocation.proceed()
+        return invocation.proceed()
     }
 }

@@ -535,6 +535,18 @@ describe("Integration", () => {
                 .expect(200)
         })
 
+        it.only("Should able to catch error with multiple middlewares", () => {
+            let app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
+                .set("views", Path.join(__dirname, "view"))
+                .set("view engine", "hbs")
+                .use(new ErrorHandler())
+                .use("ResponseTimeMiddleware, interceptor/response-time-middleware")
+                .init()
+            return Supertest(app)
+                .get("/user/haserror")
+                .expect(200)
+        })
+
         it("Should able to handle internal system error", () => {
             let app = new KambojaApplication({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
                 .set("views", Path.join(__dirname, "view"))

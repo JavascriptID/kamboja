@@ -120,6 +120,20 @@ describe("Integration Test", () => {
         }
     })
 
+    it("Should not throw MissingSchemaError on model with reference when only one model requested", async () => {
+        /*
+        ItemModel has reference with CategoryModel and UserModel
+        by only requesting ItemModel it should not throw MissingSchemaError
+        */
+        let Item = test.createModel<ItemModel & Mongoose.Document>("Item")
+
+        //this query will require CategoryModel schema
+        let result = await Item.find().populate("category")
+
+        //if we gro through so far then everything is fine
+        Chai.expect(result.length).greaterThan(-1)
+    })
+
     it("Should able to use shortid", async () => {
         let Product = test.createModel<ProductModel>("Product")
         await Product.remove((x:any) => { })

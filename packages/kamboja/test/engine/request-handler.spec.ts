@@ -8,6 +8,7 @@ import { ConcatInterceptor } from "./controller/interception-order-controller"
 import { DefaultPathResolver } from "../../src/resolver"
 import { HttpStatusError } from "../../src/controller"
 import { ErrorHandlerMiddleware } from "./interceptor/error-handler"
+import { DefaultInterceptor } from "./interceptor/default-interceptor"
 import { ChangeToHello } from "./interceptor/change-to-hello"
 import { ErrorInterceptor } from "./interceptor/error-interceptor"
 import * as Test from "kamboja-testing"
@@ -580,6 +581,18 @@ describe("RequestHandler", () => {
         it("Should handle HttpStatusError properly on controller when return non ActionResult", async () => {
             facade.middlewares = [
                 new ErrorHandlerMiddleware()
+            ]
+            let info = H.getRouteInfo(facade, "controller/controller.js", "throwStatusError")
+            let executor = new RequestHandler(facade, request, response, info)
+            await executor.execute()
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(501)
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Error handled properly")
+        })
+
+        it.only("Should handle error on multiple global middlewares", async () => {
+            facade.middlewares = [
+                new DefaultInterceptor(),
+                new ErrorHandlerMiddleware(),
             ]
             let info = H.getRouteInfo(facade, "controller/controller.js", "throwStatusError")
             let executor = new RequestHandler(facade, request, response, info)
