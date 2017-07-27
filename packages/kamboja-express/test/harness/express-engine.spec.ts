@@ -535,7 +535,7 @@ describe("Integration", () => {
                 .expect(200)
         })
 
-        it.only("Should able to catch error with multiple middlewares", () => {
+        it("Should able to catch error with multiple middlewares", () => {
             let app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
                 .set("views", Path.join(__dirname, "view"))
                 .set("view engine", "hbs")

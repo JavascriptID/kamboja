@@ -589,7 +589,7 @@ describe("RequestHandler", () => {
             Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("Error handled properly")
         })
 
-        it.only("Should handle error on multiple global middlewares", async () => {
+        it("Should handle error on multiple global middlewares", async () => {
             facade.middlewares = [
                 new DefaultInterceptor(),
                 new ErrorHandlerMiddleware(),
