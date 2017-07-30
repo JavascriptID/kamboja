@@ -11,6 +11,7 @@ import { ErrorHandlerMiddleware } from "./interceptor/error-handler"
 import { DefaultInterceptor } from "./interceptor/default-interceptor"
 import { ChangeToHello } from "./interceptor/change-to-hello"
 import { ErrorInterceptor } from "./interceptor/error-interceptor"
+import { CustomValidation } from "./validator/custom-validator"
 import * as Test from "kamboja-testing"
 
 
@@ -362,7 +363,7 @@ describe("RequestHandler", () => {
             let info = H.getRouteInfo(facade, "controller/socket-controller.js", "sendWithParam")
             let executor = new RequestHandler(facade, socket, response, info, { message: "Hello" })
             await executor.execute()
-            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq({message: "Hello"})
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq({ message: "Hello" })
         })
 
         it("Should able to send status", async () => {
@@ -407,7 +408,7 @@ describe("RequestHandler", () => {
             let info = H.getRouteInfo(facade, "controller/socket-controller.js", "withValidation")
             let executor = new RequestHandler(facade, socket, response, info)
             await executor.execute()
-            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq([ { field: 'name', message: '[name] is required' } ])
+            Chai.expect(response.MOCKS.send.getCall(0).args[0].body).deep.eq([{ field: 'name', message: '[name] is required' }])
             Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(400)
         })
 
@@ -430,6 +431,21 @@ describe("RequestHandler", () => {
             Chai.expect(result[0].field).eq("age")
             Chai.expect(result[0].message).contain("required")
         })
+
+        it("Should not duplicate validation message on second call", async () => {
+            facade.validators = [new CustomValidation]
+            let info = H.getRouteInfo(facade, "controller/controller.js", "validationTest")
+            request.MOCKS.getParam.withArgs("age").returns(undefined)
+            let executor = new RequestHandler(facade, request, response, info)
+            await executor.execute()
+            let secondHandler = new RequestHandler(facade, request, response, info)
+            await secondHandler.execute()
+            let result = response.MOCKS.send.getCall(1).args[0].body
+            Chai.expect(result.length).eq(1)
+            Chai.expect(result[0].field).eq("age")
+            Chai.expect(result[0].message).contain("required")
+        })
+
         it("Should not error when provided null validator commands", async () => {
             let info = H.getRouteInfo(facade, "controller/api-controller.js", "returnTheParam")
             request.MOCKS.getParam.withArgs("par1").returns("param1")

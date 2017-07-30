@@ -16,7 +16,7 @@ export class ValidatorImpl extends ValidatorBase implements Core.Validator {
         validators: Core.ValidatorCommand[]) {
         super()
         if (!validators) validators = []
-        this.validators = validators;
+        this.validators = validators.slice();
         let typeValidator = new TypeValidator(metaDataStorage);
         typeValidator.validators = this.validators;
         this.validators.push(typeValidator)
