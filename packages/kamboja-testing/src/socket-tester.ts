@@ -17,7 +17,7 @@ export class Builder {
         return new Tester(this.client, event)
     }
 
-    wait(cb:() => Promise<any>) {
+    wait(cb: () => Promise<any>) {
         let promise = cb()
         return new Awaitable(promise, this.client)
     }
@@ -33,17 +33,24 @@ export class Awaitable {
     }
 
     async emit(event: string, payload?: any) {
-        this.client.connect()
-        this.client.emit(event, payload)
-        await this.wait
-        this.client.close()
+        try {
+            this.client.connect();
+            this.client.emit(event, payload);
+            await this.wait
+        }
+        catch (e) {
+            throw e
+        }
+        finally {
+            this.client.close();
+        }
     }
 }
 
 export class Tester {
     constructor(private client: SocketIOClient.Socket, private event: string) { }
 
-    private start(callback?: (msg: any) => void, timeout = 100) {
+    private start(callback?: (msg: any) => void, timeout = 300) {
         return new Promise<boolean>((resolve, reject) => {
             let timer = setTimeout(function () {
                 resolve(false)
@@ -62,14 +69,28 @@ export class Tester {
     }
 
     async expect(msg: any) {
-        let result = await this.start(x => Chai.expect(x).deep.eq(msg))
-        Chai.expect(result, `Expected '${this.event}' emitted, but timeout`).eq(true)
-        this.client.close()
+        try {
+            let result = await this.start(x => Chai.expect(x).deep.eq(msg))
+            Chai.expect(result, `Expected '${this.event}' emitted, but timeout`).eq(true)
+        }
+        catch (e) {
+            throw e
+        }
+        finally {
+            this.client.close()
+        }
     }
 
     async timeout(timeout?: number) {
-        let result = await this.start(undefined, timeout)
-        Chai.expect(result, `Expected timeout but '${this.event}' emitted`).eq(false)
-        this.client.close()
+        try {
+            let result = await this.start(undefined, timeout)
+            Chai.expect(result, `Expected timeout but '${this.event}' emitted`).eq(false)
+        }
+        catch (e) {
+            throw e
+        }
+        finally {
+            this.client.close()
+        }
     }
 }

@@ -7,17 +7,18 @@ export class SocketResponse implements Core.Response {
     async send(result: Core.ResponseResult) {
         if (result.events && this.socket && this.registry) {
             for (let event of result.events) {
+                let payload = event.payload || result.body;
                 switch (event.type) {
                     case "Private":
                         if (!event.id) throw new Error(`SocketEvent ID for Private type can't be empty`);
-                        await this.emit(event.id, event.name, event.payload || result.body, id => this.registry!.lookup(id))
+                        await this.emit(event.id, event.name, payload, id => this.registry!.lookup(id))
                         break;
                     case "Room":
                         if (!event.id) throw new Error(`SocketEvent ID for Room type can't be empty`);
-                        await this.emit(event.id, event.name, event.payload || result.body)
+                        await this.emit(event.id, event.name, payload)
                         break;
                     default:
-                        this.socket.broadcast.emit(event.name, event.payload || result.body)
+                        this.socket.broadcast.emit(event.name, payload)
                         break;
                 }
             }

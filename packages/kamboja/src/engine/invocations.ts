@@ -56,16 +56,16 @@ export class HttpControllerInvocation extends Core.Invocation {
         if (this.controllerInfo.classMetaData!.baseClass == "ApiController") {
             return new Core.ActionResult(awaitedResult, 200, "application/json")
         }
-        else return new Core.ActionResult(awaitedResult, 200, "text/html")
+        return new Core.ActionResult(awaitedResult, 200, "text/html")
     }
 }
 
 export class SocketControllerInvocation extends Core.Invocation {
 
-    constructor(private option: Core.Facade, 
-        private socket: Core.Handshake, 
+    constructor(private option: Core.Facade,
+        private socket: Core.Handshake,
         public controllerInfo: Core.ControllerInfo,
-        private msg:any) { super() }
+        private msg: any) { super() }
 
     proceed(): Promise<Core.ActionResult> {
         let controller = <any>createController(this.option, this.controllerInfo, this.msg)
@@ -83,7 +83,6 @@ export class SocketControllerInvocation extends Core.Invocation {
         let awaitedResult = await Promise.resolve(result)
         if (awaitedResult instanceof Core.ActionResult)
             return awaitedResult;
-        else
-            return new Core.ActionResult(result)
+        return new Core.ActionResult(result)
     }
 }

@@ -1,5 +1,4 @@
 import { SocketController, broadcast, emit, route, Core } from "kamboja-express"
-import { BroadcastEvent, PrivateEvent } from "../../../src"
 export class ChatController extends SocketController {
 
     @route.event("connection")

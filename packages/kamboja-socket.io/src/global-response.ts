@@ -7,15 +7,16 @@ export class GlobalResponse implements Core.Response {
     async send(result: Core.ResponseResult) {
         if (result.events) {
             for (let event of result.events) {
+                let payload = event.payload || result.body;
                 switch (event.type) {
                     case "Room":
-                        this.emit(event.id!, event.name, event.payload || result.body)
+                        this.emit(event.id!, event.name, payload)
                         break;
                     case "Private":
-                        this.emit(event.id!, event.name, event.payload || result.body, id => this.registry.lookup(id))
+                        this.emit(event.id!, event.name, payload, id => this.registry.lookup(id))
                         break;
                     case "Broadcast":
-                        this.server.sockets.emit(event.name, event.payload || result.body)
+                        this.server.sockets.emit(event.name, payload)
                         break;
                 }
             }

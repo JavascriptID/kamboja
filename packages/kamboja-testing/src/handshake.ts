@@ -7,20 +7,6 @@ export class SocketHandshake implements Core.Handshake {
     rooms: string[];
     user: Core.AuthUser; 
     params: { [key: string]: string }
-    
-    private findCaseInsensitive(obj:any, key:string) {
-        let keys = Object.keys(obj);
-        for (let item of keys) {
-            if (item.toLowerCase() == key.toLowerCase())
-                return obj[item]
-        }
-    }
-
-    getHeader(key: string): string {
-        return this.findCaseInsensitive(this.headers, key)
-    }
-
-    getParam(key: string): string {
-        return this.findCaseInsensitive(this.params, key)
-    }
+    getHeader(key: string): string {return ""}
+    getParam(key: string): string { return ""}
 }

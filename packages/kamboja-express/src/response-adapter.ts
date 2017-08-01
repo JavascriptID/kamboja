@@ -44,7 +44,7 @@ export class ResponseAdapter implements Core.Response {
     send(result: Core.ResponseResult) {
         if (result.type == "application/json") return this.json(result)
         this.setup(result)
-        this.nativeResponse.type(result.type || "text/plain")
+        this.nativeResponse.type(result.type!)
         switch (typeof result.body) {
             case "number":
             case "boolean":

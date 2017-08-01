@@ -136,4 +136,25 @@ describe("RequestAdapter", () => {
         })
         Chai.expect(test.getUserRole()).undefined
     })
+
+    it("Should return undefined when no header provided", async () => {
+        let test = new RequestAdapter(<any>{
+            header: () => { }
+        })
+        Chai.expect(test.getHeader("test")).undefined
+    })
+
+    it("Should return undefined when no cookie provided", async () => {
+        let test = new RequestAdapter(<any>{
+            header: () => { }
+        })
+        Chai.expect(test.getCookie("test")).undefined
+    })
+
+    it("Should return undefined when no params provided", async () => {
+        let test = new RequestAdapter(<any>{
+            header: () => { }
+        })
+        Chai.expect(test.getParam("test")).undefined
+    })
 })

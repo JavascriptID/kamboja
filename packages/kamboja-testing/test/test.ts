@@ -1,4 +1,4 @@
-import { HttpRequest, HttpResponse, spy, stub, socketTester } from "../src"
+import { HttpRequest, HttpResponse, spy, stub, socketTester, SocketHandshake } from "../src"
 import * as Chai from "chai";
 import { app } from "./socket-server"
 
@@ -29,6 +29,12 @@ describe("Testing Utility", () => {
         resp.send({ body: undefined });
         Chai.expect(resp.MOCKS.send.called).true
     })
+
+    it("Should provide handshake properly", () => {
+        let handshake = new SocketHandshake();
+        handshake.getHeader("")
+        handshake.getParam("")
+    })
 })
 
 describe("Socket tester", () => {
@@ -49,4 +55,38 @@ describe("Socket tester", () => {
             .on("feedback")
             .timeout()
     })
+
+    it("Should be able to set timeout value", async () => {
+        let start = new Date();
+        await socketTester(HOST)
+            .on("feedback")
+            .timeout(200)
+        let gap = new Date().getTime() - start.getTime();
+        Chai.expect(gap - 200).lessThan(100)
+    })
+
+    it("Should throw error when invalid expected value provided", async () => {
+        try {
+            await socketTester(HOST)
+                .wait(() => socketTester(HOST)
+                    .on("feedback")
+                    .expect("hello"))
+                .emit("broadcast", "hola")
+        } catch (e) {
+            Chai.expect(e.message).contains("expected 'hola' to deeply equal 'hello'")
+        }
+    })
+
+    it("Should throw error when correct value provided but expected timeout", async () => {
+        try {
+            await socketTester(HOST)
+                .wait(() => socketTester(HOST)
+                    .on("feedback")
+                    .timeout())
+                .emit("broadcast", "hello")
+        } catch (e) {
+            Chai.expect(e.message).contains("Expected timeout but 'feedback' emitted")
+        }
+    })
+
 })

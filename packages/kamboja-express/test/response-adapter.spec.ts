@@ -23,14 +23,12 @@ describe("ResponseAdapter", () => {
     it("Should able to send number", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.send({
-                body: 400,
-                type: "application/json"
-            })
+            adapter.send({ body: 400 })
         }))
             .get("/")
             .expect((response: Supertest.Response) => {
-                Chai.expect(response.body).eq(400)
+                Chai.expect(response.text).eq("400")
+                Chai.expect(response.type).eq("text/plain")
             })
             .expect(200)
     })
@@ -39,14 +37,12 @@ describe("ResponseAdapter", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
 
-            adapter.send({
-                body: false,
-                type: "application/json"
-            })
+            adapter.send({ body: false })
         }))
             .get("/")
             .expect((response: Supertest.Response) => {
-                Chai.expect(response.body).eq(false)
+                Chai.expect(response.text).eq("false")
+                Chai.expect(response.type).eq("text/plain")
             })
             .expect(200)
     })
@@ -66,7 +62,7 @@ describe("ResponseAdapter", () => {
     it("Should able to send header properly", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.send({body:undefined, header: { Accept: "text/xml" }})
+            adapter.send({ body: undefined, header: { Accept: "text/xml" } })
         }))
             .get("/")
             .expect((response: Supertest.Response) => {
@@ -78,7 +74,7 @@ describe("ResponseAdapter", () => {
     it("Should set status properly", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.send({body:undefined, status: 401})
+            adapter.send({ body: undefined, status: 401 })
         }))
             .get("/")
             .expect(401)
