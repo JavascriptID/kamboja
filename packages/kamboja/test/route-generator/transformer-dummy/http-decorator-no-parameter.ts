@@ -1,17 +1,17 @@
-import { internal, http } from "../../../src"
+import { route } from "../../../src"
 import {Controller, ApiController} from "../../../src/controller"
 
 export class SimpleController extends Controller {
     
-    @http.get()
+    @route.get()
     getMethod(){}
 
-    @http.post()
+    @route.post()
     postMethod(params:any){}
 
-    @http.put()
+    @route.put()
     putMethod(){}
 
-    @http.delete()
+    @route.delete()
     deleteMethod(){}
 }

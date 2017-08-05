@@ -6,10 +6,9 @@ import { ErrorInvocation, SocketControllerInvocation, HttpControllerInvocation }
 
 export class RequestHandler {
     constructor(private option: Core.Facade,
-        private context: Core.HttpRequest | Core.Handshake,
+        private context: Core.HttpRequest,
         private response: Core.Response,
-        private target?: Core.RouteInfo | Error,
-        private params?: any) { }
+        private target?: Core.RouteInfo | Error) { }
 
     async execute() {
         let invoker = new Invoker(this.option)
@@ -17,17 +16,13 @@ export class RequestHandler {
             let invocation: Core.Invocation;
             let routeInfo: Core.RouteInfo | undefined;
             if (!this.target) {
-                let msg = this.context.contextType == "HttpRequest" ? "Requested url not found" : "Invalid event"
-                invocation = new ErrorInvocation(new HttpStatusError(404, msg))
+                invocation = new ErrorInvocation(new HttpStatusError(404, "Requested url not found"))
             }
             else if (this.target instanceof Error)
                 invocation = new ErrorInvocation(this.target)
             else {
-                routeInfo = this.target;
-                if (this.context.contextType == "Handshake")
-                    invocation = new SocketControllerInvocation(this.option, this.context, routeInfo, this.params || [])
-                else
-                    invocation = new HttpControllerInvocation(this.option, this.context, routeInfo)
+                routeInfo = this.target
+                invocation = new HttpControllerInvocation(this.option, this.context, routeInfo)
             }
 
             let result = await invoker.invoke(this.context, invocation)

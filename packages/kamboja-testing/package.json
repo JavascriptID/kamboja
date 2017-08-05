@@ -19,9 +19,9 @@
   },
   "homepage": "http://kambojajs.com",
   "dependencies": {
-    "@types/lodash": "^4.14.66",
-    "@types/node": "^8.0.1",
-    "@types/sinon": "^2.3.1",
+    "@types/lodash": "^4.14.71",
+    "@types/node": "^8.0.19",
+    "@types/sinon": "^2.3.3",
     "@types/socket.io-client": "^1.4.29",
     "kamboja-core": "^0.3.2",
     "kecubung": "^0.3.2",
@@ -32,24 +32,24 @@
     "tslib": "^1.7.1"
   },
   "devDependencies": {
-    "@types/chai": "^4.0.0",
+    "@types/chai": "^4.0.2",
     "@types/mocha": "^2.2.41",
-    "@types/sinon": "^2.3.1",
+    "@types/sinon": "^2.3.3",
     "@types/socket.io": "^1.4.29",
-    "@types/supertest": "^2.0.1",
-    "chai": "^4.0.2",
+    "@types/supertest": "^2.0.2",
+    "chai": "^4.1.0",
     "coveralls": "^2.13.1",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-istanbul": "^1.1.2",
     "gulp-mocha": "^3.0.1",
     "gulp-sourcemaps": "^2.6.0",
-    "gulp-typescript": "^3.1.7",
-    "mocha": "^3.4.2",
-    "run-sequence": "^1.2.2",
-    "sinon": "^2.3.5",
+    "gulp-typescript": "^3.2.1",
+    "mocha": "^3.5.0",
+    "run-sequence": "^2.1.0",
+    "sinon": "^3.0.0",
     "socket.io": "^2.0.3",
     "supertest": "^3.0.0",
-    "typescript": "^2.3.4"
+    "typescript": "^2.4.2"
   }
 }

@@ -94,14 +94,14 @@ describe("Transformer", () => {
     })
 
     describe("Internal Decorator", () => {
-        it("Should not transform @internal action", () => {
+        it("Should not transform @route.ignore() action", () => {
             let meta = H.fromFile("./transformer-dummy/internal-decorators.js", new DefaultPathResolver(__dirname))
             let result = Transformer.transform(meta);
             let info = result.filter(x => x.methodMetaData!.name == "privateMethod")
             Chai.expect(info.length).eq(0);
         })
 
-        it("Should detect conflict @internal and @route.<any>()", () => {
+        it("Should detect conflict @route.ignore() and @route.<any>()", () => {
             let meta = H.fromFile("./transformer-dummy/internal-conflict.js", new DefaultPathResolver(__dirname))
             let result = Transformer.transform(meta);
             let clean = H.cleanUp(result)
@@ -125,6 +125,8 @@ describe("Transformer", () => {
             Chai.expect(result[3].httpMethod).eq("DELETE")
             Chai.expect(result[4].route).eq("/this/patch/got/different")
             Chai.expect(result[4].httpMethod).eq("PATCH")
+            Chai.expect(result[5].route).eq("this/is/event")
+            Chai.expect(result[5].httpMethod).eq("EVENT")
         })
 
         it("Should identify parameter association issue", () => {
@@ -335,36 +337,6 @@ describe("Transformer", () => {
         })
     })
 
-    describe("SocketController", () => {
-        it("Should transform properly", () => {
-            let meta = H.fromFile("./transformer-dummy/socket-controller.js", new DefaultPathResolver(__dirname))
-            let result = Transformer.transform(meta);
-            let clean = H.cleanUp(result)
-            Chai.expect(result[0].route).eq("connection")
-            Chai.expect(result[0].analysis).undefined
-            Chai.expect(result[0].httpMethod).eq("EVENT")
-            Chai.expect(result[0].methodMetaData!.name).eq("connection")
-            Chai.expect(result[1].route).eq("chat/send")
-            Chai.expect(result[1].analysis).undefined
-            Chai.expect(result[1].httpMethod).eq("EVENT")
-            Chai.expect(result[1].methodMetaData!.name).eq("send")
-        })
-
-        it("Should transform controller with @route.root()", () => {
-            let meta = H.fromFile("./transformer-dummy/socket-controller-with-root.js", new DefaultPathResolver(__dirname))
-            let result = Transformer.transform(meta);
-            let clean = H.cleanUp(result)
-            Chai.expect(result[0].route).eq("connection")
-            Chai.expect(result[0].analysis).undefined
-            Chai.expect(result[0].httpMethod).eq("EVENT")
-            Chai.expect(result[0].methodMetaData!.name).eq("connection")
-            Chai.expect(result[1].route).eq("hello/send")
-            Chai.expect(result[1].analysis).undefined
-            Chai.expect(result[1].httpMethod).eq("EVENT")
-            Chai.expect(result[1].methodMetaData!.name).eq("send")
-        })
-    })
-
     describe("Root Decorator", () => {
         it("Should transform @route decorator", () => {
             let meta = H.fromFile("./transformer-dummy/root-decorator.js", new DefaultPathResolver(__dirname))
@@ -377,8 +349,7 @@ describe("Transformer", () => {
                 methodMetaData: { name: 'index' },
                 qualifiedClassName: 'Namespace.AbsoluteRootController, ./transformer-dummy/root-decorator.js',
                 classMetaData: { name: 'AbsoluteRootController', baseClass: 'Controller' },
-                collaborator: ['DefaultAction', 'ControllerWithDecorator', 'Module'],
-                analysis: [2]
+                collaborator: ['DefaultAction', 'ControllerWithDecorator', 'Module']
             },
             {
                 initiator: 'HttpMethodDecorator',
@@ -387,8 +358,16 @@ describe("Transformer", () => {
                 methodMetaData: { name: 'myGetAction' },
                 qualifiedClassName: 'Namespace.AbsoluteRootController, ./transformer-dummy/root-decorator.js',
                 classMetaData: { name: 'AbsoluteRootController', baseClass: 'Controller' },
-                collaborator: ['DefaultAction', 'ControllerWithDecorator', 'Module'],
-                analysis: [2]
+                collaborator: ['DefaultAction', 'ControllerWithDecorator', 'Module']
+            },
+            {
+                initiator: 'HttpMethodDecorator',
+                route: 'custom-event',
+                httpMethod: 'EVENT',
+                methodMetaData: { name: 'customHandler' },
+                qualifiedClassName: 'Namespace.AbsoluteRootController, ./transformer-dummy/root-decorator.js',
+                classMetaData: { name: 'AbsoluteRootController', baseClass: 'Controller' },
+                collaborator: ['ControllerWithDecorator', 'Module']
             },
             {
                 initiator: 'HttpMethodDecorator',
@@ -397,8 +376,7 @@ describe("Transformer", () => {
                 methodMetaData: { name: 'index' },
                 qualifiedClassName: 'Namespace.RelativeRootController, ./transformer-dummy/root-decorator.js',
                 classMetaData: { name: 'RelativeRootController', baseClass: 'Controller' },
-                collaborator: ['DefaultAction', 'ControllerWithDecorator', 'Module'],
-                analysis: [2]
+                collaborator: ['DefaultAction', 'ControllerWithDecorator', 'Module']
             },
             {
                 initiator: 'HttpMethodDecorator',
@@ -407,8 +385,7 @@ describe("Transformer", () => {
                 methodMetaData: { name: 'myGetAction' },
                 qualifiedClassName: 'Namespace.RelativeRootController, ./transformer-dummy/root-decorator.js',
                 classMetaData: { name: 'RelativeRootController', baseClass: 'Controller' },
-                collaborator: ['DefaultAction', 'ControllerWithDecorator', 'Module'],
-                analysis: [2]
+                collaborator: ['DefaultAction', 'ControllerWithDecorator', 'Module']
             }])
         })
 

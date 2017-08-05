@@ -65,7 +65,7 @@ export class SocketControllerInvocation extends Core.Invocation {
     constructor(private option: Core.Facade,
         private socket: Core.Handshake,
         public controllerInfo: Core.ControllerInfo,
-        private msg: any) { super() }
+        private msg?: any) { super() }
 
     proceed(): Promise<Core.ActionResult> {
         let controller = <any>createController(this.option, this.controllerInfo, this.msg)

@@ -1,4 +1,3 @@
-import { internal, http } from "../../../src"
 import {Controller, ApiController} from "../../../src/controller"
 
 //this class is not exported

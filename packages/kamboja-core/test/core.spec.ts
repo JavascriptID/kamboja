@@ -25,13 +25,6 @@ describe("Core", () => {
         request.isAuthenticated()
     })
 
-    it("Should instantiate decorator properly", () => {
-        let decorator = new Core.Decorator();
-        let fun = decorator.internal()
-        fun(null, "", {})
-        Chai.expect(typeof fun == "function").true
-    
-    })
 
     it("Should instantiate HttpError properly", () => {
         let err = new Core.HttpError(200, {message:"halo"}, new HttpRequest(), new HttpResponse());

@@ -1,4 +1,4 @@
-import { http, internal } from "../src"
+import { route } from "../src"
 import { Controller, ApiController } from "../src/controller"
 
 export class MyModel {
@@ -7,6 +7,6 @@ export class MyModel {
 
 export class MyController extends Controller {
 
-    @http.get()
+    @route.get()
     getByPage(model:any) {}
 }

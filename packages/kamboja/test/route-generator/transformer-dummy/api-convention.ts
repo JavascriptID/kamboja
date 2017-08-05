@@ -1,5 +1,4 @@
-import { internal, http } from "../../../src"
-import {Controller, ApiController} from "../../../src/controller"
+import {ApiController} from "../../../src/controller"
 
 export class SimpleController extends ApiController {
     list(offset:number, pageWidth:number){}

@@ -1,4 +1,4 @@
-import { ApiController, val, http } from "../../../src"
+import { ApiController, val, route } from "../../../src"
 
 export class CategoriesController extends ApiController {
     get( @val.required() id:string) {
@@ -26,7 +26,7 @@ export class CategoriesController extends ApiController {
     }
 }
 
-@http.root("categories/:categoryId/items")
+@route.root("categories/:categoryId/items")
 export class CategoriesItemController extends ApiController {
     get( @val.required() id:string, @val.required() categoryId:string) {
         return { id: id, categoryId: categoryId }

@@ -18,7 +18,7 @@ describe("InternalDecoratorTransformer", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.internal(),
+            src_1.route.ignore(),
         ], MyController.prototype, "privateMethod", null);
         exports.MyController = MyController;
         `, "controller/user-controller.js")
@@ -55,7 +55,7 @@ describe("InternalDecoratorTransformer", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.internal(),
+            src_1.route.ignore(),
             src_1.http.get()            
         ], MyController.prototype, "privateMethod", null);
         exports.MyController = MyController;
@@ -76,7 +76,7 @@ describe("InternalDecoratorTransformer", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.internal(),
+            src_1.route.ignore(),
             src_1.http.post()            
         ], MyController.prototype, "privateMethod", null);
         exports.MyController = MyController;
@@ -97,7 +97,7 @@ describe("InternalDecoratorTransformer", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.internal(),
+            src_1.route.ignore(),
             src_1.http.put()            
         ], MyController.prototype, "privateMethod", null);
         exports.MyController = MyController;
@@ -118,7 +118,7 @@ describe("InternalDecoratorTransformer", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.internal(),
+            src_1.route.ignore(),
             src_1.http.patch()            
         ], MyController.prototype, "privateMethod", null);
         exports.MyController = MyController;
@@ -139,7 +139,7 @@ describe("InternalDecoratorTransformer", () => {
             return MyController;
         }(controller_1.Controller));
         tslib_1.__decorate([
-            src_1.internal(),
+            src_1.route.ignore(),
             src_1.http.delete()            
         ], MyController.prototype, "privateMethod", null);
         exports.MyController = MyController;

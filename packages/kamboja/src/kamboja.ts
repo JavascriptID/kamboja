@@ -193,7 +193,7 @@ export class Kamboja implements Core.Application {
         this.set("httpApp", httpApp)
         let server = Http.createServer(httpApp)
         if (this.options.socketEngine) {
-            let socketControllers = routeInfos.filter(x => x.classMetaData!.baseClass == "SocketController")
+            let socketControllers = routeInfos.filter(x => x.httpMethod == "EVENT")
             let socketApp = this.options.socketEngine.init(socketControllers, this.options);
             this.set("socketApp", socketApp)
             socketApp.listen(server)

@@ -1,4 +1,4 @@
-import { ApiController, JsonActionResult, broadcast, emit, json } from "kamboja-express"
+import { ApiController, JsonActionResult, route, broadcast, emit, json } from "kamboja-express"
 export class HttpController extends ApiController {    
     broadcast(){
         return broadcast("message", "Success!")
@@ -10,5 +10,10 @@ export class HttpController extends ApiController {
 
     noEmit(){
         return new JsonActionResult("Success!")
+    }
+
+    @route.on("connection")
+    connection(){
+        return broadcast("message", "Success!")
     }
 }

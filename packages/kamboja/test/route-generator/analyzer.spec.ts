@@ -144,7 +144,7 @@ describe("Analyzer", () => {
         }(core_1.Controller));
         tslib_1.__decorate([
             core_1.http.get("/this/is/route/:par/:par2"),
-            core_1.internal(),
+            core_1.route.ignore(),
         ], MyClass.prototype, "myMethod", null);
         exports.MyClass = MyClass;
         `, "example-file.js")
@@ -153,7 +153,7 @@ describe("Analyzer", () => {
         let result = Analyzer.analyze(info);
         Chai.expect(result).deep.eq([{
             code: Core.RouteAnalysisCode.ConflictDecorators,
-            message: 'Method decorated with @http will not visible, because the method is decorated @internal in [MyClass.myMethod example-file.js]',
+            message: "Route conflict, @route.ignore() can't be combined with other type of routes in [MyClass.myMethod example-file.js]",
             type: 'Error'
         }])
     })
@@ -285,57 +285,7 @@ describe("Analyzer", () => {
         }])
     })
 
-    it("Should analyze issue when @route.event() used in Controller", () => {
-        let meta = H.fromCode(`
-        var MyController = (function (_super) {
-            tslib_1.__extends(MyController, _super);
-            function MyController() {
-                return _super !== null && _super.apply(this, arguments) || this;
-            }
-            MyController.prototype.index = function (model) { };
-            return MyController;
-        }(controller_1.Controller));
-        tslib_1.__decorate([
-            src_1.route.event("relative"),
-        ], MyController.prototype, "index", null);
-        exports.MyController = MyController;
-        `, "example-file.js")
-
-        let info = Transformer.transform(meta);
-        let result = Analyzer.analyze(info);
-        Chai.expect(result).deep.eq([{
-            code: Core.RouteAnalysisCode.DecoratorNotAllowed,
-            message: "@route.event is not allowed when used inside ApiController or Controller in [MyController.index example-file.js]",
-            type: 'Error'
-        }])
-    })
-
-    it("Should analyze issue when @route.event() used in ApiController", () => {
-        let meta = H.fromCode(`
-        var MyController = (function (_super) {
-            tslib_1.__extends(MyController, _super);
-            function MyController() {
-                return _super !== null && _super.apply(this, arguments) || this;
-            }
-            MyController.prototype.index = function (model) { };
-            return MyController;
-        }(controller_1.ApiController));
-        tslib_1.__decorate([
-            src_1.route.event("relative"),
-        ], MyController.prototype, "index", null);
-        exports.MyController = MyController;
-        `, "example-file.js")
-
-        let info = Transformer.transform(meta);
-        let result = Analyzer.analyze(info);
-        Chai.expect(result).deep.eq([{
-            code: Core.RouteAnalysisCode.DecoratorNotAllowed,
-            message: "@route.event is not allowed when used inside ApiController or Controller in [MyController.index example-file.js]",
-            type: 'Error'
-        }])
-    })
-
-    it("Should analyze issue when @route.event() has query parameters", () => {
+    it("Should analyze issue when @route.on() has query parameters", () => {
         let meta = H.fromCode(`
         var MyController = (function (_super) {
             tslib_1.__extends(MyController, _super);
@@ -346,7 +296,7 @@ describe("Analyzer", () => {
             return MyController;
         }(controller_1.SocketController));
         tslib_1.__decorate([
-            src_1.route.event("relative/:id"),
+            src_1.route.on("relative/:id"),
         ], MyController.prototype, "index", null);
         exports.MyController = MyController;
         `, "example-file.js")

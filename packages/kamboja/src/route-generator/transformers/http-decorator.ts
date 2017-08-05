@@ -54,7 +54,7 @@ export class HttpDecoratorTransformer extends TransformerBase {
 
             routeAnalysis = this.checkUnAssociatedParameters(meta, route, method);
             if (routeAnalysis) analysis.push(routeAnalysis)
-
+            
             let result = <Core.RouteInfo>{
                 initiator: "HttpMethodDecorator",
                 httpMethod: method,

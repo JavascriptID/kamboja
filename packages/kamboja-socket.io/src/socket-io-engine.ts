@@ -1,7 +1,8 @@
-import { Core, RequestHandler, HttpStatusError, Invoker } from "kamboja"
+import { Core, RequestHandler, HttpStatusError, Invoker, SocketControllerInvocation, ErrorInvocation } from "kamboja"
 import * as SocketIo from "socket.io"
 import { SocketResponse } from "./socket-response"
 import { SocketIoHandshake } from "./socket-handshake"
+import { SocketAdapter } from "./socket-adapter"
 
 export class OnConnectionInvocation extends Core.Invocation {
     async proceed(): Promise<Core.ActionResult> {
@@ -9,14 +10,29 @@ export class OnConnectionInvocation extends Core.Invocation {
     }
 }
 
+class SocketHandler {
+    constructor(private option: Core.Facade) { }
+    async execute(handshake: Core.Handshake, response: Core.Response, invocation: Core.Invocation) {
+        try {
+            let invoker = new Invoker(this.option)
+            let result = await invoker.invoke(handshake, invocation)
+            await result.execute(handshake, response)
+        }
+        catch (e) {
+            response.send({ status: 500, body: e.message })
+        }
+    }
+}
+
 export class SocketIoEngine implements Core.Engine {
-    constructor(private server:SocketIO.Server, private registry:Core.SocketRegistry){}
+    constructor(private server: SocketIO.Server, private registry: Core.SocketRegistry) { }
 
     init(routes: Core.RouteInfo[], option: Core.KambojaOption) {
         let connectionEvents = routes.filter(x => x.route == "connection")
         let errorEvents = routes.filter(x => x.route == "error")
         let socketEvents = routes.filter(x => x.route != "error" && x.route != "connection")
-        
+        let handler = new SocketHandler(option)
+
         this.server.on("connection", socket => {
             /*
             this handler will executed on each connection created
@@ -25,38 +41,27 @@ export class SocketIoEngine implements Core.Engine {
             If no handler found it is required to execute the system 
             once, to make sure authentication process in middlewares called.
             */
-            if(connectionEvents.length == 0){
-                let invoker = new Invoker(option)
-                invoker.invoke(new SocketIoHandshake(socket), new OnConnectionInvocation())
-                    .catch(er => {
-                        new SocketResponse(this.registry, socket)
-                            .send({body: er.message, status: er.status || 500})
-                    })
+            let handshake = new SocketIoHandshake(socket)
+            let response = new SocketResponse(this.registry, socket)
+
+            if (connectionEvents.length == 0) {
+                handler.execute(handshake, response, new OnConnectionInvocation())
             }
             else {
                 connectionEvents.forEach(route => {
-                    let requestHandler = new RequestHandler(option,
-                        new SocketIoHandshake(socket),
-                        new SocketResponse(this.registry, socket), route)
-                    requestHandler.execute()
+                    handler.execute(handshake, response, new SocketControllerInvocation(option, handshake, route))
                 })
             }
-            
 
             socketEvents.forEach(route => {
                 socket.on(route.route!, (msg: any, callback: (body: any) => void) => {
-                    let handler = new RequestHandler(option, new SocketIoHandshake(socket),
-                        new SocketResponse(this.registry, socket, callback), route, msg)
-                    handler.execute()
+                    handler.execute(handshake, response, new SocketControllerInvocation(option, handshake, route, msg))
                 })
             })
 
-            this.server.on("error", (err:any) => {
+            this.server.on("error", (err: any) => {
                 errorEvents.forEach(route => {
-                    let requestHandler = new RequestHandler(option,
-                        new SocketIoHandshake(socket),
-                        new SocketResponse(this.registry, socket), err)
-                    requestHandler.execute()
+                    handler.execute(handshake, response, new ErrorInvocation(err))
                 })
             })
         })

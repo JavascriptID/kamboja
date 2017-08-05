@@ -1,4 +1,4 @@
-import { internal, route } from "../../../src"
+import { route } from "../../../src"
 import { Controller, ApiController } from "../../../src/controller"
 
 export class SimpleController extends Controller {
@@ -17,4 +17,7 @@ export class SimpleController extends Controller {
 
     @route.patch("/this/patch/got/different")
     patchMethod() { }
+
+    @route.on("this/is/event")
+    eventMethod() {}
 }

@@ -1,6 +1,6 @@
 import { Core } from "kamboja"
 import { SocketResponse } from "./socket-response"
-import { GlobalResponse } from "./global-response"
+import { ServerSocketAdapter } from "./socket-adapter"
 
 export class RealTimeMiddleware implements Core.Middleware {
     constructor(private server: SocketIO.Server, private registry: Core.SocketRegistry) { }
@@ -20,7 +20,7 @@ export class RealTimeMiddleware implements Core.Middleware {
         */
         let result = await next.proceed();
         if (context.contextType == "HttpRequest" && result.events) {
-            let response = new GlobalResponse(this.server, this.registry)
+            let response = new SocketResponse(this.registry, new ServerSocketAdapter(this.server))
             await response.send(result)
             return result;
         }

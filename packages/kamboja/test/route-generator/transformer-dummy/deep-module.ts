@@ -1,5 +1,4 @@
-import { internal, http } from "../../../src"
-import {Controller, ApiController} from "../../../src/controller"
+import {Controller} from "../../../src/controller"
 
 export module ParentModule {
     export class SimpleController extends Controller {

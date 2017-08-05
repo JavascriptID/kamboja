@@ -7,7 +7,7 @@ export class ConflictInternalDecoratorAnalyzer implements AnalyzerCommand {
             return [{
                 code:RouteAnalysisCode.ConflictDecorators,
                 type: "Error",
-                message: `Method decorated with @http will not visible, because the method is decorated @internal in ${getRouteDetail(route)}`
+                message: `Route conflict, @route.ignore() can't be combined with other type of routes in ${getRouteDetail(route)}`
             }]
         }
     }

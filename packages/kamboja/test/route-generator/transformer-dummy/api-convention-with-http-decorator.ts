@@ -1,9 +1,9 @@
-import { internal, http } from "../../../src"
+import { route } from "../../../src"
 import {Controller, ApiController} from "../../../src/controller"
 
 export class SimpleController extends ApiController {
     
-    @http.get()
+    @route.get()
     getByPage(offset:number, pageWidth:number){}
 
 }

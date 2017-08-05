@@ -4,7 +4,6 @@ import { TransformerBase, when } from "./transformer-base"
 
 
 export class EventDecoratorTransformer extends TransformerBase {
-    decorators: Core.DecoratorType[] = ["event"]
 
     @when("Method")
     transform(meta: Kecubung.MethodMetaData, parent: string, prevResult: Core.RouteInfo[]): Core.TransformResult {
@@ -13,19 +12,19 @@ export class EventDecoratorTransformer extends TransformerBase {
             //just pass previous result
             return this.next(prevResult);
         }
-        if (meta.decorators && meta.decorators.length > 0 && meta.decorators.some(x => x.name == "event")) {
-            let decorators = meta.decorators.filter(x => x.name == "event")
+        if (meta.decorators && meta.decorators.length > 0 && meta.decorators.some(x => x.name == "on")) {
+            let decorators = meta.decorators.filter(x => x.name == "on")
             let infos = decorators.map(decorator => {
-                return this.createInfo(meta, decorator, parent)
+                return this.createInfo(meta, decorator)
             })
             return this.exit(infos)
         }
         else return this.next()
     }
 
-    private createInfo(meta: Kecubung.MethodMetaData, decorator: Kecubung.DecoratorMetaData, parent: string) {
+    private createInfo(meta: Kecubung.MethodMetaData, decorator: Kecubung.DecoratorMetaData) {
         let analysis: number[] = []
-        let method = <Core.HttpMethod>decorator.name.toUpperCase();
+        let method = "EVENT";
         let route: string = (<Kecubung.PrimitiveValueMetaData>decorator.parameters[0]).value;
         let routeAnalysis = this.checkIfQueryParameterNotAllowed(route, method)
         if (routeAnalysis) analysis.push(routeAnalysis)
@@ -44,5 +43,4 @@ export class EventDecoratorTransformer extends TransformerBase {
         let routeParameters = route.split("/").filter(x => x.charAt(0) == ":");
         if (routeParameters.length > 0) return Core.RouteAnalysisCode.QueryParameterNotAllowed
     }
-
 }

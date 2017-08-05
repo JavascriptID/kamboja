@@ -7,8 +7,8 @@ export { FileActionResult } from "./file-action-result"
 export { DownloadActionResult } from "./download-action-result"
 export { ExpressMiddlewareAdapter } from "./express-middleware-adapter"
 export {
-    ApiController, authorize, Controller, SocketController, Core, http, HttpStatusError,
-    internal, MetaDataLoader, Middleware, RequestHandler, Resolver, RouteGenerator, val,
+    ApiController, authorize, Controller, Core, http, HttpStatusError,
+    MetaDataLoader, Middleware, RequestHandler, Resolver, RouteGenerator, val,
     Validator, bind, type, route
 } from "kamboja"
 

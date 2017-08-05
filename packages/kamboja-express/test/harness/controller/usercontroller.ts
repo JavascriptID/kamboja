@@ -1,4 +1,4 @@
-import { internal, http, Controller, Core } from "kamboja"
+import { http, Controller, Core } from "kamboja"
 import * as Model from "../model/user-model"
 import { Request, Response, NextFunction } from "express"
 import { MiddlewareActionResult, middleware, JsonActionResult } from "../../../src"

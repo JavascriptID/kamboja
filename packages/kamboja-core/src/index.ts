@@ -14,20 +14,33 @@ export type LogType = "Info" | "Warning" | "Error" | "None"
 export type MiddlewaresType = string | string[] | Middleware | Middleware[]
 export type MiddlewareFactory = (opt: KambojaOption) => MiddlewaresType
 
+export const MethodDecorator = (target: any, propertyKey: string, descriptor: PropertyDescriptor) => { }
+
 export class Decorator {
-    internal() { return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => { }; }
+    /**
+     * Add type metadata information 
+     * @param typ Qualified name of the type
+     */
     type(typ: string) { return (...target: any[]) => { }; }
+
+    /**
+     * Listen to real time event
+     * @param event event name
+     */
+    listen(event: string) { return MethodDecorator }
 }
 
 export class HttpDecorator {
+    ignore() { return MethodDecorator }
     root(route: string) { return (constructor: Function) => { } }
-    get(route?: string) { return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => { }; }
-    post(route?: string) { return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => { }; }
-    put(route?: string) { return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => { }; }
-    patch(route?: string) { return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => { }; }
-    delete(route?: string) { return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => { }; }
-    event(route: string) { return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => { }; }
+    get(route?: string) { return MethodDecorator }
+    post(route?: string) { return MethodDecorator }
+    put(route?: string) { return MethodDecorator }
+    patch(route?: string) { return MethodDecorator }
+    delete(route?: string) { return MethodDecorator }
+    on(event: string) { return MethodDecorator }
 }
+
 
 export class BinderDecorator {
     body() { return (target: any, propertyKey: string, index: number) => { }; }
@@ -324,39 +337,39 @@ export class ActionResult implements ResponseResult {
     header: { [key: string]: string | string[] } = {}
     cookies?: Cookie[]
     events?: SocketEvent[]
-    
-    constructor(public body: any, public status?:number, public type?:string) { }
 
-    setHeader(key:string, value: string | string[]){
+    constructor(public body: any, public status?: number, public type?: string) { }
+
+    setHeader(key: string, value: string | string[]) {
         this.header[key] = value;
         return this
     }
 
-    setCookie(key:string, value:string, options?:CookieOptions){
-        if(!this.cookies) this.cookies = []
-        this.cookies.push({key: key, value:value, options: options})
+    setCookie(key: string, value: string, options?: CookieOptions) {
+        if (!this.cookies) this.cookies = []
+        this.cookies.push({ key: key, value: value, options: options })
         return this
     }
 
-    setStatus(status:number){
+    setStatus(status: number) {
         this.status = status;
         return this
     }
 
-    setType(type:string){
+    setType(type: string) {
         this.type = type;
         return this;
     }
 
-    broadcast(event:string, data?:any){
-        if(!this.events) this.events = []
-        this.events.push({type: "Broadcast", name: event, payload: data || this.body})
+    broadcast(event: string, data?: any) {
+        if (!this.events) this.events = []
+        this.events.push({ type: "Broadcast", name: event, payload: data || this.body })
         return this;
     }
 
-    emit(event:string, id:string|string[], data?:any){
-        if(!this.events) this.events = []
-        this.events.push({type: "Private", id:id, name: event, payload: data || this.body})
+    emit(event: string, id: string | string[], data?: any) {
+        if (!this.events) this.events = []
+        this.events.push({ type: "Private", id: id, name: event, payload: data || this.body })
         return this;
     }
 
