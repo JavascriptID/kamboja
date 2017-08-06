@@ -13,9 +13,11 @@ export class SocketResponse implements Core.Response {
                     this.socket.emit(event.type, event.name, payload)
                 else {
                     if (!event.id) throw new Error(`SocketEvent ID can't be empty on event '${event.name}' of type ${event.type} `);
+                    if (!Array.isArray(event.id)) event.id = [event.id]
                     for (let id of event.id) {
-                        if (event.type == "Private") id = await this.registry.lookup(id)
-                        this.socket.emit(event.type, event.name, payload, id)
+                        let curId = id;
+                        if (event.type == "Private") curId = await this.registry.lookup(id)
+                        this.socket.emit(event.type, event.name, payload, curId)
                     }
                 }
             }

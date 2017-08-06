@@ -11,9 +11,4 @@ export class HttpController extends ApiController {
     noEmit(){
         return new JsonActionResult("Success!")
     }
-
-    @route.on("connection")
-    connection(){
-        return broadcast("message", "Success!")
-    }
 }

@@ -17,9 +17,12 @@ export class Builder {
         return new Tester(this.client, event)
     }
 
-    wait(cb: () => Promise<any>) {
-        let promise = cb()
-        return new Awaitable(promise, this.client)
+    wait(cb: (() => Promise<any>) | Promise<any>) {
+        if(typeof cb == "function"){
+            let promise = cb()
+            return new Awaitable(promise, this.client)
+        }
+        else return new Awaitable(cb, this.client)
     }
 }
 

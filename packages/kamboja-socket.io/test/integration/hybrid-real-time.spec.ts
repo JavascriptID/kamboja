@@ -14,8 +14,7 @@ class TokenAuthMiddleware implements Core.Middleware {
     }
 }
 
-
-describe("HttpController with real time functionalities", () => {
+describe.only("Hybrid Real-time function", () => {
     let app: Http.Server
     const HOST = "http://localhost:5000"
 
@@ -27,6 +26,7 @@ describe("HttpController with real time functionalities", () => {
     it("Should able to broadcast event without authentication", async () => {
         app = new KambojaApplication(__dirname)
             .set("showLog", "None")
+            .set("controllerPaths", ["hybrid-controller"])
             .use(BodyParser.json())
             .apply(new RealTimeFacility())
             .init();
@@ -48,6 +48,7 @@ describe("HttpController with real time functionalities", () => {
     it("Should able to send event to specific client without authentication", async () => {
         app = new KambojaApplication(__dirname)
             .set("showLog", "None")
+            .set("controllerPaths", ["hybrid-controller"])
             .use(BodyParser.json())
             .use(new TokenAuthMiddleware())
             .apply(new RealTimeFacility())
@@ -70,6 +71,7 @@ describe("HttpController with real time functionalities", () => {
     it("Should not conflict with http controller that doesn't emit events", async () => {
         app = new KambojaApplication(__dirname)
             .set("showLog", "None")
+            .set("controllerPaths", ["hybrid-controller"])
             .use(BodyParser.json())
             .use(new TokenAuthMiddleware())
             .apply(new RealTimeFacility())

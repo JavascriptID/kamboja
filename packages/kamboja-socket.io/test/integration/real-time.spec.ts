@@ -42,14 +42,16 @@ describe("SocketController", () => {
     })
 
     it("Should able to broadcast event", async () => {
+        let listeners = Promise.all([
+            SocketClient(HOST)
+                .on("message")
+                .expect("Success!"),
+            SocketClient(HOST)
+                .on("message")
+                .expect("Success!")
+        ])
         await SocketClient(HOST)
-            .wait(() => Promise.all([
-                SocketClient(HOST)
-                    .on("message")
-                    .expect("Success!"),
-                SocketClient(HOST)
-                    .on("message")
-                    .expect("Success!")
-            ])).emit("chat/broadcast")
+            .wait(listeners)
+            .emit("chat/broadcast")
     })
 })

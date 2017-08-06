@@ -187,8 +187,7 @@ export class Kamboja implements Core.Application {
         let routeInfos = this.generateRoutes(this.storage.getFiles("Controller"))
         if (routeInfos.length == 0) throw new Error("Fatal error")
         if (!this.analyzeRoutes(routeInfos)) throw new Error("Fatal Error")
-        let httpControllers = routeInfos.filter(x => x.classMetaData!.baseClass == "ApiController" ||
-            x.classMetaData!.baseClass == "Controller")
+        let httpControllers = routeInfos.filter(x => x.httpMethod != "EVENT")
         let httpApp = this.engine.init(httpControllers, this.options)
         this.set("httpApp", httpApp)
         let server = Http.createServer(httpApp)
