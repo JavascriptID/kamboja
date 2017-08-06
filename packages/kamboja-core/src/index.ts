@@ -22,12 +22,6 @@ export class Decorator {
      * @param typ Qualified name of the type
      */
     type(typ: string) { return (...target: any[]) => { }; }
-
-    /**
-     * Listen to real time event
-     * @param event event name
-     */
-    listen(event: string) { return MethodDecorator }
 }
 
 export class HttpDecorator {
@@ -203,6 +197,7 @@ export interface SocketRegistry {
 }
 
 export interface BaseController {
+    context:HttpRequest | Handshake;
     validator: Validator;
 }
 

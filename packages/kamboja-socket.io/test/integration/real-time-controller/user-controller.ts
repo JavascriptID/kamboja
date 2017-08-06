@@ -3,12 +3,12 @@ import { Controller, route, broadcast, emit } from "kamboja-express";
 export class UserController extends Controller {
   @route.on("connection")
   onConnect() {
-    return broadcast("custom-event", { message: "Client connected" });
+    return broadcast("join", this.context.user);
   }
 
   @route.on("disconnect")
   onDisconnect() {
-    return broadcast("custom-event", { message: "Client disconnected" });
+    return broadcast("leave", this.context.user);
   }
 
   @route.on("send")

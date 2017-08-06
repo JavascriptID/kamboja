@@ -21,6 +21,7 @@ describe("SocketController", () => {
     before(done => {
         app = new KambojaApplication(__dirname)
             .set("showLog", "None")
+            .set("controllerPaths", ["real-time-controller"])
             .use(BodyParser.json())
             .use(new TokenAuthMiddleware())
             .apply(new RealTimeFacility())
@@ -34,24 +35,26 @@ describe("SocketController", () => {
     })
 
     it("Should able listen to connection event", async () => {
+        let listener = SocketClient(HOST)
+            .on("join")
+            .expect({ id: "abcd" });
+
         await SocketClient(HOST, { query: { token: "abcd" } })
-            .wait(() => SocketClient(HOST)
-                .on("presence")
-                .expect({ id: "abcd" }))
+            .wait(listener)
             .connect()
     })
 
     it("Should able to broadcast event", async () => {
         let listeners = Promise.all([
             SocketClient(HOST)
-                .on("message")
-                .expect("Success!"),
+                .on("custom-event")
+                .expect({ message: "Success!" }),
             SocketClient(HOST)
-                .on("message")
-                .expect("Success!")
+                .on("custom-event")
+                .expect({ message: "Success!" })
         ])
         await SocketClient(HOST)
             .wait(listeners)
-            .emit("chat/broadcast")
+            .emit("send-all", "Success!")
     })
 })

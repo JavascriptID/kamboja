@@ -1,21 +1,24 @@
-import * as Core from "kamboja-core"
-import * as Kecubung from "kecubung"
+import * as Core from "kamboja-core";
+import * as Kecubung from "kecubung";
 
 export interface ConverterResult {
-    type: "Next" | "Exit",
-    result?: any
+  type: "Next" | "Exit";
+  result?: any;
 }
 
 export abstract class BaseConverter {
-    constructor(protected routeInfo: Core.RouteInfo) { }
+  constructor(protected routeInfo: Core.RouteInfo) {}
 
-    abstract convert(meta: Kecubung.ParameterMetaData, value: string): ConverterResult
+  abstract convert(
+    meta: Kecubung.ParameterMetaData,
+    value: string
+  ): ConverterResult;
 
-    next(): ConverterResult {
-        return { type: "Next" }
-    }
+  next(): ConverterResult {
+    return { type: "Next" };
+  }
 
-    exit(result?: any): ConverterResult {
-        return { type: "Exit", result: result }
-    }
+  exit(result?: any): ConverterResult {
+    return { type: "Exit", result: result };
+  }
 }

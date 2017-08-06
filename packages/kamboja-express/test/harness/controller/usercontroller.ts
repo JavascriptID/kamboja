@@ -102,6 +102,6 @@ export class UserController extends Controller {
         next()
     })
     expressMiddlewareModifyUser() {
-        return new JsonActionResult(this.request.user)
+        return new JsonActionResult(this.context.user)
     }
 }

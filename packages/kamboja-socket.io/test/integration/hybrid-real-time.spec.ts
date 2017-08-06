@@ -14,7 +14,7 @@ class TokenAuthMiddleware implements Core.Middleware {
     }
 }
 
-describe.only("Hybrid Real-time function", () => {
+describe("Hybrid Real-time function", () => {
     let app: Http.Server
     const HOST = "http://localhost:5000"
 

@@ -38,9 +38,9 @@ export class HttpControllerInvocation extends Core.Invocation {
     proceed(): Promise<Core.ActionResult> {
         let binder = new ParameterBinder(this.controllerInfo, this.option.pathResolver!)
         let parameters = binder.getParameters(this.request);
-        let controller = <any>createController(this.option, this.controllerInfo, parameters)
-        controller.request = this.request
-        let method = controller[this.controllerInfo.methodMetaData!.name]
+        let controller = createController(this.option, this.controllerInfo, parameters)
+        controller.context = this.request
+        let method = (<any>controller)[this.controllerInfo.methodMetaData!.name]
         let result;
         if (this.option.autoValidation && !controller.validator.isValid())
             result = new Core.ActionResult(controller.validator.getValidationErrors(), 400, "application/json")
@@ -68,9 +68,9 @@ export class SocketControllerInvocation extends Core.Invocation {
         private msg?: any) { super() }
 
     proceed(): Promise<Core.ActionResult> {
-        let controller = <any>createController(this.option, this.controllerInfo, this.msg)
-        controller.socket = this.socket;
-        let method = controller[this.controllerInfo.methodMetaData!.name]
+        let controller = createController(this.option, this.controllerInfo, this.msg)
+        controller.context = this.socket;
+        let method = (<any>controller)[this.controllerInfo.methodMetaData!.name]
         let result;
         if (this.option.autoValidation && !controller.validator.isValid())
             result = new Core.ActionResult(controller.validator.getValidationErrors(), 400)

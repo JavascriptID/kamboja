@@ -6,10 +6,10 @@ type ControllerMemberNames = keyof Controller
 type ApiControllerMemberNames = keyof ApiController 
 
 const reservedWords:ControllerMemberNames[] = [
-    "request", "validator"]
+    "context", "validator"]
 
 const apiReservedWords:ApiControllerMemberNames[] = [
-    "request", "validator"]
+    "context", "validator"]
 
  
 
@@ -25,7 +25,7 @@ export class ReservedWordUsedAnalyzer implements AnalyzerCommand {
             return [{
                 code: RouteAnalysisCode.UnAssociatedParameters,
                 type: "Error",
-                message: `[${route.methodMetaData!.name}] must not be used as action, because it will override the Controller method, in [${getRouteDetail(route)}]`
+                message: `[${route.methodMetaData!.name}] must not be used as action, because it will override the Controller method, in ${getRouteDetail(route)}`
             }]
         }
     }

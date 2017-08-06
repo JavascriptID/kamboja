@@ -187,13 +187,8 @@ describe("Analyzer", () => {
             function MyClass() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            MyClass.prototype.request = function () { };
+            MyClass.prototype.context = function () { };
             MyClass.prototype.validator = function () { };
-            MyClass.prototype.view = function () { };
-            MyClass.prototype.json = function () { };
-            MyClass.prototype.redirect = function () { };
-            MyClass.prototype.file = function () { };
-            MyClass.prototype.ok = function () { };
             return MyClass;
         }(core_1.Controller));
         exports.MyClass = MyClass;
@@ -204,12 +199,12 @@ describe("Analyzer", () => {
         Chai.expect(result).deep.eq([{
             code: 1,
             type: 'Error',
-            message: '[request] must not be used as action, because it will override the Controller method, in [[MyClass.request example-file.js]]'
+            message: '[context] must not be used as action, because it will override the Controller method, in [MyClass.context example-file.js]'
         },
         {
             code: 1,
             type: 'Error',
-            message: '[validator] must not be used as action, because it will override the Controller method, in [[MyClass.validator example-file.js]]'
+            message: '[validator] must not be used as action, because it will override the Controller method, in [MyClass.validator example-file.js]'
         }])
     })
 
@@ -220,11 +215,8 @@ describe("Analyzer", () => {
             function MyClass() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            MyClass.prototype.request = function () { };
+            MyClass.prototype.context = function () { };
             MyClass.prototype.validator = function () { };
-            MyClass.prototype.ok = function () { };
-            MyClass.prototype.invalid = function () { };
-            MyClass.prototype.json = function () { };
             return MyClass;
         }(core_1.ApiController));
         exports.MyClass = MyClass;
@@ -235,12 +227,12 @@ describe("Analyzer", () => {
         Chai.expect(result).deep.eq([{
             code: 1,
             type: 'Error',
-            message: '[request] must not be used as action, because it will override the Controller method, in [[MyClass.request example-file.js]]'
+            message: '[context] must not be used as action, because it will override the Controller method, in [MyClass.context example-file.js]'
         },
         {
             code: 1,
             type: 'Error',
-            message: '[validator] must not be used as action, because it will override the Controller method, in [[MyClass.validator example-file.js]]'
+            message: '[validator] must not be used as action, because it will override the Controller method, in [MyClass.validator example-file.js]'
         }])
     })
 
