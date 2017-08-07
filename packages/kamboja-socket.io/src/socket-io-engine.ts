@@ -44,13 +44,13 @@ export class SocketIoEngine implements Core.Engine {
 
             if (connectionEvents.length == 0) {
                 let handshake = new SocketIoHandshake(socket)
-                let response = new SocketResponse(this.registry, new SocketAdapter(socket))
+                let response = new SocketResponse(new SocketAdapter(socket))
                 handler.execute(handshake, response, new OnConnectionInvocation())
             }
             else {
                 connectionEvents.forEach(route => {
                     let handshake = new SocketIoHandshake(socket)
-                    let response = new SocketResponse(this.registry, new SocketAdapter(socket))
+                    let response = new SocketResponse(new SocketAdapter(socket))
                     handler.execute(handshake, response, new SocketControllerInvocation(option, handshake, route))
                 })
             }
@@ -58,15 +58,15 @@ export class SocketIoEngine implements Core.Engine {
             socketEvents.forEach(route => {
                 socket.on(route.route!, (msg: any, callback: (body: any) => void) => {
                     let handshake = new SocketIoHandshake(socket)
-                    let response = new SocketResponse(this.registry, new SocketAdapter(socket), callback)
+                    let response = new SocketResponse(new SocketAdapter(socket), callback)
                     handler.execute(handshake, response, new SocketControllerInvocation(option, handshake, route, msg))
                 })
             })
 
-            this.server.on("error", (err: any) => {
+            socket.on("error", (err: any) => {
                 errorEvents.forEach(route => {
                     let handshake = new SocketIoHandshake(socket)
-                    let response = new SocketResponse(this.registry, new SocketAdapter(socket))
+                    let response = new SocketResponse(new SocketAdapter(socket))
                     handler.execute(handshake, response, new ErrorInvocation(err))
                 })
             })

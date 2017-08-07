@@ -86,4 +86,50 @@ describe("Hybrid Real-time function", () => {
             })
             .expect(200)
     })
+
+    it("Should return error when not provide user id on emit", async () => {
+        app = new KambojaApplication(__dirname)
+            .set("showLog", "None")
+            .set("controllerPaths", ["hybrid-controller"])
+            .use(BodyParser.json())
+            .use(new TokenAuthMiddleware())
+            .apply(new RealTimeFacility())
+            .init();
+
+        await new Promise(resolve => app.listen(5000, resolve))
+
+        await Promise.all([
+            SocketClient(HOST).on("message").timeout(),
+            SocketClient(HOST, { query: { token: "abc" } }).on("message").timeout(),
+            Supertest(HOST)
+                .get("/http/private")
+                .expect((response: Supertest.Response) => {
+                    Chai.expect(response.text).eq("Event id can't be null on 'emit' function")
+                })
+                .expect(500),
+        ])
+    })
+
+    it("Should return error when not provide correct user id on emit", async () => {
+        app = new KambojaApplication(__dirname)
+            .set("showLog", "None")
+            .set("controllerPaths", ["hybrid-controller"])
+            .use(BodyParser.json())
+            .use(new TokenAuthMiddleware())
+            .apply(new RealTimeFacility())
+            .init();
+
+        await new Promise(resolve => app.listen(5000, resolve))
+
+        await Promise.all([
+            SocketClient(HOST).on("message").timeout(),
+            SocketClient(HOST, { query: { token: "abc" } }).on("message").timeout(),
+            Supertest(HOST)
+                .get("/http/private?to=cde")
+                .expect((response: Supertest.Response) => {
+                    Chai.expect(response.text).eq("Can't emit event to user id [cde] because appropriate socket is not found")
+                })
+                .expect(500),
+        ])
+    })
 })

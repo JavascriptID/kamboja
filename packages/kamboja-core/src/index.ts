@@ -322,7 +322,7 @@ export interface PathResolver {
 }
 
 export interface SocketEvent {
-    type: "Broadcast" | "Private" | "Room"
+    type: "Broadcast" | "Private"// | "Room" | "JoinRoom"
     name: string
     id?: string | string[]
     payload?: any
@@ -368,7 +368,7 @@ export class ActionResult implements ResponseResult {
         return this;
     }
 
-    async execute(context: HttpRequest | Handshake, response: Response, routeInfo?: RouteInfo) {
+    execute(context: HttpRequest | Handshake, response: Response, routeInfo?: RouteInfo) {
         response.send(this)
     }
 }

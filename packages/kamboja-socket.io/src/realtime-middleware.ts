@@ -15,12 +15,30 @@ export class RealTimeMiddleware implements Core.Middleware {
             this.registry.register(context.id, context.user.id)
         }
 
+        let result = await next.proceed();
+
+        /*
+        validate action result events, and swap back user id to socket id
+        */
+        if (result.events) {
+            for (let event of result.events) {
+                if (event.type == "Private") {
+                    if (!event.id) throw new Error(`Event id can't be null on 'emit' function`)
+                    if (!Array.isArray(event.id)) event.id = [event.id]
+                    let ids = await Promise.all(event.id.map(id => this.registry.lookup(id)))
+                    ids.forEach((id, i) => {
+                        if(!id) throw new Error(`Can't emit event to user id [${event.id![i]}] because appropriate socket is not found`)
+                    })
+                    event.id = ids;
+                }
+            }
+        }
+
         /*
         Process below will give all HTTP Controllers ability to send socket events
         */
-        let result = await next.proceed();
         if (context.contextType == "HttpRequest" && result.events) {
-            let response = new SocketResponse(this.registry, new ServerSocketAdapter(this.server))
+            let response = new SocketResponse(new ServerSocketAdapter(this.server))
             await response.send(result)
             return result;
         }

@@ -35,10 +35,10 @@ export class Awaitable {
         this.client.close()
     }
 
-    async emit(event: string, payload?: any) {
+    async emit(event: string, payload?: any, handler?: (result:any) => void) {
         try {
             this.client.connect();
-            this.client.emit(event, payload);
+            this.client.emit(event, payload, handler);
             await this.wait
         }
         catch (e) {

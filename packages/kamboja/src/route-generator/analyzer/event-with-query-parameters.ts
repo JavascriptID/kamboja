@@ -11,7 +11,7 @@ export class EventWithQueryParameters implements AnalyzerCommand {
             return [{
                 code: RouteAnalysisCode.QueryParameterNotAllowed,
                 type: "Error",
-                message: `Query parameters in @route.event() is not allowed in ${getRouteDetail(route)}`
+                message: `Query parameters in @route.on() is not allowed in ${getRouteDetail(route)}`
             }]
         }
     }

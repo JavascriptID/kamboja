@@ -12,7 +12,7 @@ export class SocketAdapter {
             case "Broadcast":
                 this.socket.broadcast.emit(event, payload)
                 break;
-            case "Room":
+            //case "Room":
             case "Private":
                 this.socket.to(id!).emit(event, payload)
                 break;
@@ -28,7 +28,7 @@ export class ServerSocketAdapter {
                 case "Broadcast":
                     this.server.sockets.emit(event, payload)
                     break;
-                case "Room":
+                //case "Room":
                 case "Private":
                     this.server.sockets.to(id!).emit(event, payload)
                     break;

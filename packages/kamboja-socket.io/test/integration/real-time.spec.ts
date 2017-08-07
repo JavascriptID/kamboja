@@ -15,7 +15,7 @@ class TokenAuthMiddleware implements Core.Middleware {
 }
 
 
-describe("SocketController", () => {
+describe("Real time functionalities", () => {
     let app: Http.Server
     const HOST = "http://localhost:5000"
     before(done => {
@@ -56,5 +56,91 @@ describe("SocketController", () => {
         await SocketClient(HOST)
             .wait(listeners)
             .emit("send-all", "Success!")
+    })
+
+    it("Should able to send to specific user", async () => {
+        let listeners = Promise.all([
+            SocketClient(HOST, { query: { token: "abcd" } })
+                .on("custom-event")
+                .expect({ message: "Success!" }),
+            SocketClient(HOST)
+                .on("custom-event")
+                .timeout()
+        ])
+        await SocketClient(HOST)
+            .wait(listeners)
+            .emit("send", { to: "abcd", message: "Success!" })
+    })
+
+    it("Should able to return feedback to client", async () => {
+        let listeners = Promise.all([
+            SocketClient(HOST, { query: { token: "abcd" } })
+                .on("custom-event")
+                .expect({ message: "Success!" }),
+            SocketClient(HOST)
+                .on("custom-event")
+                .timeout()
+        ])
+        let feedback;
+        await SocketClient(HOST)
+            .wait(listeners)
+            .emit("send", { to: "abcd", message: "Success!" }, msg => {
+                feedback = msg;
+            })
+        Chai.expect(feedback).deep.eq({ body: { message: "Success!" }, status: 200 })
+    })
+
+    it.only("Should able to validate parameter", async () => {
+        let listeners = Promise.all([
+            SocketClient(HOST, { query: { token: "abcd" } })
+                .on("custom-event")
+                .timeout(),
+            SocketClient(HOST)
+                .on("custom-event")
+                .timeout()
+        ])
+        let feedback;
+        await SocketClient(HOST)
+            .wait(listeners)
+            .emit("validate", { message: "Success!" }, msg => {
+                feedback = msg;
+            })
+        Chai.expect(feedback).deep.eq({ body: { message: "Success!" }, status: 200 })
+    })
+
+    it("Should throw error when not provide user id on emit", async () => {
+        let listeners = Promise.all([
+            SocketClient(HOST, { query: { token: "abcd" } })
+                .on("custom-event")
+                .timeout(),
+            SocketClient(HOST)
+                .on("custom-event")
+                .timeout()
+        ])
+        let feedback;
+        await SocketClient(HOST)
+            .wait(listeners)
+            .emit("send", { to: undefined, message: "Success!" }, msg => {
+                feedback = msg;
+            })
+        Chai.expect(feedback).deep.eq({ body: "Event id can't be null on 'emit' function", status: 500 })
+    })
+
+    it("Should throw error when specify user id that is not exist", async () => {
+        let listeners = Promise.all([
+            SocketClient(HOST, { query: { token: "abcd" } })
+                .on("custom-event")
+                .timeout(),
+            SocketClient(HOST)
+                .on("custom-event")
+                .timeout()
+        ])
+        let feedback;
+        await SocketClient(HOST)
+            .wait(listeners)
+            .emit("send", { to: "def", message: "Success!" }, msg => {
+                feedback = msg;
+            })
+        Chai.expect(feedback).deep.eq({ body: "Can't emit event to user id [def] because appropriate socket is not found", status: 500 })
     })
 })

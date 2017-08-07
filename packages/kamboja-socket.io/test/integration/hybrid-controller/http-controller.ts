@@ -4,8 +4,8 @@ export class HttpController extends ApiController {
         return broadcast("message", "Success!")
     }
 
-    private(to: number) {
-        return emit("message", to.toString(), "Success!")
+    private(to: string) {
+        return emit("message", to, "Success!")
     }
 
     noEmit(){
