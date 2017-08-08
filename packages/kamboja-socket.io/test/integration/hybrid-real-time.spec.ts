@@ -68,6 +68,30 @@ describe("Hybrid Real-time function", () => {
         ])
     })
 
+    it("Should able to send event to multiple clients", async () => {
+        app = new KambojaApplication(__dirname)
+            .set("showLog", "None")
+            .set("controllerPaths", ["hybrid-controller"])
+            .use(BodyParser.json())
+            .use(new TokenAuthMiddleware())
+            .apply(new RealTimeFacility())
+            .init();
+
+        await new Promise(resolve => app.listen(5000, resolve))
+
+        await Promise.all([
+            SocketClient(HOST).on("message").timeout(),
+            SocketClient(HOST, { query: { token: "abc" } }).on("message").expect("Success!"),
+            SocketClient(HOST, { query: { token: "efg" } }).on("message").expect("Success!"),
+            Supertest(HOST)
+                .get("/http/sendMultiple?to=abc&to=efg")
+                .expect((response: Supertest.Response) => {
+                    Chai.expect(response.body).eq("Success!")
+                })
+                .expect(200),
+        ])
+    })
+
     it("Should not conflict with http controller that doesn't emit events", async () => {
         app = new KambojaApplication(__dirname)
             .set("showLog", "None")

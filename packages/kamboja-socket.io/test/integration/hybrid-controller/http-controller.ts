@@ -11,4 +11,8 @@ export class HttpController extends ApiController {
     noEmit(){
         return new JsonActionResult("Success!")
     }
+
+    sendMultiple(to:string[]){
+        return emit("message", to, "Success!")
+    }
 }
