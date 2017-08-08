@@ -27,9 +27,9 @@ function fixPackageJson(filePath, cb) {
     var file = path.join(filePath, "/package.json")
     var dest = path.join(filePath)
     var name = "fixing: " + file
-    gulp.task(name, function() {
+    gulp.task(name, function () {
         return gulp.src(file)
-            .pipe(jeditor(function(json) {
+            .pipe(jeditor(function (json) {
                 cb(json)
                 return json
             }))
@@ -38,7 +38,7 @@ function fixPackageJson(filePath, cb) {
     return name;
 }
 
-gulp.task("clean-source", function(cb) {
+gulp.task("clean-source", function (cb) {
     return del([
         "./packages/*/src/**/*.js",
         "./packages/*/src/**/*.d.ts",
@@ -46,7 +46,7 @@ gulp.task("clean-source", function(cb) {
     ], cb)
 })
 
-gulp.task("clean-test", function(cb) {
+gulp.task("clean-test", function (cb) {
     return del([
         "./packages/*/test/**/*.js",
         "./packages/*/test/**/*.d.ts",
@@ -54,7 +54,7 @@ gulp.task("clean-test", function(cb) {
     ], cb)
 })
 
-gulp.task("clean-lib", function(cb) {
+gulp.task("clean-lib", function (cb) {
     return del([
         "./coverage",
         "./packages/*/lib",
@@ -75,11 +75,11 @@ gulp.task("clean-lib", function(cb) {
         cb)
 })
 
-gulp.task("fix-package.json", function(cb) {
+gulp.task("fix-package.json", function (cb) {
     var buildSequence = []
     for (var i = 0; i < PACKAGES.length; i++) {
         var pack = PACKAGES[i];
-        buildSequence.push(fixPackageJson(pack, function(json) {
+        buildSequence.push(fixPackageJson(pack, function (json) {
             json.main = "src/index.js";
             json.types = "src/index.ts"
         }))
@@ -88,7 +88,7 @@ gulp.task("fix-package.json", function(cb) {
     runSequence.apply(null, buildSequence)
 });
 
-gulp.task("clean", function(cb) {
+gulp.task("clean", function (cb) {
     runSequence("clean-source", "clean-test", "clean-lib", "fix-package.json", cb);
 });
 
@@ -109,10 +109,10 @@ function compile(opt) {
         typescript: require("typescript")
     });
 
-    gulp.task(name, function() {
+    gulp.task(name, function () {
         return gulp.src([opt.src + "/**/*.ts"])
             .pipe(tsProject())
-            .on("error", function(err) {
+            .on("error", function (err) {
                 process.exit(1);
             })
             .pipe(gulp.dest(opt.dest));
@@ -121,7 +121,7 @@ function compile(opt) {
 }
 
 
-gulp.task("build", function(cb) {
+gulp.task("build", function (cb) {
     var buildSequence = []
     for (var i = 0; i < PACKAGES.length; i++) {
         var pack = PACKAGES[i];
@@ -135,12 +135,12 @@ gulp.task("build", function(cb) {
 
 //******** PRE PUBLISH *************
 
-gulp.task("prepublish", function(cb) {
+gulp.task("prepublish", function (cb) {
     var buildSequence = []
     for (var i = 0; i < PACKAGES.length; i++) {
         var pack = PACKAGES[i];
         buildSequence.push(compile({ src: pack + "/src", dest: pack + "/lib", declaration: true, tsconfig: "tsconfig-es5.json" }))
-        buildSequence.push(fixPackageJson(pack, function(json) {
+        buildSequence.push(fixPackageJson(pack, function (json) {
             json.main = "lib/index.js";
             json.types = "lib/index.d.ts"
         }))
@@ -151,25 +151,20 @@ gulp.task("prepublish", function(cb) {
 
 //******** TEST *************
 
-gulp.task("test-debug", function() {
-    return gulp.src(PACKAGES.map(function(x) { return x + "/test/**/*.js" }))
-        .pipe(mocha());
-});
-
-gulp.task("pre-test", function() {
-    return gulp.src(PACKAGES.map(function(x) { return x + "/src/**/*.js" }))
+gulp.task("pre-test", function () {
+    return gulp.src(PACKAGES.map(function (x) { return x + "/src/**/*.js" }))
         .pipe(istanbul({ includeUntested: false }))
         .pipe(istanbul.hookRequire());
 });
 
-gulp.task("test", ["pre-test"], function() {
-    return gulp.src(PACKAGES.map(function(x) { return x + "/test/**/*.js" }))
-        .pipe(mocha())
+gulp.task("test", ["pre-test"], function () {
+    return gulp.src(PACKAGES.map(function (x) { return x + "/test/**/*.js" }))
+        .pipe(mocha({ timeout: 5000 }))
         .pipe(istanbul.writeReports());
 });
 
 /** DEFAULT */
-gulp.task("default", function(cb) {
+gulp.task("default", function (cb) {
     runSequence(
         "clean",
         "fix-package.json",
