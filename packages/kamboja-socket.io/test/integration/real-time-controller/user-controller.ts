@@ -1,5 +1,5 @@
 import { Controller, route, broadcast, emit, type } from "kamboja-express";
-import {DataModel} from "../model/data-model"
+import { DataModel } from "../model/data-model"
 
 export class UserController extends Controller {
   @route.on("connection")
@@ -23,7 +23,12 @@ export class UserController extends Controller {
   }
 
   @route.on("validate")
-  withValidation(@type("DataModel, model/data-model") msg: DataModel) {
+  withValidation( @type("DataModel, model/data-model") msg: DataModel) {
     return emit("custom-event", msg.to, { message: msg.message });
+  }
+
+  @route.on("get-data")
+  returnPrimitive() {
+    return { message: "Success!" }
   }
 }

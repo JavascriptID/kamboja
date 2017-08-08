@@ -12,8 +12,7 @@ export class SocketResponse implements Core.Response {
                 if (event.type == "Broadcast")
                     this.socket.emit(event.type, event.name, payload)
                 else {
-                    if (!Array.isArray(event.id)) event.id = [event.id!]
-                    for (let id of event.id) {
+                    for (let id of event.id!) {
                         this.socket.emit(event.type, event.name, payload, id)
                     }
                 }

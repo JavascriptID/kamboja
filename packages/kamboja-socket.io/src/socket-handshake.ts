@@ -17,7 +17,6 @@ export class SocketIoHandshake implements Core.Handshake {
             this.params = nativeSocket.handshake.query
         }
     }
-
     
     private findCaseInsensitive(obj:any, key:string) {
         if(!obj) return

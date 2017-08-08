@@ -90,7 +90,7 @@ describe("Real time functionalities", () => {
         Chai.expect(feedback).deep.eq({ body: { message: "Success!" }, status: 200 })
     })
 
-    it.only("Should able to validate parameter", async () => {
+    it("Should able to validate parameter", async () => {
         let listeners = Promise.all([
             SocketClient(HOST, { query: { token: "abcd" } })
                 .on("custom-event")
@@ -103,6 +103,24 @@ describe("Real time functionalities", () => {
         await SocketClient(HOST)
             .wait(listeners)
             .emit("validate", { message: "Success!" }, msg => {
+                feedback = msg;
+            })
+        Chai.expect(feedback).deep.eq({
+            body: [{
+                field: "msg.to",
+                message: "[to] is required",
+            }],
+            status: 400
+        })
+    })
+
+    it("Should able get data directly from controller", async () => {
+        let feedback;
+        await SocketClient(HOST)
+            .wait(SocketClient(HOST, { query: { token: "abcd" } })
+                .on("custom-event")
+                .timeout())
+            .emit("get-data", undefined, msg => {
                 feedback = msg;
             })
         Chai.expect(feedback).deep.eq({ body: { message: "Success!" }, status: 200 })

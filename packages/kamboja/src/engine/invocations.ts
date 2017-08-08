@@ -68,7 +68,7 @@ export class SocketControllerInvocation extends Core.Invocation {
         private msg?: any) { super() }
 
     proceed(): Promise<Core.ActionResult> {
-        let controller = createController(this.option, this.controllerInfo, this.msg)
+        let controller = createController(this.option, this.controllerInfo, [this.msg])
         controller.context = this.socket;
         let method = (<any>controller)[this.controllerInfo.methodMetaData!.name]
         let result;
@@ -83,6 +83,6 @@ export class SocketControllerInvocation extends Core.Invocation {
         let awaitedResult = await Promise.resolve(result)
         if (awaitedResult instanceof Core.ActionResult)
             return awaitedResult;
-        return new Core.ActionResult(result)
+        return new Core.ActionResult(result, 200)
     }
 }

@@ -62,14 +62,6 @@ export class SocketIoEngine implements Core.Engine {
                     handler.execute(handshake, response, new SocketControllerInvocation(option, handshake, route, msg))
                 })
             })
-
-            socket.on("error", (err: any) => {
-                errorEvents.forEach(route => {
-                    let handshake = new SocketIoHandshake(socket)
-                    let response = new SocketResponse(new SocketAdapter(socket))
-                    handler.execute(handshake, response, new ErrorInvocation(err))
-                })
-            })
         })
         return this.server;
     }
