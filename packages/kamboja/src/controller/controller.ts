@@ -1,7 +1,7 @@
-import { HttpRequest, Validator, BaseController } from "kamboja-core"
+import { HttpRequest, Validator, BaseController, Handshake } from "kamboja-core"
 
 export class Controller implements BaseController {
-    context: HttpRequest
+    context: HttpRequest | Handshake
     validator: Validator
 }
 
