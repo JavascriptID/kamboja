@@ -150,6 +150,11 @@ gulp.task("prepublish", function (cb) {
 });
 
 //******** TEST *************
+//this task used for debugging from VSCode
+gulp.task("test-debug", function() {
+    return gulp.src(PACKAGES.map(function(x) { return x + "/test/**/*.js" }))
+        .pipe(mocha());
+});
 
 gulp.task("pre-test", function () {
     return gulp.src(PACKAGES.map(function (x) { return x + "/src/**/*.js" }))

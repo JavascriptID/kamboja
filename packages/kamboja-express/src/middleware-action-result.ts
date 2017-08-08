@@ -11,6 +11,7 @@ export class MiddlewareActionResult extends Core.ActionResult {
      */
     constructor(private middleware: RequestHandler, private chain?: (req:RequestAdapter, res:ResponseAdapter) => Promise<void>) {
         super(null)
+        this.engine = "Express"
     }
 
     execute(request: RequestAdapter, response: ResponseAdapter, routeInfo: Core.RouteInfo) {

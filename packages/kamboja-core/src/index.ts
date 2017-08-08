@@ -329,11 +329,14 @@ export interface SocketEvent {
 }
 
 export class ActionResult implements ResponseResult {
+    engine: "Express" | "General"
     header: { [key: string]: string | string[] } = {}
     cookies?: Cookie[]
     events?: SocketEvent[]
 
-    constructor(public body: any, public status?: number, public type?: string) { }
+    constructor(public body: any, public status?: number, public type?: string) { 
+        this.engine = "General"
+    }
 
     setHeader(key: string, value: string | string[]) {
         this.header[key] = value;

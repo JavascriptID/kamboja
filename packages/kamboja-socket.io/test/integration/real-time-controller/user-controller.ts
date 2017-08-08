@@ -1,4 +1,4 @@
-import { Controller, route, broadcast, emit, type } from "kamboja-express";
+import { Controller, route, broadcast, emit, type, json, view, redirect, file, download } from "kamboja-express";
 import { DataModel } from "../model/data-model"
 
 export class UserController extends Controller {
@@ -30,5 +30,30 @@ export class UserController extends Controller {
   @route.on("get-data")
   returnPrimitive() {
     return { message: "Success!" }
+  }
+
+  @route.on("get-json")
+  returnJson() {
+    return json({ message: "Success!" })
+  }
+
+  @route.on("get-view")
+  returnView() {
+    return view({ message: "Success!" })
+  }
+
+  @route.on("get-file")
+  returnFile() {
+    return file("./file.txt")
+  }
+
+  @route.on("get-redirect")
+  returnRedirect() {
+    return redirect("/index")
+  }
+
+  @route.on("get-download")
+  returnDownload() {
+    return download("./file.txt")
   }
 }

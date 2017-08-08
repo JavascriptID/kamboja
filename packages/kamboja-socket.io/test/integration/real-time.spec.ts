@@ -126,6 +126,81 @@ describe("Real time functionalities", () => {
         Chai.expect(feedback).deep.eq({ body: { message: "Success!" }, status: 200 })
     })
 
+    it("Should throw error when access controller returned json", async () => {
+        let feedback;
+        await SocketClient(HOST)
+            .wait(SocketClient(HOST, { query: { token: "abcd" } })
+                .on("custom-event")
+                .timeout())
+            .emit("get-json", undefined, msg => {
+                feedback = msg;
+            })
+        Chai.expect(feedback).deep.eq({
+            body: "ActionResult Error, only return value of type 'redirect' and 'emit' are allowed in real time action",
+            status: 500
+        })
+    })
+
+    it("Should throw error when access controller returned view", async () => {
+        let feedback;
+        await SocketClient(HOST)
+            .wait(SocketClient(HOST, { query: { token: "abcd" } })
+                .on("custom-event")
+                .timeout())
+            .emit("get-view", undefined, msg => {
+                feedback = msg;
+            })
+        Chai.expect(feedback).deep.eq({
+            body: "ActionResult Error, only return value of type 'redirect' and 'emit' are allowed in real time action",
+            status: 500
+        })
+    })
+
+    it("Should throw error when access controller returned file", async () => {
+        let feedback;
+        await SocketClient(HOST)
+            .wait(SocketClient(HOST, { query: { token: "abcd" } })
+                .on("custom-event")
+                .timeout())
+            .emit("get-file", undefined, msg => {
+                feedback = msg;
+            })
+        Chai.expect(feedback).deep.eq({
+            body: "ActionResult Error, only return value of type 'redirect' and 'emit' are allowed in real time action",
+            status: 500
+        })
+    })
+
+    it("Should throw error when access controller returned redirect", async () => {
+        let feedback;
+        await SocketClient(HOST)
+            .wait(SocketClient(HOST, { query: { token: "abcd" } })
+                .on("custom-event")
+                .timeout())
+            .emit("get-redirect", undefined, msg => {
+                feedback = msg;
+            })
+        Chai.expect(feedback).deep.eq({
+            body: "ActionResult Error, only return value of type 'redirect' and 'emit' are allowed in real time action",
+            status: 500
+        })
+    })
+
+    it("Should throw error when access controller returned download", async () => {
+        let feedback;
+        await SocketClient(HOST)
+            .wait(SocketClient(HOST, { query: { token: "abcd" } })
+                .on("custom-event")
+                .timeout())
+            .emit("get-download", undefined, msg => {
+                feedback = msg;
+            })
+        Chai.expect(feedback).deep.eq({
+            body: "ActionResult Error, only return value of type 'redirect' and 'emit' are allowed in real time action",
+            status: 500
+        })
+    })
+
     it("Should throw error when not provide user id on emit", async () => {
         let listeners = Promise.all([
             SocketClient(HOST, { query: { token: "abcd" } })

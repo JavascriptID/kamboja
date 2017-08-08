@@ -6,6 +6,7 @@ const ViewOutsideControllerError = "Relative view path can not be use inside mid
 export class ViewActionResult extends Core.ActionResult {
     constructor(public model?:any, public viewName?: string) {
         super(null)
+        this.engine = "Express"
     }
 
     async execute(request: Core.HttpRequest, response: ResponseAdapter, routeInfo: Core.RouteInfo): Promise<void> {

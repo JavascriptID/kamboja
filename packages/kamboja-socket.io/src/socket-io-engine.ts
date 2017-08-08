@@ -16,6 +16,7 @@ class SocketHandler {
         try {
             let invoker = new Invoker(this.option)
             let result = await invoker.invoke(handshake, invocation)
+            if(result.engine != "General") throw new Error(`ActionResult Error, only return value of type 'redirect' and 'emit' are allowed in real time action`)
             await result.execute(handshake, response)
         }
         catch (e) {
