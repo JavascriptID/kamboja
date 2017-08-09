@@ -1,6 +1,6 @@
 {
   "name": "kamboja-security",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Security library for KambojaJS",
   "main": "src/index.js",
   "types": "src/index.ts",
@@ -18,9 +18,6 @@
     "url": "https://github.com/kambojajs/kamboja/issues"
   },
   "homepage": "http://kambojajs.com",
-  "dependencies": {
-    
-  },
   "devDependencies": {
     "@types/chai": "^4.0.2",
     "@types/mocha": "^2.2.41",
