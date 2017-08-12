@@ -1,5 +1,5 @@
 import {
-    ResponseResult,
+    ActionResult,
     Cookie,
     SocketEvent,
     CookieOptions,
@@ -7,9 +7,9 @@ import {
     Handshake,
     Response,
     RouteInfo
-} from "../interfaces"
+} from "kamboja-core";
 
-export class ActionResult implements ResponseResult {
+export class ActionResultBase implements ActionResult {
     engine: "Express" | "General"
     header: { [key: string]: string | string[] } = {}
     cookies?: Cookie[]

@@ -26,7 +26,7 @@ export class RequestHandler {
             }
 
             let result = await invoker.invoke(this.context, invocation)
-            await result.execute(this.context, this.response, routeInfo)
+            await result.execute!(this.context, this.response, routeInfo)
         }
         catch (e) {
             this.response.send({ body: e.message, status: e.status || 500 })

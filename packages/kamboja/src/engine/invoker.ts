@@ -1,7 +1,6 @@
-import { ErrorInvocation, MiddlewareInvocation } from "./invocations"
-import { Middleware } from "../"
+import { MiddlewareInvocation } from "./invocations"
+import { MiddlewareDecorator, MiddlewareFactory, ControllerFactory } from "../framework"
 import * as Core from "kamboja-core"
-import { Controllers } from "../../"
 
 export class Invoker {
     constructor(private option: Core.Facade) { }
@@ -17,10 +16,10 @@ export class Invoker {
     private getMiddlewares(routeInfo?: Core.RouteInfo) {
         let globalMiddlewares = (<Core.Middleware[]>this.option.middlewares! || []).slice().reverse()
         if (routeInfo) {
-            let controller = Controllers.resolve(routeInfo, this.option.dependencyResolver!)
-            let middlewares = Middleware.resolve(Middleware.getMiddlewares(controller), this.option.dependencyResolver!)
+            let controller = ControllerFactory.resolve(routeInfo, this.option.dependencyResolver!)
+            let middlewares = MiddlewareFactory.resolve(MiddlewareDecorator.getMiddlewares(controller), this.option.dependencyResolver!)
             middlewares = globalMiddlewares.concat(middlewares)
-            return middlewares.concat(Middleware.resolve(Middleware.getMiddlewares(controller, routeInfo.methodMetaData!.name), this.option.dependencyResolver!))
+            return middlewares.concat(MiddlewareFactory.resolve(MiddlewareDecorator.getMiddlewares(controller, routeInfo.methodMetaData!.name), this.option.dependencyResolver!))
         }
         else {
             return globalMiddlewares;

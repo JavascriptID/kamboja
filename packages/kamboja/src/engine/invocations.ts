@@ -1,6 +1,7 @@
 import * as Core from "kamboja-core"
 import { Validator, Controllers } from "../../"
 import { ParameterBinder } from "../parameter-binder"
+import {ActionResultBase} from "../framework"
 
 function createController(option: Core.Facade, controllerInfo: Core.ControllerInfo, parameters: any[]) {
     let validator = new Validator.ValidatorImpl(option.metaDataStorage!, <Core.ValidatorCommand[]>option.validators!)
@@ -10,7 +11,14 @@ function createController(option: Core.Facade, controllerInfo: Core.ControllerIn
     return controller;
 }
 
-export class MiddlewareInvocation extends Core.Invocation {
+export abstract class InvocationBase {
+    abstract proceed(): Promise<Core.ActionResult>
+    parameters: any[]
+    controllerInfo?: Core.RouteInfo
+    middlewares?: Core.Middleware[]
+}
+
+export class MiddlewareInvocation extends InvocationBase {
     constructor(private invocation: Core.Invocation, private context: Core.HttpRequest | Core.Handshake, private middleware: Core.Middleware) {
         super()
         this.controllerInfo = invocation.controllerInfo
@@ -23,7 +31,7 @@ export class MiddlewareInvocation extends Core.Invocation {
 }
 
 
-export class ErrorInvocation extends Core.Invocation {
+export class ErrorInvocation extends InvocationBase {
     constructor(private error: any) { super() }
 
     async proceed(): Promise<Core.ActionResult> {
@@ -31,7 +39,7 @@ export class ErrorInvocation extends Core.Invocation {
     }
 }
 
-export class HttpControllerInvocation extends Core.Invocation {
+export class HttpControllerInvocation extends InvocationBase {
 
     constructor(private option: Core.Facade, private request: Core.HttpRequest, public controllerInfo: Core.ControllerInfo) { super() }
 
@@ -43,7 +51,7 @@ export class HttpControllerInvocation extends Core.Invocation {
         let method = (<any>controller)[this.controllerInfo.methodMetaData!.name]
         let result;
         if (this.option.autoValidation && !controller.validator.isValid())
-            result = new Core.ActionResult(controller.validator.getValidationErrors(), 400, "application/json")
+            result = new ActionResultBase(controller.validator.getValidationErrors(), 400, "application/json")
         else
             result = method.apply(controller, parameters);
         return this.createResult(result)
@@ -51,16 +59,16 @@ export class HttpControllerInvocation extends Core.Invocation {
 
     private async createResult(result: any) {
         let awaitedResult = await Promise.resolve(result)
-        if (awaitedResult instanceof Core.ActionResult)
+        if (awaitedResult instanceof ActionResultBase)
             return awaitedResult
         if (this.controllerInfo.classMetaData!.baseClass == "ApiController") {
-            return new Core.ActionResult(awaitedResult, 200, "application/json")
+            return new ActionResultBase(awaitedResult, 200, "application/json")
         }
-        return new Core.ActionResult(awaitedResult, 200, "text/html")
+        return new ActionResultBase(awaitedResult, 200, "text/html")
     }
 }
 
-export class SocketControllerInvocation extends Core.Invocation {
+export class SocketControllerInvocation extends InvocationBase {
 
     constructor(private option: Core.Facade,
         private socket: Core.Handshake,
@@ -73,7 +81,7 @@ export class SocketControllerInvocation extends Core.Invocation {
         let method = (<any>controller)[this.controllerInfo.methodMetaData!.name]
         let result;
         if (this.option.autoValidation && !controller.validator.isValid())
-            result = new Core.ActionResult(controller.validator.getValidationErrors(), 400)
+            result = new ActionResultBase(controller.validator.getValidationErrors(), 400)
         else
             result = method.apply(controller, [this.msg]);
         return this.createResult(result)
@@ -81,8 +89,8 @@ export class SocketControllerInvocation extends Core.Invocation {
 
     private async createResult(result: any) {
         let awaitedResult = await Promise.resolve(result)
-        if (awaitedResult instanceof Core.ActionResult)
+        if (awaitedResult instanceof ActionResultBase)
             return awaitedResult;
-        return new Core.ActionResult(result, 200)
+        return new ActionResultBase(result, 200)
     }
 }
