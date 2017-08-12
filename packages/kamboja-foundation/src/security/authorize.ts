@@ -1,5 +1,5 @@
 import { Middleware, Invocation, ActionResult, HttpRequest } from "kamboja-core"
-import { middleware } from "../decorator"
+import { middleware } from "../framework"
 
 @middleware.id("kamboja:authorize")
 export class Authorize implements Middleware {

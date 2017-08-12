@@ -1,12 +1,13 @@
 import * as Core from "kamboja-core"
-import { Validator, Controllers } from "../../"
+import { ControllerFactory } from "./controller-factory"
+import { ValidatorImpl } from "../validator";
 import { ParameterBinder } from "../parameter-binder"
-import {ActionResultBase} from "../framework"
+import { ActionResultBase } from "../framework"
 
 function createController(option: Core.Facade, controllerInfo: Core.ControllerInfo, parameters: any[]) {
-    let validator = new Validator.ValidatorImpl(option.metaDataStorage!, <Core.ValidatorCommand[]>option.validators!)
+    let validator = new ValidatorImpl(option.metaDataStorage!, <Core.ValidatorCommand[]>option.validators!)
     validator.setValue(parameters, controllerInfo.classMetaData!, controllerInfo.methodMetaData!.name)
-    let controller = Controllers.resolve(controllerInfo, option.dependencyResolver!)
+    let controller = ControllerFactory.resolve(controllerInfo, option.dependencyResolver!)
     controller.validator = validator;
     return controller;
 }

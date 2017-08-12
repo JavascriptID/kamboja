@@ -1,5 +1,7 @@
 import { MiddlewareInvocation } from "./invocations"
-import { MiddlewareDecorator, MiddlewareFactory, ControllerFactory } from "../framework"
+import { MiddlewareDecorator, } from "../framework"
+import { MiddlewareFactory } from "./middleware-factory";
+import { ControllerFactory } from "./controller-factory";
 import * as Core from "kamboja-core"
 
 export class Invoker {
