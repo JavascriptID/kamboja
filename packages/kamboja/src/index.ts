@@ -27,7 +27,6 @@ const middleware: Middleware.MiddlewareDecorator = new Middleware.MiddlewareDeco
 export const val: Validator.ValidatorDecorator = new Validator.ValidatorDecorator();
 let decorator = new Core.Decorator();
 export const type = decorator.type;
-export const listen = decorator.type;
 /**
  * [DEPRECATED] use @route
  */
