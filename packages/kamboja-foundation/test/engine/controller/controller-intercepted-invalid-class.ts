@@ -1,8 +1,5 @@
-import { Controller } from "../../../src/controller"
-import { Middleware } from "../../../src"
-import { val } from "../../../src"
+import { Controller, middleware } from "../../../src"
 
-let middleware = new Middleware.MiddlewareDecorator()
 
 @middleware.use("UnqualifiedName, path/of/nowhere")
 export class UnQualifiedNameOnClassController extends Controller {

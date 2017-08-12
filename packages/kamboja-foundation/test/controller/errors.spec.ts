@@ -1,5 +1,5 @@
 import * as Chai from "chai"
-import { HttpStatusError } from "../../src/controller/errors"
+import { HttpStatusError } from "../../src/framework"
 
 describe("HttpStatusError", () => {
     it("Should instantiate properly", ()=> {

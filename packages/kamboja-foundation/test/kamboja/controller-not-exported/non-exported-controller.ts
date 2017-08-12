@@ -1,6 +1,5 @@
-import {ApiController} from "../../../src/controller"
+import { ApiController } from "../../../src"
 
-
-class UserController extends ApiController{
-    getByPage(offset:number, take:number){}
+class UserController extends ApiController {
+    getByPage(offset: number, take: number) { }
 }

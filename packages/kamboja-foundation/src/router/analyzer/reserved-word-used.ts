@@ -1,24 +1,24 @@
 import { AnalysisMessage, RouteInfo, RouteAnalysisCode } from "kamboja-core"
 import { AnalyzerCommand, getRouteDetail } from "./definitions"
-import {ApiController, Controller} from "../../controller"
+import { ApiController, Controller } from "../../framework"
 
-type ControllerMemberNames = keyof Controller 
-type ApiControllerMemberNames = keyof ApiController 
+type ControllerMemberNames = keyof Controller
+type ApiControllerMemberNames = keyof ApiController
 
-const reservedWords:ControllerMemberNames[] = [
+const reservedWords: ControllerMemberNames[] = [
     "context", "validator"]
 
-const apiReservedWords:ApiControllerMemberNames[] = [
+const apiReservedWords: ApiControllerMemberNames[] = [
     "context", "validator"]
 
- 
+
 
 export class ReservedWordUsedAnalyzer implements AnalyzerCommand {
-    analyse(route: RouteInfo): AnalysisMessage[] | undefined{
-        let usedInController = reservedWords.some(x => route.methodMetaData! 
+    analyse(route: RouteInfo): AnalysisMessage[] | undefined {
+        let usedInController = reservedWords.some(x => route.methodMetaData!
             && x == route.methodMetaData!.name)
             && route.classMetaData!.baseClass == "Controller"
-        let usedInApiController = apiReservedWords.some(x => route.methodMetaData! 
+        let usedInApiController = apiReservedWords.some(x => route.methodMetaData!
             && x == route.methodMetaData!.name)
             && route.classMetaData!.baseClass == "ApiController"
         if (usedInApiController || usedInController) {

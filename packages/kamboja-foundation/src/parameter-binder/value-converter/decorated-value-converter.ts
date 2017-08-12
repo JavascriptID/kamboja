@@ -1,6 +1,7 @@
 import * as Kecubung from "kecubung";
 import { BaseConverter, ConverterResult } from "./base-converter";
-import { getRouteDetail, ValidationTypesAccepted } from "kamboja-core";
+import { getRouteDetail, } from "../../router";
+import { ValidationTypesAccepted } from "kamboja-core"
 
 export class DecoratedValueConverter extends BaseConverter {
   convert(meta: Kecubung.ParameterMetaData, value: string): ConverterResult {

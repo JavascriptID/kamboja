@@ -1,1 +1,1 @@
-export const MethodDecorator = (target: any, propertyKey: string, descriptor: PropertyDescriptor) => { }
+export const MethodDecorator = (target: any, propertyKey: string, descriptor: any) => { }

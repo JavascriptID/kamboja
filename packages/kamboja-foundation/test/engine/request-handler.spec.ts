@@ -1,4 +1,3 @@
-import * as Transformer from "../../src/route-generator/transformers"
 import * as Chai from "chai"
 import * as H from "../helper"
 import * as Sinon from "sinon"
@@ -6,7 +5,7 @@ import * as Core from "kamboja-core"
 import { RequestHandler } from "../../src/engine"
 import { ConcatInterceptor } from "./controller/interception-order-controller"
 import { DefaultPathResolver } from "../../src/resolver"
-import { HttpStatusError } from "../../src/controller"
+import { HttpStatusError, Router } from "../../src"
 import { ErrorHandlerMiddleware } from "./interceptor/error-handler"
 import { DefaultInterceptor } from "./interceptor/default-interceptor"
 import { ChangeToHello } from "./interceptor/change-to-hello"
@@ -383,7 +382,7 @@ describe("RequestHandler", () => {
     describe("Middleware Function", () => {
         it("Should execute global interception on all actions", async () => {
             let meta = H.fromFile("controller/api-controller.js", new DefaultPathResolver(__dirname))
-            let infos = Transformer.transform(meta)
+            let infos = Router.transform(meta)
             facade.middlewares = [
                 new ChangeToHello()
             ]
@@ -421,7 +420,7 @@ describe("RequestHandler", () => {
 
         it("Should execute interception in proper order", async () => {
             let meta = H.fromFile("controller/interception-order-controller.js", new DefaultPathResolver(__dirname))
-            let infos = Transformer.transform(meta)
+            let infos = Router.transform(meta)
             let info = infos.filter(x => x.classMetaData!.name == "InterceptedTestController" && x.methodMetaData!.name == "returnHello")[0]
             facade.middlewares = [
                 new ConcatInterceptor("4"),

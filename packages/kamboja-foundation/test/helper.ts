@@ -2,10 +2,7 @@ import * as Kecubung from "kecubung";
 import * as Babylon from "babylon"
 import * as Fs from "fs"
 import * as Core from "kamboja-core"
-import * as Test from "kamboja-testing"
-import * as Transformer from "../src/route-generator/transformers"
-import { DefaultDependencyResolver, DefaultIdentifierResolver, DefaultPathResolver } from "../src/resolver"
-import { MetaDataLoader } from "../src/metadata-loader/metadata-loader"
+import {Router, Resolver} from "../src"
 import * as Sinon from "sinon"
 
 export function fromFile(filePath: string, pathResolver: Core.PathResolver):Kecubung.ParentMetaData {
@@ -46,11 +43,11 @@ export function errorReadFile(path: string): Buffer {
 }
 
 export function createFacade(rootPath: string) {
-    let pathResolver = new DefaultPathResolver(rootPath);
+    let pathResolver = new Resolver.DefaultPathResolver(rootPath);
     let facade: Core.Facade = {
-        identifierResolver: new DefaultIdentifierResolver(),
-        dependencyResolver: new DefaultDependencyResolver(new DefaultIdentifierResolver(), pathResolver),
-        metaDataStorage: new MetaDataLoader(new DefaultIdentifierResolver(), pathResolver),
+        identifierResolver: new Resolver.DefaultIdentifierResolver(),
+        dependencyResolver: new Resolver.DefaultDependencyResolver(new Resolver.DefaultIdentifierResolver(), pathResolver),
+        metaDataStorage: new Router.MetaDataLoader(new Resolver.DefaultIdentifierResolver(), pathResolver),
         pathResolver: pathResolver,
         autoValidation: true
     }
@@ -59,7 +56,7 @@ export function createFacade(rootPath: string) {
 
 export function getRouteInfo(facade: Core.Facade, path: string, methodName: string) {
     let meta = fromFile(path, facade.pathResolver!)
-    let infos = Transformer.transform(meta)
+    let infos = Router.transform(meta)
     let info = infos.filter(x => x.methodMetaData!.name == methodName)[0]
     info.classId = info.qualifiedClassName
     return info

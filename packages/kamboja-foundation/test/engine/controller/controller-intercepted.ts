@@ -1,14 +1,15 @@
-import { Controller } from "../../../src/controller"
-import { Middleware } from "../../../src"
-import { val, Core } from "../../../src"
-import { id } from "../interceptor/interceptor-identifier"
+import {
+    Core, Controller,
+    middleware,
+    MiddlewareBase,
+    ActionResultBase
+} from "../../../src"
 
-let middleware = new Middleware.MiddlewareDecorator()
 
-@id("ChangeValueToHelloWorld")
-export class ChangeValueToHelloWorld implements Core.Middleware {
-    async execute(request:Core.HttpRequest, invocation: Core.Invocation) {
-       return new Core.ActionResult("Hello world!")
+@middleware.id("ChangeValueToHelloWorld")
+export class ChangeValueToHelloWorld implements MiddlewareBase {
+    async execute(context: Core.Handshake | Core.HttpRequest, next: Core.Invocation): Promise<Core.ActionResult> {
+        return new ActionResultBase("Hello world!")
     }
 }
 
@@ -19,6 +20,6 @@ export class DummyApi extends Controller {
     @middleware.use("DefaultInterceptor, interceptor/default-interceptor")
     @middleware.use(new ChangeValueToHelloWorld())
     returnView() {
-        return new Core.ActionResult("Helow")
+        return new ActionResultBase("Helow")
     }
 }

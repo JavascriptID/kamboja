@@ -1,4 +1,5 @@
-import { RouteInfo, AnalysisMessage, getRouteDetail } from "kamboja-core"
+import { RouteInfo, AnalysisMessage } from "kamboja-core"
+import { getRouteDetail } from "../../router"
 
 
 export interface AnalyzerCommand {

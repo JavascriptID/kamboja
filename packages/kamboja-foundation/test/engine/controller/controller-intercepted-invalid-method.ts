@@ -1,8 +1,4 @@
-import { Controller } from "../../../src/controller"
-import { Middleware } from "../../../src"
-import { val } from "../../../src"
-
-let middleware = new Middleware.MiddlewareDecorator()
+import { Controller, middleware } from "../../../src"
 
 export class UnQualifiedNameOnMethodController extends Controller {
 

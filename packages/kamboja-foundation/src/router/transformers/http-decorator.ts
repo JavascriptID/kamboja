@@ -1,10 +1,11 @@
 import * as Kecubung from "kecubung"
 import * as Core from "kamboja-core"
 import { TransformerBase, when } from "./transformer-base"
+import { RouteDecoratorType } from "../../framework"
 
 
 export class HttpDecoratorTransformer extends TransformerBase {
-    decorators: Core.DecoratorType[] = ["get", "post", "put", "delete", "patch"]
+    decorators: RouteDecoratorType[] = ["get", "post", "put", "delete", "patch"]
 
     @when("Method")
     transform(meta: Kecubung.MethodMetaData, parent: string, prevResult: Core.RouteInfo[]): Core.TransformResult {
@@ -54,7 +55,7 @@ export class HttpDecoratorTransformer extends TransformerBase {
 
             routeAnalysis = this.checkUnAssociatedParameters(meta, route, method);
             if (routeAnalysis) analysis.push(routeAnalysis)
-            
+
             let result = <Core.RouteInfo>{
                 initiator: "HttpMethodDecorator",
                 httpMethod: method,

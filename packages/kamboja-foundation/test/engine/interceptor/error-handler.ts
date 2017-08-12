@@ -1,5 +1,4 @@
-import { Controller } from "../../../src/controller"
-import { val, Core, HttpStatusError } from "../../../src"
+import { HttpStatusError, Core } from "../../../src"
 
 export class ErrorHandlerMiddleware implements Core.Middleware {
     constructor(private callback?: (i: Core.Invocation) => void) { }

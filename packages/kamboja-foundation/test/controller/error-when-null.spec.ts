@@ -1,5 +1,5 @@
 import * as Chai from "chai"
-import { HttpStatusError } from "../../src/controller/errors"
+import { HttpStatusError } from "../../src/framework"
 
 /**
  * this test is a hack to get 100% coverage on extending error issue

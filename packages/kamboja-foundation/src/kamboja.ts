@@ -1,14 +1,15 @@
 import * as Core from "kamboja-core"
 import * as Lodash from "lodash"
-import { MetaDataLoader } from "./metadata-loader/metadata-loader"
+import { MetaDataLoader } from "./router"
 import { DefaultDependencyResolver, DefaultIdentifierResolver, DefaultPathResolver } from "./resolver"
-import { RouteGenerator, RouteAnalyzer } from "./route-generator"
+import { RouteGenerator, RouteAnalyzer } from "./router"
+import { MiddlewareFactory } from "./engine"
 import * as Fs from "fs"
 import * as Path from "path"
 import * as Chalk from "chalk"
 import { Logger } from "./logger"
 import * as Kecubung from "kecubung"
-import { Validator, Middleware } from "./index"
+import { ValidatorFactory } from "./validator"
 import * as Http from "http"
 
 /**
@@ -165,11 +166,11 @@ export class Kamboja implements Core.Application {
     }
 
     private resolveMiddlewares(option: Core.KambojaOption) {
-        option.middlewares = Middleware.resolve(option.middlewares!, option.dependencyResolver!)
+        option.middlewares = MiddlewareFactory.resolve(option.middlewares!, option.dependencyResolver!)
     }
 
     private resolveValidators(option: Core.KambojaOption) {
-        option.validators = Validator.resolve(option.validators!, option.dependencyResolver!)
+        option.validators = ValidatorFactory.resolve(option.validators!, option.dependencyResolver!)
     }
 
     /**

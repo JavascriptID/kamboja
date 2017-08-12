@@ -1,10 +1,9 @@
-import { ValidatorBase, decoratorName } from "../../../src/validator/baseclasses"
+import { Validator } from "../../../src"
 import { ValidationError, FieldValidatorArg } from "kamboja-core"
-import * as Kecubung from "kecubung"
 
-export class CustomValidation extends ValidatorBase {
+export class CustomValidation extends Validator.ValidatorBase {
 
-    @decoratorName("customValidation")
+    @Validator.decoratorName("customValidation")
     validate(arg:FieldValidatorArg): ValidationError[] {
         return [{
             field: "any.field",

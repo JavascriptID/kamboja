@@ -1,3 +1,5 @@
 export * from "./request-handler"
 export * from "./invoker"
 export * from "./invocations"
+export * from "./controller-factory"
+export * from "./middleware-factory"

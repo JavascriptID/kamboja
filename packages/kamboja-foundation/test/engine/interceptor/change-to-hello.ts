@@ -1,10 +1,8 @@
-import { Controller } from "../../../src/controller"
-import { val, Core } from "../../../src"
-import { id } from "./interceptor-identifier"
+import { Controller, ActionResultBase, middleware, Core } from "../../../src"
 
-@id("ChangeToHello")
+@middleware.id("ChangeToHello")
 export class ChangeToHello implements Core.Middleware {
     async execute(request:Core.HttpRequest, invocation: Core.Invocation) {
-        return new Core.ActionResult("Hello world!")
+        return new ActionResultBase("Hello world!")
     }
 }

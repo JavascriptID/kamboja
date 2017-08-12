@@ -1,9 +1,9 @@
 import * as Chai from "chai"
-import * as Core from "../src"
 import * as Kecubung from "kecubung"
 import * as Sinon from "sinon"
 import * as Url from "url"
-import { HttpRequest, HttpResponse } from "./helper"
+import { ActionResultBase } from "../../src";
+import { HttpRequest, HttpResponse } from "kamboja-testing"
 
 describe("ActionResult", () => {
     let request: HttpRequest;
@@ -17,7 +17,7 @@ describe("ActionResult", () => {
     })
 
     it("Should fill response properties properly", async () => {
-        let result = new Core.ActionResult("Halo", 400, "application/json")
+        let result = new ActionResultBase("Halo", 400, "application/json")
         result.cookies = [{ key: "Halo", value: "Hello" }]
         result.header = { Accept: "text/*, application/json" }
         await result.execute(request, response, undefined)
@@ -29,21 +29,21 @@ describe("ActionResult", () => {
     })
 
     it("Should able to set header using chainable api", async () => {
-        let result = new Core.ActionResult("Halo")
+        let result = new ActionResultBase("Halo")
             .setHeader("Accept", "text/*, application/json")
         await result.execute(request, response, undefined)
         Chai.expect(sendSpy.getCall(0).args[0].header).deep.eq({ Accept: "text/*, application/json" })
     })
 
     it("Should able to set status using chainable api", async () => {
-        let result = new Core.ActionResult("Halo")
+        let result = new ActionResultBase("Halo")
             .setStatus(500)
         await result.execute(request, response, undefined)
         Chai.expect(sendSpy.getCall(0).args[0].status).eq(500)
     })
 
     it("Should able to set cookie using chainable api", async () => {
-        let result = new Core.ActionResult("Halo")
+        let result = new ActionResultBase("Halo")
             .setCookie("Halo", "Hello")
             .setCookie("Hola", "Helo")
         await result.execute(request, response, undefined)
@@ -55,14 +55,14 @@ describe("ActionResult", () => {
     })
 
     it("Should able to set content type using chainable api", async () => {
-        let result = new Core.ActionResult("Halo")
+        let result = new ActionResultBase("Halo")
             .setType("application/pdf")
         await result.execute(request, response, undefined)
         Chai.expect(sendSpy.getCall(0).args[0].type).eq("application/pdf")
     })
 
     it("Should able to broadcast event using chainable api", async () => {
-        let result = new Core.ActionResult("Halo")
+        let result = new ActionResultBase("Halo")
             .broadcast("new-message")
             .broadcast("second-message", { msg: "message" })
         await result.execute(request, response, undefined)
@@ -73,7 +73,7 @@ describe("ActionResult", () => {
     })
 
     it("Should able to emit event using chainable api", async () => {
-        let result = new Core.ActionResult("Halo")
+        let result = new ActionResultBase("Halo")
             .emit("new-message", "333")
             .emit("second-message", "333", { msg: "message" })
         await result.execute(request, response, undefined)

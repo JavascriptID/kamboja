@@ -1,0 +1,1 @@
+export function type(name: string) { return (...args: any[]) => { } }

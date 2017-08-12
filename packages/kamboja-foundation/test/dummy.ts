@@ -1,5 +1,4 @@
-import { route } from "../src"
-import { Controller, ApiController } from "../src/controller"
+import { Controller, ApiController, route } from "../src"
 
 export class MyModel {
     myProp: string

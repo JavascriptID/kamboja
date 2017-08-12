@@ -1,7 +1,5 @@
-import { Controller, ApiController } from "../../../src/controller"
-import { Middleware, Core } from "../../../src"
+import { ApiController, ActionResultBase, middleware, Core } from "../../../src"
 
-let middleware = new Middleware.MiddlewareDecorator()
 
 export class ConcatInterceptor implements Core.Middleware {
     constructor(private msg: string) { }
@@ -9,7 +7,7 @@ export class ConcatInterceptor implements Core.Middleware {
     async execute(request: Core.HttpRequest, invocation: Core.Invocation) {
         let invocationResult = <Core.ActionResult>await invocation.proceed();
         let result = invocationResult.body;
-        return new Core.ActionResult(this.msg + ", " + result)
+        return new ActionResultBase(this.msg + ", " + result)
     }
 }
 

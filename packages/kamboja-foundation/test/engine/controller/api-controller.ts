@@ -1,4 +1,4 @@
-import { Controller, ApiController, } from "../../../src/controller"
+import { Controller, ApiController, } from "../../../src"
 import { val, HttpStatusError, Core } from "../../../src"
 
 export class DummyApi extends ApiController {

@@ -14,18 +14,6 @@ export function getDecoratorName(target: any) {
     return <string>Reflect.getMetadata(MetaDataKey, target)
 }
 
-export function parameterDecorator(...params: any[]) { }
-
-export class ValidatorDecorator {
-    required(message?: string) { return parameterDecorator; }
-    range(min: number, max?: number, message?: string) { return parameterDecorator; }
-    /**
-     * @deprecated use type instead of val.type
-     * @param qualifiedName 
-     */
-    type(qualifiedName: string) { console.log("@val.type() is deprecated now, use @type()"); return parameterDecorator; }
-    email(message?: string) { return parameterDecorator; }
-}
 
 export interface ParametersValidatorArg {
     type: "ParametersValidator",
