@@ -29,7 +29,7 @@ export class RequestHandler {
             await result.execute!(this.context, this.response, routeInfo)
         }
         catch (e) {
-            this.response.send(new Core.ActionResult(e.message, e.status))
+            this.response.send(new Core.ActionResult(e.message, e.status || 500))
         }
     }
 }

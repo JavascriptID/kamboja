@@ -1,5 +1,5 @@
 import { AnalysisMessage, RouteInfo, RouteAnalysisCode } from "kamboja-core"
-import { AnalyzerCommand, getRouteDetail } from "./definitions"
+import { AnalyzerCommand } from "./definitions"
 
 export class ClassNotExportedControllerAnalyzer implements AnalyzerCommand {
     analyse(route: RouteInfo): AnalysisMessage[] | undefined{

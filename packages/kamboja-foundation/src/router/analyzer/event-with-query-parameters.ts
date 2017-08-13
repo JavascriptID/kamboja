@@ -1,5 +1,6 @@
 import { AnalysisMessage, RouteInfo, RouteAnalysisCode } from "kamboja-core"
-import { AnalyzerCommand, getRouteDetail } from "./definitions"
+import { AnalyzerCommand } from "./definitions"
+import { getRouteDetail } from "../helper"
 
 export class EventWithQueryParameters implements AnalyzerCommand {
     routes: RouteInfo[] = []

@@ -1,6 +1,7 @@
 import { AnalysisMessage, RouteInfo, RouteAnalysisCode } from "kamboja-core"
-import { AnalyzerCommand, getRouteDetail } from "./definitions"
+import { AnalyzerCommand } from "./definitions"
 import { ApiController, Controller } from "../../framework"
+import { getRouteDetail } from "../helper"
 
 type ControllerMemberNames = keyof Controller
 type ApiControllerMemberNames = keyof ApiController
