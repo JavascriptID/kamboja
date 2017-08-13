@@ -1,4 +1,4 @@
-import * as action from "../src/action-results"
+import * as action from "../src/action-result/action-results"
 import * as Chai from "chai"
 import * as Supertest from "supertest"
 import * as Express from "express"

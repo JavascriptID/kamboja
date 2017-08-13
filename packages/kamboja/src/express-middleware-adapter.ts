@@ -1,5 +1,5 @@
 import { Core, Middleware } from "kamboja-foundation"
-import { MiddlewareActionResult } from "./middleware-action-result"
+import { MiddlewareActionResult } from "./action-result"
 import { RequestHandler } from "express"
 import { ResponseAdapter } from "./response-adapter"
 import { RequestAdapter } from "./request-adapter"

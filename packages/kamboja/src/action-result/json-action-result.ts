@@ -1,5 +1,5 @@
 import { Core } from "kamboja-foundation"
-import { ResponseAdapter } from "./response-adapter"
+import { ResponseAdapter } from "../response-adapter"
 
 export class JsonActionResult extends Core.ActionResult {
     constructor(body:any, status?:number){

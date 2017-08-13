@@ -164,7 +164,7 @@ gulp.task("pre-test", function () {
 
 gulp.task("test", ["pre-test"], function () {
     return gulp.src(PACKAGES.map(function (x) { return x + "/test/**/*.js" }))
-        .pipe(mocha({ timeout: 5000 }))
+        .pipe(mocha({ timeout: 10000 }))
         .pipe(istanbul.writeReports());
 });
 

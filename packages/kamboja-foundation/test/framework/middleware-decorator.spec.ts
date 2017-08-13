@@ -1,4 +1,4 @@
-import { middleware, MiddlewareDecorator } from "../../src"
+import { Core, middleware, MiddlewareDecorator, Middleware } from "../../src"
 import * as Chai from "chai"
 
 @middleware.use("Interceptor, interceptor/path")
@@ -12,7 +12,21 @@ class MyTargetClass {
     myProperty:string;
 }
 
-describe("Interceptor Decorator", () => {
+@middleware.id("kamboja:my-middleware")
+class MyMiddleware extends Middleware {
+    execute(context: Core.Handshake | Core.HttpRequest, next: Core.Invocation): Promise<Core.ActionResult> {
+        return next.proceed()
+    }
+}
+
+class MyMiddlewareWithoutID extends Middleware {
+    execute(context: Core.Handshake | Core.HttpRequest, next: Core.Invocation): Promise<Core.ActionResult> {
+        return next.proceed()
+    }
+}
+
+
+describe("Middleware Decorator", () => {
     it("Should get class interceptors", () => {
         let target = new MyTargetClass();
         let result = MiddlewareDecorator.getMiddlewares(target);
@@ -38,5 +52,17 @@ describe("Interceptor Decorator", () => {
         let result = MiddlewareDecorator.getMiddlewares(target, "theMethod");
         Chai.expect(result[0]).eq("SecondMethodInterceptor, interceptor/path")
         Chai.expect(result[1]).eq("MethodInterceptor, interceptor/path")
+    })
+
+    it("Should able to get id of middleware", () => {
+        let target = new MyMiddleware();
+        let result = MiddlewareDecorator.getId(target);
+        Chai.expect(result).eq("kamboja:my-middleware")
+    })
+
+    it("Should not error when no id found", () => {
+        let target = new MyMiddlewareWithoutID();
+        let result = MiddlewareDecorator.getId(target);
+        Chai.expect(result).undefined
     })
 })
