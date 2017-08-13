@@ -1,6 +1,6 @@
 import * as Chai from "chai"
 import * as Supertest from "supertest"
-import { KambojaApplication, Core } from "kamboja-express"
+import { KambojaApplication, Core } from "kamboja"
 import { socketTester as SocketClient } from "kamboja-testing"
 import { RealTimeFacility } from "../../src/"
 import * as BodyParser from "body-parser"

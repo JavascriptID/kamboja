@@ -1,4 +1,4 @@
-import { Controller, route, broadcast, emit, type, json, view, redirect, file, download } from "kamboja-express";
+import { Controller, route, broadcast, emit, type, json, view, redirect, file, download } from "kamboja";
 import { DataModel } from "../model/data-model"
 
 export class UserController extends Controller {

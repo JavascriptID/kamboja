@@ -1,10 +1,10 @@
-import { MiddlewareDecorator, Core} from "kamboja-foundation"
+import { MiddlewareDecorator as Decorator, Core} from "kamboja-foundation"
 import { RequestHandler } from "express"
 import { ExpressMiddlewareAdapter } from "./express-middleware-adapter"
 
-export class MiddlewareMetaData {
+export class MiddlewareDecorator {
 
-    private middleware:MiddlewareDecorator = new MiddlewareDecorator()
+    private middleware:Decorator = new Decorator()
     
     use(middleware: RequestHandler | string | Core.Middleware) {
         if (typeof middleware == "function")
@@ -17,3 +17,5 @@ export class MiddlewareMetaData {
         return this.middleware.id(id)
     }
 }
+
+export const middleware = new MiddlewareDecorator();

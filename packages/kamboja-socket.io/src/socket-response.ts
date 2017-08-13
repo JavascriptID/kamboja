@@ -5,7 +5,7 @@ export class SocketResponse implements Core.Response {
 
     constructor(private socket: Socket, private callback?: (body: any) => void) { }
 
-    async send(result: Core.ResponseResult) {
+    async send(result: Core.ActionResult) {
         if (result.events) {
             for (let event of result.events) {
                 let payload = event.payload || result.body;

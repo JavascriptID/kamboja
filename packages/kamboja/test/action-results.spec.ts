@@ -19,7 +19,6 @@ describe("ActionResults", () => {
         return Supertest(app)
             .get("/")
             .expect((response:Supertest.Response) => {
-                console.log(response.header)
                 Chai.expect(response.header["access-control-allow-origin"]).eq("*")
                 Chai.expect(response.header["set-cookie"]).deep.eq(['User=Nobita; Path=/'])
                 Chai.expect(response.header["content-disposition"]).eq(`attachment; filename="helper.js"`)

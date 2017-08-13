@@ -1,5 +1,5 @@
 import * as Chai from "chai"
-import { ValidatorDecorator, Validator } from "../../src"
+import { ValidatorDecorator, Validator,  } from "../../src"
 import {FieldValidatorArg} from "kamboja-core"
 describe("Validator Base Classes", () => {
     it("Instantiate Validator Decorator properly", () => {
@@ -7,7 +7,6 @@ describe("Validator Base Classes", () => {
         decorator.email()
         decorator.range(1)
         decorator.required()
-        decorator.type("")
     })
 
     describe("ValidatorBase", () => {

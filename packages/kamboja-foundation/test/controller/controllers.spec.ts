@@ -23,7 +23,6 @@ describe("ControllerFactory", () => {
         try {
             let c = ControllerFactory.resolve(info, facade.dependencyResolver!)
         } catch (e) {
-            console.log(e.message)
             Chai.expect(e.message).contains("Can not instantiate [DummyController, non/valid/path] as Controller")
         }
     })

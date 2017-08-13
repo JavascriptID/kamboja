@@ -43,7 +43,8 @@ export class Logger {
     }
 
     newLine() {
-        console.log();
+        if (this.type == "Info" || this.type == "Warning" || this.type == "Error")
+            console.log();
         return this
     }
 }

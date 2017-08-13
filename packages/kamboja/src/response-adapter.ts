@@ -7,7 +7,7 @@ export class ResponseAdapter implements Core.Response {
     private setup(result: Core.ActionResult) {
         result.status = result.status || 200;
         result.type = result.type || "text/plain"
-        if (result.header) this.nativeResponse.set(result.header)
+        this.nativeResponse.set(result.header)
         this.nativeResponse.status(result.status)
         if (result.cookies) {
             result.cookies.forEach(x => {

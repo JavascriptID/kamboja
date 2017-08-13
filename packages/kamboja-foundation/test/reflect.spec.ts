@@ -16,9 +16,6 @@ describe("reflect", () => {
             myProperty: "Hello",
             myMethod: () => {}
         }
-        for(let i in obj){
-            console.log(i)
-        }
         let props = Decorator.reflect(obj)
         Chai.expect(props.some(x => x == "myProperty")).true
         Chai.expect(props.some(x => x == "myMethod")).true

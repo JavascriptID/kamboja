@@ -37,7 +37,8 @@ describe("Integration Test", () => {
     it("Should provide singleton", () => {
         let kamboja = new Kamboja({ init: () => { } }, <Core.KambojaOption>{
             rootPath: __dirname,
-            modelPath: "models"
+            modelPath: "models",
+            showLog: "None"
         })
         kamboja.init()
         let instance = MongooseHelper.getInstance();
@@ -143,7 +144,6 @@ describe("Integration Test", () => {
         })
         await user.save()
         let result = <any[]>await Product.find().lean().exec()
-        console.log(result)
         Chai.expect(result[0].name).eq("i-Phone 7s Plus")
         Chai.expect(result[0]._id.length).eq(9)
     })

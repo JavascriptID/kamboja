@@ -11,14 +11,7 @@ function createController(option: Core.Facade, controllerInfo: Core.ControllerIn
     return controller;
 }
 
-export abstract class InvocationBase {
-    abstract proceed(): Promise<Core.ActionResult>
-    parameters: any[]
-    controllerInfo?: Core.RouteInfo
-    middlewares?: Core.Middleware[]
-}
-
-export class MiddlewareInvocation extends InvocationBase {
+export class MiddlewareInvocation extends Core.Invocation {
     constructor(private invocation: Core.Invocation, private context: Core.HttpRequest | Core.Handshake, private middleware: Core.Middleware) {
         super()
         this.controllerInfo = invocation.controllerInfo
@@ -31,7 +24,7 @@ export class MiddlewareInvocation extends InvocationBase {
 }
 
 
-export class ErrorInvocation extends InvocationBase {
+export class ErrorInvocation extends Core.Invocation {
     constructor(private error: any) { super() }
 
     async proceed(): Promise<Core.ActionResult> {
@@ -39,7 +32,7 @@ export class ErrorInvocation extends InvocationBase {
     }
 }
 
-export class HttpControllerInvocation extends InvocationBase {
+export class HttpControllerInvocation extends Core.Invocation {
 
     constructor(private option: Core.Facade, private request: Core.HttpRequest, public controllerInfo: Core.ControllerInfo) { super() }
 
@@ -68,7 +61,7 @@ export class HttpControllerInvocation extends InvocationBase {
     }
 }
 
-export class SocketControllerInvocation extends InvocationBase {
+export class SocketControllerInvocation extends Core.Invocation {
 
     constructor(private option: Core.Facade,
         private socket: Core.Handshake,
