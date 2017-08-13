@@ -1,10 +1,10 @@
-import { Core } from "kamboja"
+import { Core } from "kamboja-foundation"
 import * as Express from "express"
 
 export class ResponseAdapter implements Core.Response {
     constructor(public nativeResponse: Express.Response, public nativeNextFunction: Express.NextFunction) { }
 
-    private setup(result: Core.ResponseResult) {
+    private setup(result: Core.ActionResult) {
         result.status = result.status || 200;
         result.type = result.type || "text/plain"
         if (result.header) this.nativeResponse.set(result.header)
@@ -16,32 +16,32 @@ export class ResponseAdapter implements Core.Response {
         }
     }
 
-    json(result: Core.ResponseResult) {
+    json(result: Core.ActionResult) {
         this.setup(result)
         this.nativeResponse.status(result.status!).json(result.body)
     }
 
-    redirect(result: Core.ResponseResult, path: string) {
+    redirect(result: Core.ActionResult, path: string) {
         this.setup(result)
         this.nativeResponse.redirect(path)
     }
 
-    download(result: Core.ResponseResult, path: string) {
+    download(result: Core.ActionResult, path: string) {
         this.setup(result)
         this.nativeResponse.download(path)
     }
 
-    file(result: Core.ResponseResult, path: string) {
+    file(result: Core.ActionResult, path: string) {
         this.setup(result)
         this.nativeResponse.sendFile(path)
     }
 
-    render(result: Core.ResponseResult, viewName: string, model: any) {
+    render(result: Core.ActionResult, viewName: string, model: any) {
         this.setup(result)
         this.nativeResponse.render(viewName, model)
     }
 
-    send(result: Core.ResponseResult) {
+    send(result: Core.ActionResult) {
         if (result.type == "application/json") return this.json(result)
         this.setup(result)
         this.nativeResponse.type(result.type!)

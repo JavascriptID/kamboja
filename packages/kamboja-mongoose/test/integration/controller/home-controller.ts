@@ -1,4 +1,4 @@
-import {Controller, Core} from "kamboja"
+import {Controller, Core} from "kamboja-foundation"
 
 export class HomeController extends Controller{
     index(){

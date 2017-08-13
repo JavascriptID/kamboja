@@ -1,4 +1,4 @@
-import { Core } from "kamboja"
+import { Core } from "kamboja-foundation"
 import * as Kecubung from "kecubung"
 import { SchemaOptions } from "mongoose"
 

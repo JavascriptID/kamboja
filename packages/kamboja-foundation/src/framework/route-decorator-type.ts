@@ -1,3 +1,3 @@
-import { RouteDecorator } from "./route-decorator"
+import { RouteDecorator } from "./decorator"
 
 export type RouteDecoratorType = keyof RouteDecorator;

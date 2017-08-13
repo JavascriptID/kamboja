@@ -5,3 +5,4 @@ export function analyze(info: RouteInfo[]) {
     let analyzer = new RouteAnalyzer(info)
     return analyzer.analyse();
 }
+export { RouteAnalyzer }

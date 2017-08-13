@@ -1,4 +1,4 @@
-import { http, Controller, Core } from "kamboja"
+import { route, Controller, Core } from "kamboja-foundation"
 import * as Model from "../model/user-model"
 import { Request, Response, NextFunction } from "express"
 import { MiddlewareActionResult, middleware, JsonActionResult } from "../../../src"
@@ -28,7 +28,7 @@ export class UserController extends Controller {
     }
 
 
-    @http.get("with/:id")
+    @route.get("with/:id")
     withParam(id: string, iAge: number, bGraduated: boolean) {
         return { id: id, age: iAge, graduated: bGraduated }
     }

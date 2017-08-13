@@ -1,4 +1,4 @@
-import { Controller } from "kamboja"
+import { Controller } from "kamboja-foundation"
 import { middleware } from "../../../src"
 import { ConcatMiddleware } from "../interceptor/concat-middleware"
 

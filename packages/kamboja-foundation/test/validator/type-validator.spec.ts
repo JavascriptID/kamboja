@@ -5,7 +5,7 @@ import { RequiredValidator } from "../../src/validator/required-validator"
 import { EmailValidator } from "../../src/validator/email-validator"
 import { RangeValidator } from "../../src/validator/range-validator"
 import { TypeValidator } from "../../src/validator/type-validator"
-import { MetaDataLoader } from "../../src/metadata-loader/metadata-loader"
+import { Router } from "../../src"
 import { DefaultIdentifierResolver, DefaultPathResolver } from "../../src/resolver"
 import { UserModel } from "./model/user-model"
 import { ItemModel } from "./model/item-model"
@@ -14,12 +14,12 @@ import { ValidatorCommand } from "kamboja-core"
 
 
 describe("TypeValidator", () => {
-    let storage: MetaDataLoader;
+    let storage: Router.MetaDataLoader;
     let validators: ValidatorCommand[]
     let test: TypeValidator;
 
     beforeEach(() => {
-        storage = new MetaDataLoader(new DefaultIdentifierResolver(), new DefaultPathResolver(__dirname))
+        storage = new Router.MetaDataLoader(new DefaultIdentifierResolver(), new DefaultPathResolver(__dirname))
         storage.load("model", "Model")
         storage.load("controller", "Controller")
         validators = [

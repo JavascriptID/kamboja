@@ -2,7 +2,7 @@ import * as Supertest from "supertest"
 import * as Chai from "chai"
 import { RequestAdapter } from "../src/request-adapter"
 import * as Express from "express"
-import * as Kamboja from "kamboja"
+import * as Kamboja from "kamboja-foundation"
 import * as Sinon from "sinon"
 
 

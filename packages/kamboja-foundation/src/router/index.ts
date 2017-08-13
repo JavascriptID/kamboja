@@ -1,5 +1,5 @@
 export * from "./route-generator"
-export * from "./analyzer/analyzer"
+export * from "./analyzer"
 export * from "./transformers/api-convention"
 export * from "./metadata-loader"
 export * from "./helper"

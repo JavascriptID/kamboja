@@ -1,4 +1,4 @@
-import { val, type } from "kamboja"
+import { val, type } from "kamboja-foundation"
 
 export class ReferenceEntityWithArray {
     @type("SimpleEntity[], models/simple-model")

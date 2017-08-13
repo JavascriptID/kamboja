@@ -1,4 +1,4 @@
-import { Core } from "kamboja"
+import { Core } from "kamboja-foundation"
 import { ResponseAdapter } from "./response-adapter"
 
 export class RedirectActionResult extends Core.ActionResult {

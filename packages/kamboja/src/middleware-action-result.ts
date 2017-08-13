@@ -1,4 +1,4 @@
-import { Core } from "kamboja"
+import { Core } from "kamboja-foundation"
 import { RequestHandler } from "express"
 import { ResponseAdapter } from "./response-adapter"
 import { RequestAdapter } from "./request-adapter"

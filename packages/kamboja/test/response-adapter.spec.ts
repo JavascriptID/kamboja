@@ -4,13 +4,14 @@ import { ResponseAdapter } from "../src/response-adapter"
 import * as Express from "express"
 import * as Sinon from "sinon"
 import * as BodyParser from "body-parser"
+import { Core } from "kamboja-foundation"
 
 describe("ResponseAdapter", () => {
 
     it("Should send body properly", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.send({ body: "Halo" })
+            adapter.send(new Core.ActionResult("Halo"))
         }))
             .get("/")
             .expect((response: Supertest.Response) => {
@@ -23,7 +24,7 @@ describe("ResponseAdapter", () => {
     it("Should able to send number", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.send({ body: 400 })
+            adapter.send(new Core.ActionResult(400))
         }))
             .get("/")
             .expect((response: Supertest.Response) => {
@@ -37,7 +38,7 @@ describe("ResponseAdapter", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
 
-            adapter.send({ body: false })
+            adapter.send(new Core.ActionResult(false))
         }))
             .get("/")
             .expect((response: Supertest.Response) => {
@@ -50,7 +51,7 @@ describe("ResponseAdapter", () => {
     it("Should send cookie properly", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.send({ body: undefined, cookies: [{ key: "Key", value: "Value" }] })
+            adapter.send(new Core.ActionResult(undefined).setCookie("Key", "Value"))
         }))
             .get("/")
             .expect((response: Supertest.Response) => {
@@ -62,7 +63,7 @@ describe("ResponseAdapter", () => {
     it("Should able to send header properly", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.send({ body: undefined, header: { Accept: "text/xml" } })
+            adapter.send(new Core.ActionResult(undefined).setHeader("Accept", "text/xml"))
         }))
             .get("/")
             .expect((response: Supertest.Response) => {
@@ -74,7 +75,7 @@ describe("ResponseAdapter", () => {
     it("Should set status properly", () => {
         return Supertest(Express().use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.send({ body: undefined, status: 401 })
+            adapter.send(new Core.ActionResult(undefined, 401))
         }))
             .get("/")
             .expect(401)
@@ -83,10 +84,7 @@ describe("ResponseAdapter", () => {
     it("Should set JSON properly", () => {
         return Supertest(Express().use(BodyParser.json()).use((req, resp, next) => {
             let adapter = new ResponseAdapter(resp, next)
-            adapter.send({
-                type: "application/json",
-                body: { message: "Hello" }
-            })
+            adapter.send(new Core.ActionResult({ message: "Hello" }, 200, "application/json"))
         }))
             .get("/")
             .expect((response: Supertest.Response) => {

@@ -16,10 +16,10 @@ var PACKAGES = [
     "packages/kecubung",
     "packages/kamboja-core",
     "packages/kamboja-testing",
-    "packages/kamboja",
-    "packages/kamboja-express",
+    "packages/kamboja-foundation",
+    "packages/kamboja-socket.io",
     "packages/kamboja-mongoose",
-    "packages/kamboja-socket.io"
+    "packages/kamboja",
 ]
 
 //********CLEAN ************

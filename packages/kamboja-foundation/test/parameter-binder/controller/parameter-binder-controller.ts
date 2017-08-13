@@ -1,5 +1,4 @@
-import { Controller, ApiController } from "../../../src/controller"
-import { type, bind } from "../../../src"
+import { Controller, ApiController, type, bind } from "../../../src"
 import { Cookie } from "kamboja-core"
 
 export class DummyApi extends ApiController {

@@ -1,8 +1,7 @@
 import * as Core from "kamboja-core"
 import { ControllerFactory } from "./controller-factory"
 import { ValidatorImpl } from "../validator";
-import { ParameterBinder } from "../parameter-binder"
-import { ActionResultBase } from "../framework"
+import { ParameterBinder } from "../binder"
 
 function createController(option: Core.Facade, controllerInfo: Core.ControllerInfo, parameters: any[]) {
     let validator = new ValidatorImpl(option.metaDataStorage!, <Core.ValidatorCommand[]>option.validators!)
@@ -52,7 +51,7 @@ export class HttpControllerInvocation extends InvocationBase {
         let method = (<any>controller)[this.controllerInfo.methodMetaData!.name]
         let result;
         if (this.option.autoValidation && !controller.validator.isValid())
-            result = new ActionResultBase(controller.validator.getValidationErrors(), 400, "application/json")
+            result = new Core.ActionResult(controller.validator.getValidationErrors(), 400, "application/json")
         else
             result = method.apply(controller, parameters);
         return this.createResult(result)
@@ -60,12 +59,12 @@ export class HttpControllerInvocation extends InvocationBase {
 
     private async createResult(result: any) {
         let awaitedResult = await Promise.resolve(result)
-        if (awaitedResult instanceof ActionResultBase)
+        if (awaitedResult instanceof Core.ActionResult)
             return awaitedResult
         if (this.controllerInfo.classMetaData!.baseClass == "ApiController") {
-            return new ActionResultBase(awaitedResult, 200, "application/json")
+            return new Core.ActionResult(awaitedResult, 200, "application/json")
         }
-        return new ActionResultBase(awaitedResult, 200, "text/html")
+        return new Core.ActionResult(awaitedResult, 200, "text/html")
     }
 }
 
@@ -82,7 +81,7 @@ export class SocketControllerInvocation extends InvocationBase {
         let method = (<any>controller)[this.controllerInfo.methodMetaData!.name]
         let result;
         if (this.option.autoValidation && !controller.validator.isValid())
-            result = new ActionResultBase(controller.validator.getValidationErrors(), 400)
+            result = new Core.ActionResult(controller.validator.getValidationErrors(), 400)
         else
             result = method.apply(controller, [this.msg]);
         return this.createResult(result)
@@ -90,8 +89,8 @@ export class SocketControllerInvocation extends InvocationBase {
 
     private async createResult(result: any) {
         let awaitedResult = await Promise.resolve(result)
-        if (awaitedResult instanceof ActionResultBase)
+        if (awaitedResult instanceof Core.ActionResult)
             return awaitedResult;
-        return new ActionResultBase(result, 200)
+        return new Core.ActionResult(result, 200)
     }
 }

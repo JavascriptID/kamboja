@@ -1,4 +1,4 @@
-import { Core } from "kamboja"
+import { Core } from "kamboja-foundation"
 import * as Express from "express"
 import * as Lodash from "lodash"
 import * as Passport from "passport"

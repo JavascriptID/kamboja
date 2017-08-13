@@ -1,4 +1,4 @@
-import { Core } from "kamboja"
+import { Core } from "kamboja-foundation"
 import {middleware, HttpStatusError} from "../../../src"
 
 export class ConcatMiddleware implements Core.Middleware{

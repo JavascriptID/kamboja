@@ -1,4 +1,3 @@
-import {RouteGenerator} from "kamboja"
 import * as Test from "kamboja-testing"
 import * as Sinon from "sinon"
 

@@ -2,7 +2,7 @@ import * as Chai from "chai"
 import { OptionBuilder } from "../../src/option-builder"
 import * as H from "../helper"
 import * as Mongoose from "mongoose"
-import { Resolver } from "kamboja"
+import { Resolver } from "kamboja-foundation"
 
 describe("OptionBuilder", () => {
     it("Should generate option with naming convention", () => {

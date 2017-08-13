@@ -1,4 +1,4 @@
-import { Core, Middleware } from "kamboja"
+import { Core, Middleware } from "kamboja-foundation"
 import { MiddlewareActionResult } from "./middleware-action-result"
 import { RequestHandler } from "express"
 import { ResponseAdapter } from "./response-adapter"
@@ -9,7 +9,7 @@ export class ExpressMiddlewareAdapter implements Core.Middleware {
     async execute(request: Core.HttpRequest, next: Core.Invocation): Promise<Core.ActionResult> {
         return new MiddlewareActionResult(this.middleware, async (req, res) => {
             let actionResult = await next.proceed();
-            await actionResult.execute(req, res)
+            await actionResult.execute!(req, res)
         })
     }
 }

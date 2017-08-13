@@ -3,7 +3,7 @@ import { SchemaGenerator } from "../../src/schema-generator"
 import { TypeConverter } from "../../src/type-converter"
 import * as H from "../helper"
 import * as Mongoose from "mongoose"
-import { Resolver } from "kamboja"
+import { Resolver } from "kamboja-foundation"
 
 describe("SchemaGenerator", () => {
     let test: SchemaGenerator

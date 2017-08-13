@@ -1,4 +1,4 @@
-import {Core} from "kamboja"
+import {Core} from "kamboja-foundation"
 
 export class ResponseTimeMiddleware implements Core.Middleware{
     async execute(request: Core.HttpRequest, next: Core.Invocation){

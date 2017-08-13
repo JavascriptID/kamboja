@@ -40,7 +40,7 @@
     "babylon": "^6.17.4",
     "chalk": "^2.0.1",
     "express": "^4.15.3",
-    "kamboja": "^0.4.0",
+    "kamboja-foundation": "^0.4.0",
     "kecubung": "^0.4.0",
     "lodash": "^4.17.4",
     "passport": "^0.3.2",

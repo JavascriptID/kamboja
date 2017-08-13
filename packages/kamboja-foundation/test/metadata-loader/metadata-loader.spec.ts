@@ -1,6 +1,6 @@
 import * as Chai from "chai"
 import * as Core from "kamboja-core"
-import { MetaDataLoader } from "../../src/metadata-loader/metadata-loader"
+import { Router } from "../../src"
 import { DefaultIdentifierResolver, DefaultPathResolver, QualifiedName } from "../../src/resolver"
 import * as H from "../helper"
 import { Kamboja } from "../../src/kamboja"
@@ -8,10 +8,10 @@ import { Kamboja } from "../../src/kamboja"
 describe("MetaDataLoader", () => {
 
     describe("load", () => {
-        let loader: MetaDataLoader;
+        let loader: Router.MetaDataLoader;
 
         beforeEach(() => {
-            loader = new MetaDataLoader(new DefaultIdentifierResolver(), new DefaultPathResolver(__dirname))
+            loader = new Router.MetaDataLoader(new DefaultIdentifierResolver(), new DefaultPathResolver(__dirname))
         })
 
         it("Should load classes properly", () => {
@@ -40,10 +40,10 @@ describe("MetaDataLoader", () => {
     })
 
     describe("get", () => {
-        let storage: MetaDataLoader;
+        let storage: Router.MetaDataLoader;
 
         beforeEach(() => {
-            storage = new MetaDataLoader(new DefaultIdentifierResolver(), new DefaultPathResolver(__dirname))
+            storage = new Router.MetaDataLoader(new DefaultIdentifierResolver(), new DefaultPathResolver(__dirname))
         })
 
         it("Should return class by qualified name properly", () => {

@@ -1,4 +1,4 @@
-import { Kamboja, Core } from "kamboja"
+import { Kamboja, Core } from "kamboja-foundation"
 import { ExpressEngine } from "./express-engine"
 import { ExpressMiddlewareAdapter } from "./express-middleware-adapter"
 import { RequestHandler } from "express"

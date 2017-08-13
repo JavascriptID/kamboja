@@ -1,4 +1,4 @@
-import { Controller, ApiController } from "../../../src/controller"
+import { Controller } from "../../../src"
 
 export namespace MyParentNamespace {
     export namespace MyChildNamespace {

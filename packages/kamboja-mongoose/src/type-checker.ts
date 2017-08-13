@@ -1,4 +1,4 @@
-import { Resolver, Core } from "kamboja"
+import { Resolver, Core } from "kamboja-foundation"
 import * as H from "./helper"
 
 export class TypeChecker {

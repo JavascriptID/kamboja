@@ -7,10 +7,9 @@ export { FileActionResult } from "./file-action-result"
 export { DownloadActionResult } from "./download-action-result"
 export { ExpressMiddlewareAdapter } from "./express-middleware-adapter"
 export {
-    ApiController, authorize, Controller, Core, http, HttpStatusError,
-    MetaDataLoader, Middleware, RequestHandler, Resolver, RouteGenerator, val,
+    ApiController, authorize, Controller, Core, HttpStatusError, Middleware, Resolver, val,
     Validator, bind, type, route
-} from "kamboja"
+} from "kamboja-foundation"
 
 export { broadcast, download, emit, file, json, redirect, view } from "./action-results"
 import { MiddlewareMetaData } from "./middleware-metadata"

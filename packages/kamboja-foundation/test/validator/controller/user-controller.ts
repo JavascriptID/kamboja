@@ -1,4 +1,4 @@
-import { Controller, ApiController } from "../../../src/controller"
+import { Controller } from "../../../src"
 import { UserModel } from "../model/user-model"
 import { CategoryModel } from "../model/category-model"
 import { val, type } from "../../../src"

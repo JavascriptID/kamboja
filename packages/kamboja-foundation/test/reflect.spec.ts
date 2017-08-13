@@ -1,5 +1,5 @@
 import * as Chai from "chai"
-import {reflect} from "../src/index"
+import {Decorator} from "../src"
 
 
 class Es6Class {
@@ -19,7 +19,7 @@ describe("reflect", () => {
         for(let i in obj){
             console.log(i)
         }
-        let props = reflect(obj)
+        let props = Decorator.reflect(obj)
         Chai.expect(props.some(x => x == "myProperty")).true
         Chai.expect(props.some(x => x == "myMethod")).true
     })
@@ -27,7 +27,7 @@ describe("reflect", () => {
     it("Should reflect ES6 class properly", () => {
         let obj = new Es6Class();
         obj.myProperty = "Hello"
-        let props = reflect(obj)
+        let props = Decorator.reflect(obj)
         Chai.expect(props.some(x => x == "myProperty")).true
         Chai.expect(props.some(x => x == "myMethod")).true
         Chai.expect(props.length).eq(2)

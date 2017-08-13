@@ -1,11 +1,5 @@
-import {
-    Handshake,
-    HttpRequest,
-    Invocation,
-    ActionResult,
-    Middleware
-} from "kamboja-core";
+import * as Core from "kamboja-core";
 
-export abstract class MiddlewareBase  implements Middleware{
-    abstract execute(context: Handshake | HttpRequest, next: Invocation): Promise<ActionResult>;
+export abstract class Middleware  implements Core.Middleware{
+    abstract execute(context: Core.Handshake | Core.HttpRequest, next: Core.Invocation): Promise<Core.ActionResult>;
 }

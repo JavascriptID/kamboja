@@ -2,7 +2,7 @@ import * as Kecubung from "kecubung";
 import * as Babylon from "babylon"
 import * as Path from "path"
 import * as Fs from "fs"
-import { Core } from "kamboja"
+import { Core } from "kamboja-foundation"
 import * as Mongoose from "mongoose"
 
 function flatten(metaList: Kecubung.MetaData[], fileName: string): Core.QualifiedClassMetaData[] {

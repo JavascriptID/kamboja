@@ -1,4 +1,4 @@
-import { val, type } from "kamboja"
+import { val, type } from "kamboja-foundation"
 import { mongoose } from "../../../src"
 
 export class WithoutProperties{

@@ -7,7 +7,7 @@ import * as BodyParser from "body-parser"
 import * as Path from "path"
 import { ResponseAdapter } from "../src/response-adapter"
 import { RequestAdapter } from "../src/request-adapter"
-import { Core } from "kamboja"
+import { Core } from "kamboja-foundation"
 
 
 describe("ResponseAdapter", () => {

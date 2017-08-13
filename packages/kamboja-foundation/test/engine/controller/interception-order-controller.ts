@@ -1,4 +1,4 @@
-import { ApiController, ActionResultBase, middleware, Core } from "../../../src"
+import { ApiController, middleware, Core } from "../../../src"
 
 
 export class ConcatInterceptor implements Core.Middleware {
@@ -7,7 +7,7 @@ export class ConcatInterceptor implements Core.Middleware {
     async execute(request: Core.HttpRequest, invocation: Core.Invocation) {
         let invocationResult = <Core.ActionResult>await invocation.proceed();
         let result = invocationResult.body;
-        return new ActionResultBase(this.msg + ", " + result)
+        return new Core.ActionResult(this.msg + ", " + result)
     }
 }
 

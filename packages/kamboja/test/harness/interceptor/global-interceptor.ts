@@ -1,4 +1,4 @@
-import { Core } from "kamboja"
+import { Core } from "kamboja-foundation"
 import { middleware } from "../../../src"
 
 @middleware.id("kamboja-express:global")

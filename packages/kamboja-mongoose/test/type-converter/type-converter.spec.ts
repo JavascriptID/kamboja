@@ -1,7 +1,7 @@
 import * as Chai from "chai"
 import { TypeConverter } from "../../src/type-converter"
 import * as Mongoose from "mongoose"
-import {Resolver} from "kamboja"
+import {Resolver} from "kamboja-foundation"
 import * as H from "../helper"
 
 describe("TypeConverter", () => {

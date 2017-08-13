@@ -3,7 +3,7 @@ import { ViewActionResult } from "./view-action-result"
 import { RedirectActionResult } from "./redirect-action-result"
 import { FileActionResult } from "./file-action-result"
 import { DownloadActionResult } from "./download-action-result"
-import { Core } from "kamboja"
+import { Core } from "kamboja-foundation"
 
 export function download(path: string) {
     return new DownloadActionResult(path)

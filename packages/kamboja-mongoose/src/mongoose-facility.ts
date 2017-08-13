@@ -1,4 +1,4 @@
-import { Core } from "kamboja"
+import { Core } from "kamboja-foundation"
 import { ObjectIdValidator } from "./validator/objectid-validator"
 import { ShortIdValidator } from "./validator/shortid-validator"
 

@@ -1,6 +1,4 @@
-import { route } from "../../../src"
-import { ApiController } from "../../../src/controller"
-
+import { route, ApiController } from "../../../src"
 
 export class UserController extends ApiController {
     @route.get("this/is/dupe")

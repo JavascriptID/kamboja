@@ -1,4 +1,4 @@
-import { Core } from "kamboja"
+import { Core } from "kamboja-foundation"
 import { TypeConverter } from "./type-converter"
 import { TypeChecker } from "./type-checker"
 import * as Kecubung from "kecubung"

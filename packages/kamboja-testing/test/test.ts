@@ -1,4 +1,5 @@
 import { HttpRequest, HttpResponse, spy, stub, socketTester, SocketHandshake } from "../src"
+import * as Core from "kamboja-core"
 import * as Chai from "chai";
 import { app } from "./socket-server"
 
@@ -15,18 +16,18 @@ describe("Testing Utility", () => {
 
     it("Should provide HttpResponse properly", () => {
         let response = new HttpResponse();
-        response.send({ body: undefined })
+        response.send(new Core.ActionResult(undefined))
     })
 
     it("Should provide stub properly", () => {
         let resp = stub(new HttpResponse());
-        resp.send({ body: undefined });
+        resp.send(new Core.ActionResult(undefined));
         Chai.expect(resp.MOCKS.send.called).true
     })
 
     it("Should provide spy properly", () => {
         let resp = spy(new HttpResponse());
-        resp.send({ body: undefined });
+        resp.send(new Core.ActionResult(undefined));
         Chai.expect(resp.MOCKS.send.called).true
     })
 

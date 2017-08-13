@@ -1,8 +1,6 @@
-import { Controller } from "../../../src/controller"
-import { val, Core} from "../../../src"
-import { id } from "./interceptor-identifier"
+import { Controller, middleware, Core } from "../../../src"
 
-@id("DefaultInterceptor")
+@middleware.id("DefaultInterceptor")
 export class DefaultInterceptor implements Core.Middleware{
     async execute(request:Core.HttpRequest, invocation:Core.Invocation) {
         return invocation.proceed()
