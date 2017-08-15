@@ -22,6 +22,7 @@ describe("Transformer", () => {
             Chai.expect((<Core.ParentMetaData>result.children[0]).children[1].name).eq("MyClass")
         })
 
+        /*
         it("Should transform TypeScript (5+ MB) without error", function () {
             this.timeout(10000)
             let filename = "./node_modules/typescript/lib/typescript.js"
@@ -34,7 +35,7 @@ describe("Transformer", () => {
             let gap = end.getTime() - start.getTime();
             console.log("EXEC TIME: " + gap)
             //Chai.expect(gap).lessThan(1000)
-        })
+        })*/
 
         it("Should transform ES6 class with namespaces properly", () => {
             let ast = JsParser.getAst(`

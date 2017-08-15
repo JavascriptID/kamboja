@@ -1,4 +1,4 @@
-import { Core, RequestHandler, HttpStatusError, Invoker, SocketControllerInvocation, ErrorInvocation } from "kamboja"
+import { Core, HttpStatusError, Engine} from "kamboja-foundation"
 import * as SocketIo from "socket.io"
 import { SocketResponse } from "./socket-response"
 import { SocketIoHandshake } from "./socket-handshake"
@@ -14,13 +14,13 @@ class SocketHandler {
     constructor(private option: Core.Facade) { }
     async execute(handshake: Core.Handshake, response: Core.Response, invocation: Core.Invocation) {
         try {
-            let invoker = new Invoker(this.option)
+            let invoker = new Engine.Invoker(this.option)
             let result = await invoker.invoke(handshake, invocation)
             if(result.engine != "General") throw new Error(`ActionResult Error, only return value of type 'redirect' and 'emit' are allowed in real time action`)
             await result.execute(handshake, response)
         }
         catch (e) {
-            response.send({ status: 500, body: e.message })
+            response.send(new Core.ActionResult(e.message, e.status || 500))
         }
     }
 }
@@ -52,7 +52,7 @@ export class SocketIoEngine implements Core.Engine {
                 connectionEvents.forEach(route => {
                     let handshake = new SocketIoHandshake(socket)
                     let response = new SocketResponse(new SocketAdapter(socket))
-                    handler.execute(handshake, response, new SocketControllerInvocation(option, handshake, route))
+                    handler.execute(handshake, response, new Engine.SocketControllerInvocation(option, handshake, route))
                 })
             }
 
@@ -60,7 +60,7 @@ export class SocketIoEngine implements Core.Engine {
                 socket.on(route.route!, (msg: any, callback: (body: any) => void) => {
                     let handshake = new SocketIoHandshake(socket)
                     let response = new SocketResponse(new SocketAdapter(socket), callback)
-                    handler.execute(handshake, response, new SocketControllerInvocation(option, handshake, route, msg))
+                    handler.execute(handshake, response, new Engine.SocketControllerInvocation(option, handshake, route, msg))
                 })
             })
         })

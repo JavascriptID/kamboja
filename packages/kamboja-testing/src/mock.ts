@@ -1,6 +1,6 @@
 import * as Sinon from "sinon"
 import * as Util from "util"
-import { reflect } from "kamboja-core"
+import { reflect } from "./reflect"
 
 export type Mock<T, TResult> = {
     [P in keyof T]: TResult

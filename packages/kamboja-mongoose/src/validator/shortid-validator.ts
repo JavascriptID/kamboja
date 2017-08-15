@@ -1,4 +1,4 @@
-import { Validator, Core } from "kamboja"
+import { Validator, Core } from "kamboja-foundation"
 import * as ShortId from "shortid"
 import * as Kecubung from "kecubung"
 

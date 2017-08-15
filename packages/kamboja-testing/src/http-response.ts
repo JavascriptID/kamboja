@@ -1,5 +1,5 @@
 import * as Core from "kamboja-core"
 
 export class HttpResponse implements Core.Response {
-    send(result:Core.ResponseResult) { }
+    send(result:Core.ActionResult) { }
 }

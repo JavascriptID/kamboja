@@ -1,4 +1,4 @@
-import { Validator, Core } from "kamboja"
+import { Validator, Core } from "kamboja-foundation"
 import { Types } from "mongoose"
 import * as Kecubung from "kecubung"
 

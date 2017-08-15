@@ -1,6 +1,6 @@
 import * as Chai from "chai"
 import { TypeChecker } from "../src/type-checker"
-import { Kamboja, Resolver } from "kamboja"
+import { Kamboja, Resolver } from "kamboja-foundation"
 
 describe("TypeChecker", () => {
     

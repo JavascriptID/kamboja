@@ -2,7 +2,7 @@ import * as Chai from "chai"
 import { MongooseHelper, model, MongooseFacility } from "../../src"
 import * as H from "../helper"
 import * as Mongoose from "mongoose"
-import { Core, Kamboja, Resolver } from "kamboja"
+import { Core, Kamboja, Resolver } from "kamboja-foundation"
 import * as Kecubung from "kecubung"
 import { UserModel, CategoryModel, ItemModel, ProductModel, ParentProductModel, ParentMultiChildModel } from "./models"
 import * as Util from "util"
@@ -37,7 +37,8 @@ describe("Integration Test", () => {
     it("Should provide singleton", () => {
         let kamboja = new Kamboja({ init: () => { } }, <Core.KambojaOption>{
             rootPath: __dirname,
-            modelPath: "models"
+            modelPath: "models",
+            showLog: "None"
         })
         kamboja.init()
         let instance = MongooseHelper.getInstance();
@@ -143,7 +144,6 @@ describe("Integration Test", () => {
         })
         await user.save()
         let result = <any[]>await Product.find().lean().exec()
-        console.log(result)
         Chai.expect(result[0].name).eq("i-Phone 7s Plus")
         Chai.expect(result[0]._id.length).eq(9)
     })

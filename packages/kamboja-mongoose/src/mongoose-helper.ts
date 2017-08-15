@@ -1,4 +1,4 @@
-import { Core, Kamboja } from "kamboja"
+import { Core, Kamboja } from "kamboja-foundation"
 import * as Mongoose from "mongoose"
 import { SchemaGenerator } from "./schema-generator"
 import * as H from "./helper"

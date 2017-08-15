@@ -37,6 +37,7 @@ describe("Core", () => {
         Chai.expect(err.proceed()).not.null;
     })
 
+    /*
     it("Should instantiate http decorator properly", () => {
         let decorator = new Core.HttpDecorator();
         let fun = decorator.delete()
@@ -65,21 +66,5 @@ describe("Core", () => {
             methodMetaData: <Kecubung.MethodMetaData>{ name: "getData" } 
         })
         Chai.expect(result).eq("[BookModel.getData model/book-model]")
-    })
-})
-
-describe("MetaDataHelper", () => {
-    it("Should save and get metadata properly on class scope", () => {
-        Core.MetaDataHelper.save("MY-KEY-123", "HELLO-123", [Invocation.constructor])
-        Chai.expect(Core.MetaDataHelper.get("MY-KEY-123", Invocation.constructor)).deep.eq(["HELLO-123"])
-    })
-
-    it("Should save and get metadata properly on method scope", () => {
-        Core.MetaDataHelper.save("MY-KEY-123", "HELLO-123", [Invocation.prototype, "proceed"])
-        Chai.expect(Core.MetaDataHelper.get("MY-KEY-123", new Invocation(), "proceed")).deep.eq(["HELLO-123"])
-    })
-
-    it("Should not return undefined if provided undefined target", () => {
-        Chai.expect(Core.MetaDataHelper.get("MY-KEY-123", undefined, "proceed")).deep.eq([])
-    })
+    })*/
 })
