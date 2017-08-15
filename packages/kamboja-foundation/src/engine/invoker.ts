@@ -7,7 +7,7 @@ import * as Core from "kamboja-core"
 export class Invoker {
     constructor(private option: Core.Facade) { }
 
-    invoke(context: Core.HttpRequest | Core.Handshake, controllerInvocation: Core.Invocation) {
+    invoke(context: Core.HttpRequest | Core.Handshake, controllerInvocation: Core.Invocation):Promise<Core.ActionResult> {
         let invocation: Core.Invocation = controllerInvocation
         this.getMiddlewares(controllerInvocation.controllerInfo!).forEach(middleware => {
             invocation = new MiddlewareInvocation(invocation, context, middleware)
