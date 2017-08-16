@@ -4,9 +4,12 @@ import {FieldValidatorArg} from "kamboja-core"
 describe("Validator Base Classes", () => {
     it("Instantiate Validator Decorator properly", () => {
         let decorator = new ValidatorDecorator();
-        decorator.email()
-        decorator.range(1)
-        decorator.required()
+        let email = decorator.email()
+        email()
+        let range = decorator.range(1)
+        range(1)
+        let required = decorator.required()
+        required()
     })
 
     describe("ValidatorBase", () => {

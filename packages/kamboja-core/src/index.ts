@@ -8,7 +8,11 @@ export { FieldValidatorArg, ValidationTypesAccepted, Validator } from "./validat
 
 /*
 definition & classes below just a hack to pass TypeScript compilation error.
-Ideally all class should separated into files for easier to identify & categorized
+Ideally all class should separated into files for easier to identify & categorized.
+
+These classes will remind here and its copy also stays in each category folder until 
+TypeScript fix its import issue.
+https://github.com/Microsoft/TypeScript/issues/9944
 */
 
 import { Cookie, CookieOptions, HttpRequest, HttpMethod } from "./http";
