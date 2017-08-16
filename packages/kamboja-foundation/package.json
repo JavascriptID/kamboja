@@ -30,11 +30,11 @@
   "dependencies": {
     "@types/babylon": "^6.16.2",
     "@types/chalk": "^0.4.31",
-    "@types/lodash": "^4.14.71",
-    "@types/node": "^8.0.19",
-    "@types/validator": "^6.2.1",
+    "@types/lodash": "^4.14.72",
+    "@types/node": "^8.0.22",
+    "@types/validator": "^6.2.2",
     "babylon": "^6.17.4",
-    "chalk": "^2.0.1",
+    "chalk": "^2.1.0",
     "kamboja-core": "^0.4.0",
     "kecubung": "^0.4.0",
     "lodash": "^4.17.4",
@@ -43,11 +43,11 @@
     "validator": "^8.0.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.0.2",
+    "@types/chai": "^4.0.3",
     "@types/mocha": "^2.2.41",
     "@types/sinon": "^2.3.3",
     "@types/supertest": "^2.0.2",
-    "chai": "^4.1.0",
+    "chai": "^4.1.1",
     "coveralls": "^2.13.1",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
@@ -58,7 +58,7 @@
     "kamboja-testing": "^0.4.0",
     "mocha": "^3.5.0",
     "run-sequence": "^2.1.0",
-    "sinon": "^3.0.0",
+    "sinon": "^3.2.0",
     "supertest": "^3.0.0",
     "typescript": "^2.4.2"
   }
