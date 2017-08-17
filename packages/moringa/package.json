@@ -1,5 +1,5 @@
 {
-  "name": "kamboja-mongoose",
+  "name": "moringa",
   "version": "0.4.0",
   "description": "Kamboja helper for MongooseJS",
   "main": "src/index.js",
