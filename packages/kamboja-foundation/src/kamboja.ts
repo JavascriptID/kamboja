@@ -74,9 +74,7 @@ export class Kamboja implements Core.Application {
      * @returns KambojaJS application
      */
     use(middleware: Core.MiddlewaresType) {
-        if (Array.isArray(middleware))
-            this.options.middlewares = this.options.middlewares!.concat(middleware)
-        else this.options.middlewares!.push(middleware)
+        this.options.middlewares!.push(middleware)
         return this
     }
 

@@ -1,7 +1,8 @@
-import { Middleware, DependencyResolver } from "kamboja-core";
+import { Middleware, MiddlewaresType, DependencyResolver } from "kamboja-core";
+import {CallbackMiddleware} from "../framework"
 
 export namespace MiddlewareFactory{
-    export function resolve(middlewares: (string | Middleware)[], resolver: DependencyResolver) {
+    export function resolve(middlewares: MiddlewaresType[], resolver: DependencyResolver) {
         let result: Middleware[] = []
         if (!middlewares) return result;
         for (let middleware of middlewares) {
@@ -13,6 +14,9 @@ export namespace MiddlewareFactory{
                 catch (e) {
                     throw new Error(`Can not instantiate middleware [${middleware}] in global middlewares`)
                 }
+            }
+            else if (typeof middleware == "function"){
+                result.push(new CallbackMiddleware(middleware))
             }
             else {
                 result.push(middleware)

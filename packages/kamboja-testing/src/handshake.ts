@@ -9,4 +9,5 @@ export class SocketHandshake implements Core.Handshake {
     params: { [key: string]: string }
     getHeader(key: string): string {return ""}
     getParam(key: string): string { return ""}
+    route:string
 }

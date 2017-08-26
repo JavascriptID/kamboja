@@ -6,6 +6,7 @@ export interface Handshake {
     id: string
     rooms: string[]
     user: AuthUser
+    route:string
     params: { [key: string]: string }
     getHeader(key: string): string | undefined
     getParam(key: string): string | undefined

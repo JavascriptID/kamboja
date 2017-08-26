@@ -1,4 +1,4 @@
-export { Application, BaseController, Engine, Facility, Invocation, KambojaOption, LogType, MethodDecorator, Middleware, MiddlewaresType, Response } from "./framework"
+export { Application, BaseController, Engine, Facility, Invocation, KambojaOption, LogType, MethodDecorator, Middleware, MiddlewaresType, MiddlewareFunction, Response } from "./framework"
 export { Cookie, CookieOptions, HttpError, HttpMethod, HttpRequest } from "./http"
 export { DependencyResolver, IdentifierResolver, PathResolver } from "./resolver"
 export { AnalysisMessage, ControllerInfo, MetaDataLoaderCategory, MetaDataStorage, OverrideRequest, QualifiedClassMetaData, RouteAnalysisCode, TransformerName, TransformStatus } from "./router"
@@ -17,7 +17,7 @@ https://github.com/Microsoft/TypeScript/issues/9944
 
 import { Cookie, CookieOptions, HttpRequest, HttpMethod } from "./http";
 import { Handshake, SocketEvent } from "./socket";
-import { Response, Middleware, Facility } from "./framework";
+import { Response, Middleware, Facility, MiddlewaresType } from "./framework";
 import { TransformerName, OverrideRequest, MetaDataStorage, TransformStatus } from "./router";
 import { MethodMetaData, ClassMetaData } from "kecubung";
 import { DependencyResolver, IdentifierResolver, PathResolver } from "./resolver"
@@ -105,7 +105,7 @@ export interface Facade {
     pathResolver?: PathResolver
     validators?: (ValidatorCommand | string)[]
     metaDataStorage?: MetaDataStorage
-    middlewares?: (Middleware | string)[]
+    middlewares?: MiddlewaresType[]
     autoValidation?: boolean
     authUserStore?: AuthUserStore
     routeInfos?: RouteInfo[]

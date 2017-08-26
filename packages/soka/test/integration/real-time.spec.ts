@@ -9,7 +9,7 @@ import * as Http from "http"
 class TokenAuthMiddleware implements Core.Middleware {
     execute(context: Core.Handshake | Core.HttpRequest, next: Core.Invocation): Promise<Core.ActionResult> {
         let token = context.getHeader("token") || context.getParam("token")
-        if (token) context.user = { id: token }
+        if (token) context.user = { id: token, role: "Admin" }
         return next.proceed()
     }
 }
@@ -37,7 +37,7 @@ describe("Real time functionalities", () => {
     it("Should able listen to connection event", async () => {
         let listener = SocketClient(HOST)
             .on("join")
-            .expect({ id: "abcd" });
+            .expect({ id: "abcd", role: "Admin" });
 
         await SocketClient(HOST, { query: { token: "abcd" } })
             .wait(listener)

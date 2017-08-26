@@ -291,7 +291,8 @@ describe("Kamboja", () => {
         }
         let kamboja = new Kamboja(engine, opt)
         kamboja.use(new FakeInterceptor())
-            .use([new FakeInterceptor(), new FakeInterceptor()])
+            .use(new FakeInterceptor())
+            .use(new FakeInterceptor())
             .init()
         Chai.expect((<any>kamboja).options.middlewares.length).eq(3)
     })
@@ -306,7 +307,8 @@ describe("Kamboja", () => {
         }
         let kamboja = new Kamboja(engine, opt)
         kamboja.use(new FakeInterceptor())
-            .use([new FakeInterceptor(), new FakeInterceptor()])
+            .use(new FakeInterceptor())
+            .use(new FakeInterceptor())
             .init()
         Chai.expect((<any>kamboja).options.middlewares.length).eq(4)
     })
@@ -317,7 +319,7 @@ describe("Kamboja", () => {
             showLog: "None"
         }
         let kamboja = new Kamboja(engine, opt)
-        kamboja.use(["FakeMiddleware, middleware/fake-middleware"])
+        kamboja.use("FakeMiddleware, middleware/fake-middleware")
             .init()
         let middlewares = kamboja.get<Core.Middleware[]>("middlewares");
         Chai.expect(typeof middlewares[0]).eq("object")
@@ -331,7 +333,7 @@ describe("Kamboja", () => {
         }
         let kamboja = new Kamboja(engine, opt)
         Chai.expect(() => {
-            kamboja.use(["InvalidName, path/of/nowhere"])
+            kamboja.use("InvalidName, path/of/nowhere")
                 .init()
         }).throw("Can not instantiate middleware [InvalidName, path/of/nowhere] in global middlewares")
     })

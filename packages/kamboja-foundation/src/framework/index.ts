@@ -5,3 +5,4 @@ export * from "./facility"
 export * from "./http-status-error";
 export * from "./middleware-base";
 export * from "./route-decorator-type"
+export * from "./callback-middleware"

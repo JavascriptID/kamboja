@@ -18,6 +18,9 @@
     "url": "https://github.com/kambojajs/kamboja/issues"
   },
   "homepage": "http://kambojajs.com",
+  "dependencies": {
+    "kamboja-foundation": "^0.4.0"
+  },
   "devDependencies": {
     "@types/chai": "^4.0.3",
     "@types/mocha": "^2.2.41",

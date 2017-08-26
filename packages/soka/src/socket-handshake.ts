@@ -7,6 +7,7 @@ export class SocketIoHandshake implements Core.Handshake {
     rooms: string[]
     user:Core.AuthUser
     params: { [key: string]: string }
+    route:string;
 
     constructor(private nativeSocket: SocketIO.Socket) {
         this.id = nativeSocket.id
