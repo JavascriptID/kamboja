@@ -3,7 +3,7 @@ import {DefaultIdentifierResolver} from "../../src/resolver/identifier-resolver"
 import {DefaultPathResolver} from "../../src/resolver/path-resolver"
 import * as Chai from "chai"
 
-describe.only("DependencyResolver", () => {
+describe("DependencyResolver", () => {
     
     it("Should load class properly", () => {
         let test = new DefaultDependencyResolver(new DefaultIdentifierResolver(), new DefaultPathResolver(__dirname))
@@ -26,7 +26,7 @@ describe.only("DependencyResolver", () => {
         Chai.expect(data).eq(200)
     })
 
-    it.only("Should load class with nested modules", () => {
+    it("Should load class with nested modules", () => {
         let test = new DefaultDependencyResolver(new DefaultIdentifierResolver(), new DefaultPathResolver(__dirname))
         let dummy = test.resolve<any>("ParentModule.InnerModule.Dummy, ./dummy/dummy-with-module")
         let data = dummy.getData();

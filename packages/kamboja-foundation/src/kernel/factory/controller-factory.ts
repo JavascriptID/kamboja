@@ -9,4 +9,4 @@ export namespace ControllerFactory{
             throw new Error(`Can not instantiate [${routeInfo.classId}] as Controller.\n\t Inner message: ${e.message}`)
         }
     }
-}
+} 

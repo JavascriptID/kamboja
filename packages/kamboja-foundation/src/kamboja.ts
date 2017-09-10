@@ -3,7 +3,6 @@ import * as Lodash from "lodash"
 import { MetaDataLoader } from "./router"
 import { DefaultDependencyResolver, DefaultIdentifierResolver, DefaultPathResolver } from "./resolver"
 import { RouteGenerator, RouteAnalyzer } from "./router"
-import { MiddlewareFactory } from "./engine"
 import * as Fs from "fs"
 import * as Path from "path"
 import * as Chalk from "chalk"
@@ -163,10 +162,6 @@ export class Kamboja implements Core.Application {
         return true;
     }
 
-    private resolveMiddlewares(option: Core.KambojaOption) {
-        option.middlewares = MiddlewareFactory.resolve(option.middlewares!, option.dependencyResolver!)
-    }
-
     private resolveValidators(option: Core.KambojaOption) {
         option.validators = ValidatorFactory.resolve(option.validators!, option.dependencyResolver!)
     }
@@ -180,7 +175,7 @@ export class Kamboja implements Core.Application {
         if (!this.isFolderProvided()) throw new Error("Fatal error")
         this.storage.load(this.options.controllerPaths!, "Controller")
         this.storage.load(this.options.modelPath!, "Model")
-        this.resolveMiddlewares(this.options)
+        //TODO: possibly temporal coupling
         this.resolveValidators(this.options)
         let routeInfos = this.generateRoutes(this.storage.getFiles("Controller"))
         if (routeInfos.length == 0) throw new Error("Fatal error")

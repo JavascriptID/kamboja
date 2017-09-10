@@ -1,4 +1,4 @@
-import { ControllerFactory } from "../../src/engine"
+import { ControllerFactory } from "../../src/kernel"
 import * as Transformer from "../../src/router/transformers"
 import * as H from "../helper"
 import * as Path from "path"
