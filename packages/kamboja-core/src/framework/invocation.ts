@@ -3,6 +3,7 @@ import { RouteInfo } from "../router";
 import { Middleware } from "./middleware";
 import { HttpRequest } from "../http"
 import { Handshake } from "../socket"
+import { Facade } from "./facade"
 
 export abstract class Invocation {
     abstract proceed(): Promise<ActionResult>
@@ -10,4 +11,5 @@ export abstract class Invocation {
     parameters: any[]
     controllerInfo?: RouteInfo
     middlewares?: Middleware[]
+    facade: Facade
 }

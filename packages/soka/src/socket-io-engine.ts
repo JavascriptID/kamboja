@@ -1,8 +1,8 @@
 import { Core, HttpStatusError, Kernel } from "kamboja-foundation"
-import * as SocketIo from "socket.io"
 import { SocketResponse } from "./socket-response"
 import { SocketIoHandshake } from "./socket-handshake"
 import { SocketAdapter } from "./socket-adapter"
+import * as SocketIo from "socket.io"
 
 export class OnConnectionInvocation extends Core.Invocation {
     async proceed(): Promise<Core.ActionResult> {
@@ -27,24 +27,26 @@ export class SocketIoEngine implements Core.Engine {
             */
 
             if (connectionEvents.length == 0) {
-                let handler = new Kernel.RequestHandler(new Kernel.MiddlewarePipeline(option))
+                let handler = new Kernel.RequestHandler(option)
                 await handler.execute(new SocketIoHandshake(socket),
                     new SocketResponse(new SocketAdapter(socket)),
                     new OnConnectionInvocation())
             }
             else {
                 connectionEvents.forEach(async route => {
-                    let handler = new Kernel.RequestHandler(new Kernel.MiddlewarePipeline(option, route))
+                    let handler = new Kernel.RequestHandler(option, route)
                     await handler.execute(new SocketIoHandshake(socket),
-                        new SocketResponse(new SocketAdapter(socket)))
+                        new SocketResponse(new SocketAdapter(socket)), 
+                        new Kernel.ControllerInvocation())
                 })
             }
 
             socketEvents.forEach(route => {
                 socket.on(route.route!, async (msg: any, callback: (body: any) => void) => {
-                    let handler = new Kernel.RequestHandler(new Kernel.MiddlewarePipeline(option, route))
-                    await handler.execute(new SocketIoHandshake(socket),
-                        new SocketResponse(new SocketAdapter(socket), callback))
+                    let handler = new Kernel.RequestHandler(option, route)
+                    await handler.execute(new SocketIoHandshake(socket, msg),
+                        new SocketResponse(new SocketAdapter(socket), callback), 
+                        new Kernel.ControllerInvocation())
                 })
             })
         })

@@ -10,4 +10,5 @@ export interface Handshake {
     params: { [key: string]: string }
     getHeader(key: string): string | undefined
     getParam(key: string): string | undefined
+    getPacket():any
 }
