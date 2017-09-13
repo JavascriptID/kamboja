@@ -24,7 +24,7 @@ function notFound(handler: Kernel.RequestHandler) {
 function error(handler: Kernel.RequestHandler) {
     return async (err: any, req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
         await handler.execute(new RequestAdapter(req), new ResponseAdapter(res, next),
-            new Kernel.ErrorInvocation(new HttpStatusError(err)));
+            new Kernel.ErrorInvocation(err));
     }
 }
 
