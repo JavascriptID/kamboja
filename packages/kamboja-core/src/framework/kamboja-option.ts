@@ -1,4 +1,4 @@
-import { Facade } from "./facade";
+import { Facade } from "../index";
 import { LogType } from "./log-type";
 import { Engine } from "./engine";
 

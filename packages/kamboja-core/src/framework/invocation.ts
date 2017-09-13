@@ -3,7 +3,7 @@ import { RouteInfo } from "../router";
 import { Middleware } from "./middleware";
 import { HttpRequest } from "../http"
 import { Handshake } from "../socket"
-import { Facade } from "./facade"
+import { Facade } from "../index"
 
 export abstract class Invocation {
     abstract proceed(): Promise<ActionResult>

@@ -21,7 +21,7 @@ export class Kamboja implements Core.Application {
     private log: Logger;
     private storage: MetaDataLoader;
 
-    static getFacade() {
+    static getFacade():Core.Facade {
         return Kamboja.facade;
     }
 
