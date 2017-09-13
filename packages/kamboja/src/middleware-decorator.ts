@@ -1,17 +1,22 @@
-import { MiddlewareDecorator as Decorator, Core} from "kamboja-foundation"
+import { MiddlewareDecorator as Decorator, Core, CallbackMiddleware} from "kamboja-foundation"
 import { RequestHandler } from "express"
 import { ExpressMiddlewareAdapter } from "./express-middleware-adapter"
 
 export class MiddlewareDecorator {
+    static isExpressMiddleware(middleware: RequestHandler | Core.MiddlewaresType): middleware is RequestHandler{
+        return typeof middleware == "function" && middleware.length == 3
+    }
 
     private middleware:Decorator = new Decorator()
     
-    use(middleware: RequestHandler | string | Core.Middleware) {
-        if (typeof middleware == "function")
+    use(middleware: Core.MiddlewareFunction | RequestHandler | Core.Middleware | string) {
+        if (MiddlewareDecorator.isExpressMiddleware(middleware))
             return this.middleware.use(new ExpressMiddlewareAdapter(middleware))
         else
             return this.middleware.use(middleware)
     }
+
+    
 
     id(id:string){
         return this.middleware.id(id)

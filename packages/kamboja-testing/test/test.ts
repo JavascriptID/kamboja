@@ -35,6 +35,7 @@ describe("Testing Utility", () => {
         let handshake = new SocketHandshake();
         handshake.getHeader("")
         handshake.getParam("")
+        handshake.getPacket()
     })
 })
 

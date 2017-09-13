@@ -104,4 +104,11 @@ export class UserController extends Controller {
     expressMiddlewareModifyUser() {
         return new JsonActionResult(this.context.user)
     }
+
+    @middleware.use(async (context:Core.HttpRequest, next:Core.Invocation) => {
+        return new JsonActionResult({}, 501)
+    })
+    kambojaCallbackMiddleawre(){
+        return new JsonActionResult({})
+    }
 }
