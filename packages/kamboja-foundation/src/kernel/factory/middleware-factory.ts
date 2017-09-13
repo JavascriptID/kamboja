@@ -1,5 +1,5 @@
 import { Middleware, MiddlewaresType, DependencyResolver } from "kamboja-core";
-import {CallbackMiddleware} from "../framework"
+import {CallbackMiddleware} from "../../framework"
 
 export namespace MiddlewareFactory{
     export function resolve(middlewares: MiddlewaresType[], resolver: DependencyResolver) {

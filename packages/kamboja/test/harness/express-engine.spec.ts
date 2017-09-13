@@ -508,6 +508,19 @@ describe("Integration", () => {
                 .expect(500)
         })
 
+        it("Should handle express internal error properly", () => {
+            let app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
+                .set("views", Path.join(__dirname, "view"))
+                .set("view engine", "hbs")
+                .init()
+            return Supertest(app)
+                .get("/home/index")
+                .expect((result:Supertest.Response) => {
+                    Chai.expect(result.text).contains(`Failed to lookup view "home/index"`)
+                })
+                .expect(500)
+        })
+
         it("Should able to handle error from middleware", () => {
             let app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
                 .set("views", Path.join(__dirname, "view"))

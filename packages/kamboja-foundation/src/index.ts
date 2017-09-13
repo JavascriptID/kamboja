@@ -12,8 +12,8 @@ export { Resolver }
 import * as Router from "./router"
 export { Router }
 
-import * as Engine from "./engine"
-export { Engine }
+import * as Kernel from "./kernel"
+export { Kernel }
 
 import * as Binder from "./binder"
 export { Binder }

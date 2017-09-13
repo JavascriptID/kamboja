@@ -11,7 +11,7 @@ export class DefaultDependencyResolver implements Core.DependencyResolver {
         let qualified = new QualifiedName(name, this.pathResolver)
         let instance = require(this.pathResolver.resolve(qualified.fileName))
         let classParts = qualified.className.split(".")
-        classParts.forEach(x => instance = instance[x])
+        classParts.forEach(x => instance = instance[x.trim()])
         return <T>new instance();
     }
 }

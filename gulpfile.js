@@ -125,8 +125,8 @@ gulp.task("build", function (cb) {
     var buildSequence = []
     for (var i = 0; i < PACKAGES.length; i++) {
         var pack = PACKAGES[i];
-        buildSequence.push(compile({ src: pack + "/src", tsconfig: "tsconfig-es5.json" }))
-        buildSequence.push(compile({ src: pack + "/test", tsconfig: "tsconfig-es5.json" }))
+        buildSequence.push(compile({ src: pack + "/src" }))
+        buildSequence.push(compile({ src: pack + "/test" }))
     }
     buildSequence.push(cb)
     runSequence.apply(null, buildSequence)
@@ -139,7 +139,7 @@ gulp.task("prepublish", function (cb) {
     var buildSequence = []
     for (var i = 0; i < PACKAGES.length; i++) {
         var pack = PACKAGES[i];
-        buildSequence.push(compile({ src: pack + "/src", dest: pack + "/lib", declaration: true, tsconfig: "tsconfig-es5.json" }))
+        buildSequence.push(compile({ src: pack + "/src", dest: pack + "/lib", declaration: true }))
         buildSequence.push(fixPackageJson(pack, function (json) {
             json.main = "lib/index.js";
             json.types = "lib/index.d.ts"

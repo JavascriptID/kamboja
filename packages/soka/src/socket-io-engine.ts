@@ -1,27 +1,12 @@
-import { Core, HttpStatusError, Engine} from "kamboja-foundation"
-import * as SocketIo from "socket.io"
+import { Core, HttpStatusError, Kernel } from "kamboja-foundation"
 import { SocketResponse } from "./socket-response"
 import { SocketIoHandshake } from "./socket-handshake"
 import { SocketAdapter } from "./socket-adapter"
+import * as SocketIo from "socket.io"
 
 export class OnConnectionInvocation extends Core.Invocation {
     async proceed(): Promise<Core.ActionResult> {
         return new Core.ActionResult({}, 200)
-    }
-}
-
-class SocketHandler {
-    constructor(private option: Core.Facade) { }
-    async execute(handshake: Core.Handshake, response: Core.Response, invocation: Core.Invocation) {
-        try {
-            let invoker = new Engine.Invoker(this.option)
-            let result = await invoker.invoke(handshake, invocation)
-            if(result.engine != "General") throw new Error(`ActionResult Error, only return value of type 'redirect' and 'emit' are allowed in real time action`)
-            await result.execute(handshake, response)
-        }
-        catch (e) {
-            response.send(new Core.ActionResult(e.message, e.status || 500))
-        }
     }
 }
 
@@ -30,11 +15,9 @@ export class SocketIoEngine implements Core.Engine {
 
     init(routes: Core.RouteInfo[], option: Core.KambojaOption) {
         let connectionEvents = routes.filter(x => x.route == "connection")
-        let errorEvents = routes.filter(x => x.route == "error")
-        let socketEvents = routes.filter(x => x.route != "error" && x.route != "connection")
-        let handler = new SocketHandler(option)
+        let socketEvents = routes.filter(x => x.route != "connection")
 
-        this.server.on("connection", socket => {
+        this.server.on("connection", async socket => {
             /*
             this handler will executed on each connection created
             all route of type SocketController named "connection" 
@@ -44,23 +27,26 @@ export class SocketIoEngine implements Core.Engine {
             */
 
             if (connectionEvents.length == 0) {
-                let handshake = new SocketIoHandshake(socket)
-                let response = new SocketResponse(new SocketAdapter(socket))
-                handler.execute(handshake, response, new OnConnectionInvocation())
+                let handler = new Kernel.RequestHandler(option)
+                await handler.execute(new SocketIoHandshake(socket),
+                    new SocketResponse(new SocketAdapter(socket)),
+                    new OnConnectionInvocation())
             }
             else {
-                connectionEvents.forEach(route => {
-                    let handshake = new SocketIoHandshake(socket)
-                    let response = new SocketResponse(new SocketAdapter(socket))
-                    handler.execute(handshake, response, new Engine.SocketControllerInvocation(option, handshake, route))
+                connectionEvents.forEach(async route => {
+                    let handler = new Kernel.RequestHandler(option, route)
+                    await handler.execute(new SocketIoHandshake(socket),
+                        new SocketResponse(new SocketAdapter(socket)), 
+                        new Kernel.ControllerInvocation())
                 })
             }
 
             socketEvents.forEach(route => {
-                socket.on(route.route!, (msg: any, callback: (body: any) => void) => {
-                    let handshake = new SocketIoHandshake(socket)
-                    let response = new SocketResponse(new SocketAdapter(socket), callback)
-                    handler.execute(handshake, response, new Engine.SocketControllerInvocation(option, handshake, route, msg))
+                socket.on(route.route!, async (msg: any, callback: (body: any) => void) => {
+                    let handler = new Kernel.RequestHandler(option, route)
+                    await handler.execute(new SocketIoHandshake(socket, msg),
+                        new SocketResponse(new SocketAdapter(socket), callback), 
+                        new Kernel.ControllerInvocation())
                 })
             })
         })

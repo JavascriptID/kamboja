@@ -9,7 +9,7 @@ export class SocketIoHandshake implements Core.Handshake {
     params: { [key: string]: string }
     route:string;
 
-    constructor(private nativeSocket: SocketIO.Socket) {
+    constructor(private nativeSocket: SocketIO.Socket, private packet?:any) {
         this.id = nativeSocket.id
         if (nativeSocket.rooms)
             this.rooms = Object.keys(nativeSocket.rooms)
@@ -34,5 +34,9 @@ export class SocketIoHandshake implements Core.Handshake {
 
     getParam(key: string): string {
         return this.findCaseInsensitive(this.params, key)
+    }
+
+    getPacket() {
+        return this.packet;
     }
 }
