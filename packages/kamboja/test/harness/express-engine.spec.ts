@@ -1,6 +1,6 @@
 import * as Supertest from "supertest"
 import * as Chai from "chai"
-import { ExpressMiddlewareAdapter } from "../../src"
+import { ExpressMiddlewareAdapter, json } from "../../src"
 import * as Express from "express"
 import * as Kamboja from "kamboja-foundation"
 import * as Lodash from "lodash"
@@ -14,7 +14,7 @@ import { ErrorHandler } from "../harness/interceptor/error-handler"
 import * as Path from "path"
 import { ConcatMiddleware } from "./interceptor/concat-middleware"
 import { LoginUser } from "../../src/login-user"
-import {Server} from "http"
+import { Server } from "http"
 
 describe("Integration", () => {
     describe("General", () => {
@@ -63,7 +63,7 @@ describe("Integration", () => {
         it("Should init express properly", () => {
             return Supertest(app)
                 .get("/user/index")
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.text).contain("user/index")
                 })
                 .expect(200)
@@ -72,7 +72,7 @@ describe("Integration", () => {
         it("Should able to write header from controller", () => {
             return Supertest(app)
                 .get("/user/setheader")
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.header["accept"]).eq("text/xml")
                 })
                 .expect(200)
@@ -81,7 +81,7 @@ describe("Integration", () => {
         it("Should able to receive request with query string", () => {
             return Supertest(app)
                 .get("/user/with/123?iAge=20&bGraduated=true")
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.type).eq("text/html")
                     Chai.expect(result.text).eq(`{"id":123,"age":20,"graduated":true}`)
                 })
@@ -108,7 +108,7 @@ describe("Integration", () => {
                 .init()
             return Supertest(app)
                 .get("/unhandled/url")
-                .expect((response:Supertest.Response) => {
+                .expect((response: Supertest.Response) => {
                     Chai.expect(response.text).eq("HELLOW!!")
                 })
                 .expect(200)
@@ -122,7 +122,7 @@ describe("Integration", () => {
                 .init()
             return Supertest(app)
                 .get("/categories/1")
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.body).eq(1)
                 })
                 .expect(200)
@@ -135,7 +135,7 @@ describe("Integration", () => {
             return Supertest(app)
                 .post("/categories")
                 .send({ data: "Hello!" })
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.body).deep.eq({ data: "Hello!" })
                 })
                 .expect(200)
@@ -147,7 +147,7 @@ describe("Integration", () => {
                 .init()
             return Supertest(app)
                 .get("/categories")
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.body).deep.eq({ offset: 1, limit: 10, query: '' })
                 })
                 .expect(200)
@@ -159,7 +159,7 @@ describe("Integration", () => {
                 .init()
             return Supertest(app)
                 .get("/categories?iOffset=30&query=halo")
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.body).deep.eq({ offset: 30, limit: 10, query: 'halo' })
                 })
                 .expect(200)
@@ -172,7 +172,7 @@ describe("Integration", () => {
             return Supertest(app)
                 .put("/categories/20")
                 .send({ data: "Hello!" })
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.body).deep.eq({ data: "Hello!" })
                 })
                 .expect(200)
@@ -185,7 +185,7 @@ describe("Integration", () => {
             return Supertest(app)
                 .patch("/categories/20")
                 .send({ data: "Hello!" })
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.body).deep.eq({ data: "Hello!" })
                 })
                 .expect(200)
@@ -197,7 +197,7 @@ describe("Integration", () => {
                 .init()
             return Supertest(app)
                 .delete("/categories/20")
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.body).eq(20)
                 })
                 .expect(200)
@@ -214,7 +214,7 @@ describe("Integration", () => {
         it("Should handle `get` properly", () => {
             return Supertest(app)
                 .get("/categories/1/items/1")
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.body).deep.eq({ id: 1, categoryId: 1 })
                 })
                 .expect(200)
@@ -224,7 +224,7 @@ describe("Integration", () => {
             return Supertest(app)
                 .post("/categories/1/items")
                 .send({ data: "Hello!" })
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.body).deep.eq({ data: "Hello!", categoryId: 1 })
                 })
                 .expect(200)
@@ -233,7 +233,7 @@ describe("Integration", () => {
         it("Should handle `list` with default value properly", () => {
             return Supertest(app)
                 .get("/categories/1/items")
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.body).deep.eq({ offset: 1, limit: 10, query: '', categoryId: 1 })
                 })
                 .expect(200)
@@ -242,7 +242,7 @@ describe("Integration", () => {
         it("Should handle `list` with custom value properly", () => {
             return Supertest(app)
                 .get("/categories/1/items?iOffset=30&query=halo")
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.body).deep.eq({ offset: 30, limit: 10, query: 'halo', categoryId: 1 })
                 })
                 .expect(200)
@@ -252,7 +252,7 @@ describe("Integration", () => {
             return Supertest(app)
                 .put("/categories/1/items/20")
                 .send({ data: "Hello!" })
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.body).deep.eq({ data: "Hello!", categoryId: 1 })
                 })
                 .expect(200)
@@ -262,7 +262,7 @@ describe("Integration", () => {
             return Supertest(app)
                 .patch("/categories/1/items/20")
                 .send({ data: "Hello!" })
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.body).deep.eq({ data: "Hello!", categoryId: 1 })
                 })
                 .expect(200)
@@ -271,7 +271,7 @@ describe("Integration", () => {
         it("Should handle `delete` properly", () => {
             return Supertest(app)
                 .delete("/categories/1/items/20")
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.body).deep.eq({ id: 20, categoryId: 1 })
                 })
                 .expect(200)
@@ -394,10 +394,42 @@ describe("Integration", () => {
     })
 
     describe("Middleware Function", () => {
+
+        it("Should be able to add callback middleware in global scope", async () => {
+            let app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
+                .use(async (context: Kamboja.Core.HttpRequest, next: Kamboja.Core.Invocation) => {
+                    return json({}, 501)
+                })
+                .init()
+
+            return Supertest(app)
+                .get("/user/index")
+                .expect(501)
+        })
+
+        it("Should be able to add callback middleware in method scope", async () => {
+            let app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
+                .init()
+
+            return Supertest(app)
+                .get("/user/kambojacallbackmiddleawre")
+                .expect(501)
+        })
+
+        it("Should throw error if provided invalid middleware name", async () => {
+            let app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
+                .use("InvalidName, path/of/nowhere")
+                
+            try{
+                app.init()
+            }
+            catch(e){
+                Chai.expect(e.message).eq("Can not instantiate middleware [InvalidName, path/of/nowhere] in global middlewares")
+            }
+        })
+
         it("Should be able to add middleware in global scope", async () => {
             let app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
-                .set("views", Path.join(__dirname, "view"))
-                .set("view engine", "hbs")
                 .use((req, res: Express.Response, next) => {
                     res.status(501)
                     res.end()
@@ -459,7 +491,7 @@ describe("Integration", () => {
                 //otherindex should not affected by the the decorator
                 Supertest(app)
                     .get("/methodscopedmiddleware/otherindex")
-                    .expect((response:Supertest.Response) => {
+                    .expect((response: Supertest.Response) => {
                         Chai.expect(response.body).eq("Hello!")
                     })
                     .expect(200, resolve)
@@ -487,7 +519,7 @@ describe("Integration", () => {
 
             return Supertest(app)
                 .get("/concat/index")
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.text).eq("action-01 action-02 controller-01 controller-02 global-01 global-02 result")
                 })
                 .expect(200)
@@ -502,7 +534,7 @@ describe("Integration", () => {
                 .init()
             return Supertest(app)
                 .get("/user/haserror")
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.text).contain("This user error")
                 })
                 .expect(500)
@@ -515,7 +547,7 @@ describe("Integration", () => {
                 .init()
             return Supertest(app)
                 .get("/home/index")
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.text).contains(`Failed to lookup view "home/index"`)
                 })
                 .expect(500)
@@ -529,7 +561,7 @@ describe("Integration", () => {
                 .init()
             return Supertest(app)
                 .get("/user/haserror")
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.text).contain("oops!")
                 })
                 .expect(200)
@@ -571,7 +603,7 @@ describe("Integration", () => {
                 .post("/categories")
                 .type("application/json")
                 .send(`{ "message": "Hello`)
-                .expect((result:Supertest.Response) => {
+                .expect((result: Supertest.Response) => {
                     Chai.expect(result.text).contain("oops!")
                 })
                 .expect(200)

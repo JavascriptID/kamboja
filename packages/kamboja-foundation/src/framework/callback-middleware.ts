@@ -8,7 +8,3 @@ export class CallbackMiddleware extends Middleware {
         return this.callback(context, next)
     }
 }
-
-export function mdw(callback:MiddlewareFunction){
-    return new CallbackMiddleware(callback)
-}

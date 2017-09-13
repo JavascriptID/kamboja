@@ -2,7 +2,8 @@ import { Kamboja, Core } from "kamboja-foundation"
 import { ExpressEngine } from "./express-engine"
 import { ExpressMiddlewareAdapter } from "./express-middleware-adapter"
 import { RequestHandler } from "express"
-import {Server} from "http"
+import { MiddlewareDecorator } from "./middleware-decorator"
+import { Server } from "http"
 
 export type KambojaOptionKeys = keyof Core.KambojaOption
 export type ExpressOptionKeys = "case sensitive routing" | "env" | "etag"
@@ -49,8 +50,8 @@ export class KambojaApplication {
         return this;
     }
 
-    use(middleware: RequestHandler | Core.Middleware | string) {
-        if (typeof middleware == "function") {
+    use(middleware: RequestHandler | Core.MiddlewaresType) {
+        if (MiddlewareDecorator.isExpressMiddleware(middleware)) {
             this.expressEngine.application.use(middleware)
         }
         else {
@@ -58,6 +59,8 @@ export class KambojaApplication {
         }
         return this;
     }
+
+
 
     init(): Server {
         return this.kamboja.init();

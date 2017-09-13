@@ -1,11 +1,11 @@
 import { DecoratorHelper } from "../../decorator";
-import { Middleware } from "kamboja-core";
+import { Middleware, MiddlewaresType } from "kamboja-core";
 
 export const MiddlewareMetadataKey = "kamboja:middleware"
 export const MiddlewareIdMetadataKey = "kamboja:middleware:id"
 
 export class MiddlewareDecorator {
-    use(middleware: Middleware | string) {
+    use(middleware: MiddlewaresType) {
         return (...args: any[]) => {
             DecoratorHelper.save(MiddlewareMetadataKey, middleware, args)
         }
@@ -22,7 +22,7 @@ export class MiddlewareDecorator {
     }
     
     static getMiddlewares(target: any, methodName?: string) {
-        return DecoratorHelper.get<(Middleware | string)>(MiddlewareMetadataKey, target, methodName)
+        return DecoratorHelper.get<(MiddlewaresType)>(MiddlewareMetadataKey, target, methodName)
     }
 }
 
