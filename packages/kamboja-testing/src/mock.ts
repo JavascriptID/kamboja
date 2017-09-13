@@ -14,7 +14,7 @@ export type Spy<T> = T & Mockable<T, Sinon.SinonSpy>
 export type Stub<T> = T & Mockable<T, Sinon.SinonStub>
 
 function mock<T, TResult>(obj: T, sinon: (obj: any, key: string) => TResult): (T & Mockable<T, TResult>) {
-    let mocks: Mock<T, TResult> = <any>{}
+    let mocks = <any>{}
     for (let key of reflect(obj)) {
         mocks[key] = sinon(obj, key)
     }
