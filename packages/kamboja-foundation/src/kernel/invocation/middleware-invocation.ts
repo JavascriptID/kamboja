@@ -6,7 +6,7 @@ export class MiddlewareInvocation extends Invocation {
         super()
     }
 
-    async proceed(): Promise<ActionResult> {
+    proceed(): Promise<ActionResult> {
         this.next.context = this.context;
         this.next.parameters = this.parameters;
         return this.middleware.execute(this.context, this.next)
