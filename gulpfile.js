@@ -103,7 +103,7 @@ function compile(opt) {
     var name = "compiling: " + opt.src;
     if (!opt.declaration) opt.declaration = false;
     if (!opt.dest) opt.dest = opt.src;
-    if (!opt.tsconfig) opt.tsconfig = "tsconfig.json"
+    if (!opt.tsconfig) opt.tsconfig = "tsconfig-es5.json"
     var tsProject = tsc.createProject(opt.tsconfig, {
         declaration: opt.declaration,
         typescript: require("typescript")
