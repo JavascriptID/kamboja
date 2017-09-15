@@ -7,7 +7,8 @@ export class FileActionResult extends Core.ActionResult {
         this.engine = "Express"
     }
 
-    async execute(request: Core.HttpRequest, response: ResponseAdapter, routeInfo: Core.RouteInfo): Promise<void> {
-        response.file(this, this.path)
+    execute(request: Core.HttpRequest, response: ResponseAdapter, routeInfo: Core.RouteInfo): Promise<void> {
+        return Promise.resolve()
+            .then(x => response.file(this, this.path))
     }
 }
