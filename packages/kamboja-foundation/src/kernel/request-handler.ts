@@ -10,8 +10,7 @@ export class RequestHandler {
     private tail: Invocation;
 
     constructor(public facade: Core.Facade, public controllerInfo?: Core.RouteInfo) {
-        let rawGlobalMiddleware = (facade.middlewares || []).slice().reverse()
-        let middlewares = MiddlewareFactory.resolve(rawGlobalMiddleware, facade.dependencyResolver!)
+        let middlewares = <Core.Middleware[]>(facade.middlewares || []).slice().reverse()
         if (controllerInfo) {
             let controller = ControllerFactory.resolve(controllerInfo, facade.dependencyResolver!)
             middlewares.push(...MiddlewareFactory.resolve(MiddlewareDecorator

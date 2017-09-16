@@ -313,6 +313,34 @@ describe("Kamboja", () => {
         Chai.expect((<any>kamboja).options.middlewares.length).eq(4)
     })
 
+
+    it("Should resolve middlewares on init", () => {
+        let opt: Core.KambojaOption = {
+            rootPath: __dirname,
+            showLog: "None"
+        }
+        let kamboja = new Kamboja(engine, opt)
+        kamboja.use("FakeMiddleware, middleware/fake-middleware")
+            .init()
+        let middlewares = kamboja.get<Core.Middleware[]>("middlewares");
+        Chai.expect(typeof middlewares[0]).eq("object")
+        Chai.expect(middlewares.length).eq(1)
+    })
+
+
+    it("Should throw appropriate error if provided invalid middleware name", () => {
+        let opt: Core.KambojaOption = {
+            rootPath: __dirname,
+            showLog: "None"
+        }
+        let kamboja = new Kamboja(engine, opt)
+        Chai.expect(() => {
+            kamboja.use("InvalidName, path/of/nowhere")
+                .init()
+        }).throw("Can not instantiate middleware [InvalidName, path/of/nowhere] in global middlewares")
+    })
+
+
     it("Should resolve validators on init", () => {
         let opt: Core.KambojaOption = {
             rootPath: __dirname,
