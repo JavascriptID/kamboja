@@ -25,13 +25,15 @@ export class ControllerInvocation extends Core.Invocation {
         return this.createResult(result)
     }
 
-    private async createResult(result: any) {
-        let awaitedResult = await Promise.resolve(result)
-        if (awaitedResult instanceof Core.ActionResult)
-            return awaitedResult
-        if (this.controllerInfo!.classMetaData!.baseClass == "ApiController") {
-            return new Core.ActionResult(awaitedResult, 200, "application/json")
-        }
-        return new Core.ActionResult(awaitedResult, 200, "text/html")
+    createResult(result: any) {
+        return Promise.resolve(result)
+            .then(awaitedResult => {
+                if (awaitedResult instanceof Core.ActionResult)
+                    return awaitedResult
+                if (this.controllerInfo!.classMetaData!.baseClass == "ApiController") {
+                    return new Core.ActionResult(awaitedResult, 200, "application/json")
+                }
+                return new Core.ActionResult(awaitedResult, 200, "text/html")
+            })
     }
 }

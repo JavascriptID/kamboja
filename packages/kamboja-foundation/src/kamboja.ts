@@ -10,6 +10,7 @@ import { Logger } from "./logger"
 import * as Kecubung from "kecubung"
 import { ValidatorFactory } from "./validator"
 import * as Http from "http"
+import { MiddlewareFactory } from "./kernel";
 
 /**
  * Create instance of KambojaJS application
@@ -21,7 +22,7 @@ export class Kamboja implements Core.Application {
     private log: Logger;
     private storage: MetaDataLoader;
 
-    static getFacade() {
+    static getFacade():Core.Facade {
         return Kamboja.facade;
     }
 
@@ -162,6 +163,10 @@ export class Kamboja implements Core.Application {
         return true;
     }
 
+    private resolveMiddlewares(option: Core.KambojaOption) {
+        option.middlewares = MiddlewareFactory.resolve(option.middlewares!, option.dependencyResolver!)
+    }
+
     private resolveValidators(option: Core.KambojaOption) {
         option.validators = ValidatorFactory.resolve(option.validators!, option.dependencyResolver!)
     }
@@ -177,6 +182,7 @@ export class Kamboja implements Core.Application {
         this.storage.load(this.options.modelPath!, "Model")
         //TODO: possibly temporal coupling
         this.resolveValidators(this.options)
+        this.resolveMiddlewares(this.options)
         let routeInfos = this.generateRoutes(this.storage.getFiles("Controller"))
         if (routeInfos.length == 0) throw new Error("Fatal error")
         if (!this.analyzeRoutes(routeInfos)) throw new Error("Fatal Error")

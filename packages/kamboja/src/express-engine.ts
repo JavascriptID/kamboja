@@ -8,22 +8,22 @@ import * as Fs from "fs"
 import * as Chalk from "chalk"
 
 function route(handler: Kernel.RequestHandler) {
-    return async (req: Express.Request, resp: Express.Response, next: Express.NextFunction) => {
-        await handler.execute(new RequestAdapter(req), new ResponseAdapter(resp, next),
+    return (req: Express.Request, resp: Express.Response, next: Express.NextFunction) => {
+        handler.execute(new RequestAdapter(req), new ResponseAdapter(resp, next),
             new Kernel.ControllerInvocation());
     }
 }
 
 function notFound(handler: Kernel.RequestHandler) {
-    return async (req: Express.Request, resp: Express.Response, next: Express.NextFunction) => {
-        await handler.execute(new RequestAdapter(req), new ResponseAdapter(resp, next),
+    return (req: Express.Request, resp: Express.Response, next: Express.NextFunction) => {
+        handler.execute(new RequestAdapter(req), new ResponseAdapter(resp, next),
             new Kernel.ErrorInvocation(new HttpStatusError(404, "Requested url not found")));
     }
 }
 
 function error(handler: Kernel.RequestHandler) {
-    return async (err: any, req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
-        await handler.execute(new RequestAdapter(req), new ResponseAdapter(res, next),
+    return (err: any, req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
+        handler.execute(new RequestAdapter(req), new ResponseAdapter(res, next),
             new Kernel.ErrorInvocation(err));
     }
 }
