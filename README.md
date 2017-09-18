@@ -88,7 +88,13 @@ $ npm install -g lerna gulp
 Clone the repository 
 
 ```ssh
-$ git clone git@github.com:kambojajs/kamboja.git
+$ git clone https://github.com/kambojajs/kamboja.git
+```
+
+Move to Kamboja directory
+
+```ssh
+$ cd kamboja
 ```
 
 Install root dependency
