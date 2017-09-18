@@ -20,7 +20,7 @@ export class MiddlewareDecorator {
         let result = DecoratorHelper.get<string>(MiddlewareIdMetadataKey, target)
         return result ? result[0] : undefined
     }
-    
+
     static getMiddlewares(target: any, methodName?: string) {
         return DecoratorHelper.get<(MiddlewaresType)>(MiddlewareMetadataKey, target, methodName)
     }

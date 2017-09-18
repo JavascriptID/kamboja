@@ -101,4 +101,15 @@ describe("SchemaGenerator", () => {
             test.generate(clazz)
         }).throw("Invalid type used in @type in [EntityWithUnsupportedType]")
     })
+
+    it("Should throw if model has properties but not decorated with @type", () => {
+        let classes = H.fromFile("models/model-without-type-info.js", new Resolver.DefaultPathResolver(__dirname))
+        let clazz = classes.filter(x => x.name == "UserModel")[0]
+        let resolver = new Resolver.DefaultPathResolver(__dirname);
+        let converter = new TypeConverter(resolver, classes)
+        let test = new SchemaGenerator(resolver, converter)
+        Chai.expect(() => {
+            test.generate(clazz)
+        }).throw("No type information found in [UserModel.email], please decorate property with @type")
+    })
 })

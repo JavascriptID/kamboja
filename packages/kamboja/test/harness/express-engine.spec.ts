@@ -49,6 +49,21 @@ describe("Integration", () => {
                 .set("view engine", undefined)
                 .set("x-powered-by", undefined)
         })
+
+        it("Should able to use external server", async () => {
+            //let uws = http.getExpressApp(Express)
+            let app = <any>new KambojaApplication({ rootPath: __dirname, showLog: "None" })
+                .set("views", Path.join(__dirname, "view"))
+                .set("view engine", "hbs")
+                .init(Express())
+            
+            await Supertest(app)
+                .get("/user/index")
+                .expect((result: Supertest.Response) => {
+                    Chai.expect(result.text).contain("user/index")
+                })
+                .expect(200)
+        })
     })
 
     describe("Controller", () => {
@@ -98,6 +113,15 @@ describe("Integration", () => {
             return Supertest(app)
                 .get("/unhandled/url")
                 .expect(404)
+        })
+
+        it("Should return json properly", () => {
+            return Supertest(app)
+                .get("/home/json")
+                .expect((response: Supertest.Response) => {
+                    Chai.expect(response.body).deep.eq({ message: "Hello world" })
+                })
+                .expect(200)
         })
 
         it("Should able to intercept unhandled url from interception", () => {
@@ -419,12 +443,12 @@ describe("Integration", () => {
         it("Should throw error if provided invalid middleware name", async () => {
             let app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
                 .use("InvalidName, path/of/nowhere")
-                
-            try{
+
+            try {
                 app.init()
             }
-            catch(e){
-                Chai.expect(e.message).eq("Can not instantiate middleware [InvalidName, path/of/nowhere] in global middlewares")
+            catch (e) {
+                Chai.expect(e.message).eq("Can not instantiate middleware [InvalidName, path/of/nowhere]")
             }
         })
 

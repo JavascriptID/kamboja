@@ -8,7 +8,6 @@ export class JsonActionResult extends Core.ActionResult {
     }
 
     execute(request: Core.HttpRequest, response: ResponseAdapter, routeInfo: Core.RouteInfo): Promise<void> {
-        return Promise.resolve()
-            .then(x => response.json(this))
+        return new Promise(x => x(response.json(this)))
     }
 }

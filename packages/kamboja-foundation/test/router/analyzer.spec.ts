@@ -238,22 +238,39 @@ describe("Analyzer", () => {
 
     it("Should analyze class not inherited from ApiController or Controller", () => {
         let meta = H.fromCode(`
-        var MyClass = (function () {
-            function MyClass() {
+        var MyClassController = (function () {
+            function MyClassController() {
             }
-            MyClass.prototype.getByPage = function () { };
-            return MyClass;
+            MyClassController.prototype.getByPage = function () { };
+            return MyClassController;
         }());
-        exports.MyClass = MyClass;
+        exports.MyClassController = MyClassController;
         `, "example-file.js")
 
         let info = Transformer.transform(meta);
         let result = Analyzer.analyze(info);
         Chai.expect(result).deep.eq([{
             code: Core.RouteAnalysisCode.ClassNotInheritedFromController,
-            message: "Class not inherited from Controller, ApiController or SocketController in [MyClass, example-file.js]",
+            message: "Class not inherited from Controller, ApiController in [MyClassController, example-file.js]",
             type: 'Warning'
         }])
+    })
+
+    it("Should not analyze class not inherited from Controller if it doesn't ends with 'Controller'", () => {
+        let meta = H.fromCode(`
+        var MyClassr = (function () {
+            function MyClassr() {
+            }
+            MyClassr.prototype.getByPage = function () { };
+            return MyClassr;
+        }());
+        exports.MyClassr = MyClassr;
+        `, "example-file.js")
+
+        let info = Transformer.transform(meta);
+        let result = Analyzer.analyze(info);
+        Chai.expect(result.length).eq(0)
+        Chai.expect(info[0].analysis).deep.eq([Core.RouteAnalysisCode.ClassNotInheritedFromController])
     })
 
     it("Should analyze non exported class", () => {
@@ -286,7 +303,7 @@ describe("Analyzer", () => {
             }
             MyController.prototype.index = function (model) { };
             return MyController;
-        }(controller_1.SocketController));
+        }(controller_1.Controller));
         tslib_1.__decorate([
             src_1.route.on("relative/:id"),
         ], MyController.prototype, "index", null);

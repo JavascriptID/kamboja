@@ -8,7 +8,6 @@ export class FileActionResult extends Core.ActionResult {
     }
 
     execute(request: Core.HttpRequest, response: ResponseAdapter, routeInfo: Core.RouteInfo): Promise<void> {
-        return Promise.resolve()
-            .then(x => response.file(this, this.path))
+        return new Promise(x => x(response.file(this, this.path)))
     }
 }

@@ -138,7 +138,7 @@ export class Kamboja implements Core.Application {
         if (analysis.some(x => x.type == "Error")) {
             return false;
         }
-        let validRoutes = infos.filter(x => !x.analysis || x.analysis.length == 0)
+        let validRoutes = infos.filter(x => !x.analysis)
         if (validRoutes.length == 0) {
             let path = this.options.controllerPaths!.join(", ")
             this.log.newLine().error(`No valid controller found in [${path}]`)
@@ -164,7 +164,7 @@ export class Kamboja implements Core.Application {
     }
 
     private resolveMiddlewares(option: Core.KambojaOption) {
-        option.middlewares = MiddlewareFactory.resolve(option.middlewares!, option.dependencyResolver!)
+        option.middlewares = MiddlewareFactory.resolveArray(option.middlewares!, option.dependencyResolver!)
     }
 
     private resolveValidators(option: Core.KambojaOption) {
@@ -175,7 +175,7 @@ export class Kamboja implements Core.Application {
      * Initialize KambojaJS application 
      * @returns HttpServer 
      */
-    init() {
+    init(app?:any) {
         this.log = new Logger(this.options.showLog!)
         if (!this.isFolderProvided()) throw new Error("Fatal error")
         this.storage.load(this.options.controllerPaths!, "Controller")
@@ -186,16 +186,14 @@ export class Kamboja implements Core.Application {
         let routeInfos = this.generateRoutes(this.storage.getFiles("Controller"))
         if (routeInfos.length == 0) throw new Error("Fatal error")
         if (!this.analyzeRoutes(routeInfos)) throw new Error("Fatal Error")
-        let httpControllers = routeInfos.filter(x => x.httpMethod != "EVENT")
-        let httpApp = this.engine.init(httpControllers, this.options)
+        let httpControllers = this.options.routeInfos!.filter(x => x.httpMethod != "EVENT")
+        let httpApp = this.engine.init(httpControllers, this.options, app)
         this.set("httpApp", httpApp)
-        let server = Http.createServer(httpApp)
         if (this.options.socketEngine) {
             let socketControllers = routeInfos.filter(x => x.httpMethod == "EVENT")
-            let socketApp = this.options.socketEngine.init(socketControllers, this.options);
+            let socketApp = this.options.socketEngine.init(socketControllers, this.options, httpApp);
             this.set("socketApp", socketApp)
-            socketApp.listen(server)
         }
-        return server;
+        return httpApp;
     }
 }

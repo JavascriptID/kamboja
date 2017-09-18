@@ -18,7 +18,7 @@ export class ControllerInvocation extends Core.Invocation {
         controller.context = this.context
         let method = (<any>controller)[this.controllerInfo!.methodMetaData!.name]
         let result;
-        if (this.facade.autoValidation && !controller.validator.isValid())
+        if (this.facade.autoValidation && this.controllerInfo!.methodMetaData!.parameters.length > 0 && !controller.validator.isValid())
             result = new Core.ActionResult(controller.validator.getValidationErrors(), 400, "application/json")
         else
             result = method.apply(controller, this.parameters);
@@ -27,7 +27,7 @@ export class ControllerInvocation extends Core.Invocation {
 
     createResult(result: any) {
         return Promise.resolve(result)
-            .then(awaitedResult => {
+            .then(awaitedResult => { 
                 if (awaitedResult instanceof Core.ActionResult)
                     return awaitedResult
                 if (this.controllerInfo!.classMetaData!.baseClass == "ApiController") {

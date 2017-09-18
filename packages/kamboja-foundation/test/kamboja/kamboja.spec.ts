@@ -4,6 +4,7 @@ import * as Sinon from "sinon"
 import * as Kecubung from "kecubung"
 import * as H from "../helper"
 import { BasicFacility } from "./facility/basic-facility"
+import * as Testing from "kamboja-testing"
 
 let engine = {
     init: () => { }
@@ -58,7 +59,7 @@ describe("Kamboja", () => {
         })
         kamboja.init()
         let result = initSpy.getCall(0).args
-        Chai.expect(result.length).eq(2)
+        Chai.expect(result.length).eq(3)
     })
 
     it("Should generate routes properly", () => {
@@ -222,7 +223,7 @@ describe("Kamboja", () => {
         })
         kamboja.init()
         let result = initSpy.getCall(0).args
-        Chai.expect(result.length).eq(2)
+        Chai.expect(result.length).eq(3)
     })
 
     it("Should throw if provided model directory not exists", () => {
@@ -252,6 +253,16 @@ describe("Kamboja", () => {
             showLog: "None"
         })
         Chai.expect(() => kamboja.init()).throw()
+    })
+
+    it("Should not error if mixed with non controller", () => {
+        let kamboja = new Kamboja(engine, {
+            rootPath: __dirname,
+            controllerPaths: ["controller-with-non-controller"],
+            showLog: "None"
+        })
+        kamboja.init();
+        Chai.expect(initSpy.getCall(0).args[0].length).eq(1)
     })
 
     it("Should throw if analysis failure", () => {
@@ -337,7 +348,7 @@ describe("Kamboja", () => {
         Chai.expect(() => {
             kamboja.use("InvalidName, path/of/nowhere")
                 .init()
-        }).throw("Can not instantiate middleware [InvalidName, path/of/nowhere] in global middlewares")
+        }).throw("Can not instantiate middleware [InvalidName, path/of/nowhere]")
     })
 
 

@@ -10,34 +10,22 @@ export class RequestHandler {
     private tail: Invocation;
 
     constructor(public facade: Core.Facade, public controllerInfo?: Core.RouteInfo) {
-        //let middlewares = <Core.Middleware[]>(facade.middlewares || []).slice().reverse()
-        let middlewares:Core.Middleware[] = []
-        if(facade.middlewares){
-            let i = facade.middlewares.length;
-            while(i--){
-                middlewares.push(<Core.Middleware>facade.middlewares[i])
-            }
-        }
+        let middlewares = <Core.Middleware[]>(facade.middlewares || []).slice().reverse()
         if (controllerInfo) {
             let controller = ControllerFactory.resolve(controllerInfo, facade.dependencyResolver!)
-            middlewares.push(...MiddlewareFactory.resolve(MiddlewareDecorator
+            middlewares.push(...MiddlewareFactory.resolveArray(MiddlewareDecorator
                 .getMiddlewares(controller), facade.dependencyResolver!))
-            middlewares.push(...MiddlewareFactory.resolve(MiddlewareDecorator
+            middlewares.push(...MiddlewareFactory.resolveArray(MiddlewareDecorator
                 .getMiddlewares(controller, controllerInfo.methodMetaData!.name), facade.dependencyResolver!))
         }
         this.tail = this.head = new AttachableInvocation(middlewares, controllerInfo!, facade)
         middlewares.forEach(x => {
-            let invocation = new MiddlewareInvocation(x, this.tail)
-            invocation.middlewares = middlewares;
-            invocation.controllerInfo = controllerInfo;
-            invocation.facade = facade;
-            this.tail = invocation;
+            this.tail = new MiddlewareInvocation(x, this.tail, middlewares, facade, controllerInfo)
         })
     }
 
     execute(context: Core.HttpRequest | Core.Handshake, response: Core.Response, invocation: Core.Invocation) {
-        return Promise.resolve()
-            .then(result => this.prepare(context, invocation))
+        return new Promise<void>(resolve => resolve(this.prepare(context, invocation)))
             .then(result => this.tail.proceed())
             .then(result => {
                 if (context.contextType == "Handshake" && result.engine != "General")
@@ -51,7 +39,7 @@ export class RequestHandler {
 
     private prepare(context: Core.HttpRequest | Core.Handshake, invocation: Invocation) {
         this.head.attach(invocation);
-        if (context.contextType == "HttpRequest" && this.controllerInfo) {
+        if (context.contextType == "HttpRequest" && this.controllerInfo && this.controllerInfo.methodMetaData!.parameters.length > 0) {
             let binder = new ParameterBinder(this.controllerInfo!, this.facade.pathResolver!);
             this.tail.parameters = binder.getParameters(context);
         }

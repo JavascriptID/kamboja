@@ -5,7 +5,7 @@ import * as Kecubung from "kecubung"
 import * as Shortid from "shortid"
 
 export class SchemaGenerator {
-    constructor(private pathResolver: Core.PathResolver, private converter:TypeConverter) { }
+    constructor(private pathResolver: Core.PathResolver, private converter: TypeConverter) { }
 
     generate(clazz: Core.QualifiedClassMetaData) {
         let schema: any = {}
@@ -24,9 +24,10 @@ export class SchemaGenerator {
         return schema;
     }
 
-    private getType(property: Kecubung.PropertyMetaData, typeName:string) {
+    private getType(property: Kecubung.PropertyMetaData, typeName: string) {
         let decorators = property.decorators!.filter(x => x.name == "type");
         if (decorators.length > 1) throw new Error(`Multiple @type found in [${typeName}]`)
+        if (decorators.length == 0) throw new Error(`No type information found in [${typeName}.${property.name}], please decorate property with @type`)
         let decorator = decorators[0]
         let parameter = <Kecubung.PrimitiveValueMetaData>decorator.parameters[0]
         let type: string = parameter.value;

@@ -33,7 +33,7 @@ export class KambojaApplication {
             case "view cache":
             case "view engine":
             case "x-powered-by":
-                this.expressEngine.application.set(setting, value)
+                this.expressEngine.addSetting(setting, value)
                 break;
             default:
                 this.kamboja.set(setting, value)
@@ -52,7 +52,7 @@ export class KambojaApplication {
 
     use(middleware: RequestHandler | Core.MiddlewaresType) {
         if (MiddlewareDecorator.isExpressMiddleware(middleware)) {
-            this.expressEngine.application.use(middleware)
+            this.expressEngine.addMiddleware(middleware)
         }
         else {
             this.kamboja.use(middleware)
@@ -60,9 +60,7 @@ export class KambojaApplication {
         return this;
     }
 
-
-
-    init(): Server {
-        return this.kamboja.init();
+    init(app?:any): Server {
+        return this.kamboja.init(app);
     }
 }

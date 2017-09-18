@@ -29,13 +29,28 @@ function error(handler: Kernel.RequestHandler) {
 }
 
 export class ExpressEngine implements Core.Engine {
-    application: Express.Application
+    private application: Express.Application
+    middlewares: Express.RequestHandler[] = []
+    settings: { [key: string]: any } = {}
 
-    constructor() {
-        this.application = Express();
+    addMiddleware(mdw:Express.RequestHandler){
+        this.middlewares.push(mdw)
     }
 
-    init(routes: Core.RouteInfo[], option: Core.KambojaOption) {
+    addSetting(key:string, value:any){
+        this.settings[key] = value;
+    }
+
+    init(routes: Core.RouteInfo[], option: Core.KambojaOption, app?: any) {
+        this.application = app || Express();
+        for(let key in this.settings){
+            this.application.set(key, this.settings[key])
+        }
+
+        for(let mdw of this.middlewares){
+            this.application.use(mdw)
+        }
+
         //routes
         routes.forEach(info => (<any>this.application)[info.httpMethod!.toLowerCase()]
             (info.route, route(new Kernel.RequestHandler(option, info))))
@@ -45,7 +60,9 @@ export class ExpressEngine implements Core.Engine {
 
         //error handler
         this.application.use(error(new Kernel.RequestHandler(option)))
-        return this.application;
+
+        if(app) return this.application
+        else return Http.createServer(this.application)
     }
 }
 

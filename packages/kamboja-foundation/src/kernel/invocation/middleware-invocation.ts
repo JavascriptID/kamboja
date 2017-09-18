@@ -1,8 +1,12 @@
-import { Middleware, Invocation, ActionResult, RouteInfo } from "kamboja-core"
+import { Middleware, Invocation, ActionResult, RouteInfo, Facade } from "kamboja-core"
 
 
 export class MiddlewareInvocation extends Invocation {
-    constructor(private middleware: Middleware, private next: Invocation) {
+    constructor(private middleware: Middleware, 
+        private next: Invocation, 
+        public middlewares:Middleware[],
+        public facade:Facade,
+        public controllerInfo?:RouteInfo) {
         super()
     }
 

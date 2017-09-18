@@ -3,6 +3,7 @@ import { SocketResponse } from "./socket-response"
 import { SocketIoHandshake } from "./socket-handshake"
 import { SocketAdapter } from "./socket-adapter"
 import * as SocketIo from "socket.io"
+import * as Http from "http"
 
 export class OnConnectionInvocation extends Core.Invocation {
     async proceed(): Promise<Core.ActionResult> {
@@ -13,15 +14,12 @@ export class OnConnectionInvocation extends Core.Invocation {
 export class SocketIoEngine implements Core.Engine {
     constructor(private server: SocketIO.Server, private registry: Core.SocketRegistry) { }
 
-    init(routes: Core.RouteInfo[], option: Core.KambojaOption) {
+    init(routes: Core.RouteInfo[], option: Core.KambojaOption, app?:any) {
         let connectionEvents = routes.filter(x => x.route == "connection")
         let socketEvents = routes.filter(x => x.route != "connection")
 
         this.server.on("connection", async socket => {
             /*
-            this handler will executed on each connection created
-            all route of type SocketController named "connection" 
-            will be called.
             If no handler found it is required to execute the system 
             once, to make sure authentication process in middlewares called.
             */
@@ -50,6 +48,7 @@ export class SocketIoEngine implements Core.Engine {
                 })
             })
         })
+        this.server.listen(app)
         return this.server;
     }
 }
