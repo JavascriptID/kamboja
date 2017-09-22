@@ -18,7 +18,7 @@ export class ResponseAdapter implements Core.Response {
 
     json(result: Core.ActionResult) {
         this.setup(result)
-        this.nativeResponse.status(result.status!).json(result.body)
+        this.nativeResponse.json(result.body)
     }
 
     redirect(result: Core.ActionResult, path: string) {
