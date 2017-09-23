@@ -1,4 +1,4 @@
-export { Application, BaseController, Engine, Facility, Invocation, KambojaOption, LogType, MethodDecorator, Middleware, MiddlewaresType, Response, MiddlewareFunction } from "./framework"
+export { Application, BaseController, Engine, Facility, Invocation, KambojaOption, LogType, MethodDecorator, Middleware, MiddlewaresType, Response, MiddlewareFunction, InvocationBase } from "./framework"
 export { Cookie, CookieOptions, HttpError, HttpMethod, HttpRequest } from "./http"
 export { DependencyResolver, IdentifierResolver, PathResolver } from "./resolver"
 export { AnalysisMessage, ControllerInfo, MetaDataLoaderCategory, MetaDataStorage, OverrideRequest, QualifiedClassMetaData, RouteAnalysisCode, TransformerName, TransformStatus } from "./router"

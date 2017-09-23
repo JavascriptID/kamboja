@@ -5,6 +5,7 @@ export * from "./engine";
 export * from "./facade";
 export * from "./facility";
 export * from "./invocation";
+export * from "./invocation-base";
 export * from "./kamboja-option";
 export * from "./log-type";
 export * from "./middleware";

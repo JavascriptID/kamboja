@@ -5,12 +5,18 @@ import { TypeValidator } from "./type-validator"
 import { RequiredValidator } from "./required-validator"
 import { EmailValidator } from "./email-validator"
 import { RangeValidator } from "./range-validator"
+import {Kamboja} from "../kamboja"
 
 export class ValidatorImpl extends ValidatorBase implements Core.Validator {
     private parameters: any[]
     private classMetaData: Kecubung.ClassMetaData
     private errors: Core.ValidationError[] = []
     private methodName: string
+
+    static create(){
+        let facade = Kamboja.getFacade();
+        return new ValidatorImpl(facade.metaDataStorage!, <Core.ValidatorCommand[]>facade.validators!)
+    }
 
     constructor(private metaDataStorage: Core.MetaDataStorage,
         validators: Core.ValidatorCommand[]) {

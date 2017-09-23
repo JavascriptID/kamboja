@@ -3,19 +3,13 @@ import { ParameterBinder } from "../../binder"
 import { ValidatorImpl } from "../../validator"
 import { ControllerFactory } from "../factory"
 
-function createController(option: Core.Facade, controllerInfo: Core.ControllerInfo, parameters: any[]) {
-    let validator = new ValidatorImpl(option.metaDataStorage!, <Core.ValidatorCommand[]>option.validators!)
-    validator.setValue(parameters, controllerInfo.classMetaData!, controllerInfo.methodMetaData!.name)
-    let controller = ControllerFactory.resolve(controllerInfo, option.dependencyResolver!)
-    controller.validator = validator;
-    return controller;
-}
 
 export class ControllerInvocation extends Core.Invocation {
 
     proceed(): Promise<Core.ActionResult> {
-        let controller = createController(this.facade, this.controllerInfo!, this.parameters)
+        let controller = ControllerFactory.resolve(this.controllerInfo!, this.facade.dependencyResolver!)
         controller.context = this.context
+        controller.invocation = this
         let method = (<any>controller)[this.controllerInfo!.methodMetaData!.name]
         let result;
         if (this.facade.autoValidation && this.controllerInfo!.methodMetaData!.parameters.length > 0 && !controller.validator.isValid())
