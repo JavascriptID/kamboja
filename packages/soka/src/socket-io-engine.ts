@@ -5,12 +5,6 @@ import { SocketAdapter } from "./socket-adapter"
 import * as SocketIo from "socket.io"
 import * as Http from "http"
 
-export class OnConnectionInvocation extends Core.Invocation {
-    async proceed(): Promise<Core.ActionResult> {
-        return new Core.ActionResult({}, 200)
-    }
-}
-
 export class SocketIoEngine implements Core.Engine {
     constructor(private server: SocketIO.Server, private registry: Core.SocketRegistry) { }
 
@@ -26,16 +20,14 @@ export class SocketIoEngine implements Core.Engine {
 
             if (connectionEvents.length == 0) {
                 let handler = new Kernel.RequestHandler(option)
-                await handler.execute(new SocketIoHandshake(socket),
-                    new SocketResponse(new SocketAdapter(socket)),
-                    new OnConnectionInvocation())
+                await handler.execute(new SocketIoHandshake(socket), 
+                    new SocketResponse(new SocketAdapter(socket)))
             }
             else {
                 connectionEvents.forEach(async route => {
                     let handler = new Kernel.RequestHandler(option, route)
                     await handler.execute(new SocketIoHandshake(socket),
-                        new SocketResponse(new SocketAdapter(socket)), 
-                        new Kernel.ControllerInvocation())
+                        new SocketResponse(new SocketAdapter(socket)))
                 })
             }
 
@@ -43,8 +35,7 @@ export class SocketIoEngine implements Core.Engine {
                 socket.on(route.route!, async (msg: any, callback: (body: any) => void) => {
                     let handler = new Kernel.RequestHandler(option, route)
                     await handler.execute(new SocketIoHandshake(socket, msg),
-                        new SocketResponse(new SocketAdapter(socket), callback), 
-                        new Kernel.ControllerInvocation())
+                        new SocketResponse(new SocketAdapter(socket), callback))
                 })
             })
         })

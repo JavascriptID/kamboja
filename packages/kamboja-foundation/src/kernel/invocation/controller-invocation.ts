@@ -5,8 +5,18 @@ import { ControllerFactory } from "../factory"
 
 
 export class ControllerInvocation extends Core.Invocation {
+    private error?:Error;
+
+    constructor(public middlewares: Core.Middleware[],
+        public controllerInfo: Core.RouteInfo,
+        public facade: Core.Facade) { super() }
+
+    setError(error?:Error){
+        this.error = error;
+    }
 
     proceed(): Promise<Core.ActionResult> {
+        if(this.error) throw this.error;
         let controller = ControllerFactory.resolve(this.controllerInfo!, this.facade.dependencyResolver!)
         controller.context = this.context
         controller.invocation = this
@@ -21,7 +31,7 @@ export class ControllerInvocation extends Core.Invocation {
 
     createResult(result: any) {
         return Promise.resolve(result)
-            .then(awaitedResult => { 
+            .then(awaitedResult => {
                 if (awaitedResult instanceof Core.ActionResult)
                     return awaitedResult
                 if (this.controllerInfo!.classMetaData!.baseClass == "ApiController") {
