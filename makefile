@@ -6,7 +6,7 @@ update:
 	done 
 
 canary: 
-	gulp && gulp prepublish && lerna publish -c --exact --yes && gulp clean
+	lerna clean --yes && lerna bootstrap && gulp && gulp prepublish && lerna publish -c --exact --yes && gulp clean
 
 publish:
 	lerna clean --yes && lerna bootstrap && gulp && gulp prepublish && lerna publish && gulp clean
