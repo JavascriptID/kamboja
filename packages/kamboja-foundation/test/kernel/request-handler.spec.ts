@@ -5,7 +5,7 @@ import * as Core from "kamboja-core"
 import { RequestHandler, ControllerInvocation } from "../../src/kernel"
 import { ConcatInterceptor } from "./controller/interception-order-controller"
 import { DefaultPathResolver } from "../../src/resolver"
-import { HttpStatusError, Router } from "../../src"
+import { HttpStatusError, Router, Kamboja } from "../../src"
 import { ErrorHandlerMiddleware } from "./interceptor/error-handler"
 import { DefaultInterceptor } from "./interceptor/default-interceptor"
 import { ChangeToHello } from "./interceptor/change-to-hello"
@@ -22,7 +22,8 @@ describe("RequestHandler", () => {
     beforeEach(() => {
         request = Test.stub(new Test.HttpRequest())
         response = Test.spy(new Test.HttpResponse())
-        facade = H.createFacade(__dirname)
+        facade = H.createFacade(__dirname);
+        (<any>Kamboja).facade = facade;
     })
 
     describe("General Functions", () => {
