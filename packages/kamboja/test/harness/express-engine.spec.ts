@@ -56,7 +56,7 @@ describe("Integration", () => {
                 .set("views", Path.join(__dirname, "view"))
                 .set("view engine", "hbs")
                 .init(Express())
-            
+
             await Supertest(app)
                 .get("/user/index")
                 .expect((result: Supertest.Response) => {
@@ -97,8 +97,8 @@ describe("Integration", () => {
             return Supertest(app)
                 .get("/user/with/123?iAge=20&bGraduated=true")
                 .expect((result: Supertest.Response) => {
-                    Chai.expect(result.type).eq("text/html")
-                    Chai.expect(result.text).eq(`{"id":123,"age":20,"graduated":true}`)
+                    Chai.expect(result.type).eq("application/json")
+                    Chai.expect(result.body).deep.eq({ id: 123, age: 20, graduated: true })
                 })
                 .expect(200)
         })

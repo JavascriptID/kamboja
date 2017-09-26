@@ -288,8 +288,6 @@ describe("RequestHandler", () => {
             let executor = new RequestHandler(facade, info)
             await executor.execute(request, response)
             Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("This is dumb")
-            Chai.expect(response.MOCKS.send.getCall(0).args[0].type).eq("text/html")
-            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(200)
             Chai.expect(response.MOCKS.send.called).true
         })
 
@@ -298,8 +296,6 @@ describe("RequestHandler", () => {
             let executor = new RequestHandler(facade, info)
             await executor.execute(request, response)
             Chai.expect(response.MOCKS.send.getCall(0).args[0].body).eq("This is dumb")
-            Chai.expect(response.MOCKS.send.getCall(0).args[0].type).eq("text/html")
-            Chai.expect(response.MOCKS.send.getCall(0).args[0].status).eq(200)
             Chai.expect(response.MOCKS.send.called).true
         })
 

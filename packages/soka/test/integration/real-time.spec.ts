@@ -122,7 +122,7 @@ describe("Real time functionalities", () => {
             .emit("get-data", undefined, msg => {
                 feedback = msg;
             })
-        Chai.expect(feedback).deep.eq({ body: { message: "Success!" }, status: 200 })
+        Chai.expect(feedback).deep.eq({ body: { message: "Success!" } })
     })
 
     it("Should throw error when access controller returned json", async () => {

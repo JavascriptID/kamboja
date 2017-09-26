@@ -5,10 +5,11 @@ export class ResponseAdapter implements Core.Response {
     constructor(public nativeResponse: Express.Response, public nativeNextFunction: Express.NextFunction) { }
 
     private setup(result: Core.ActionResult) {
-        result.status = result.status || 200;
-        result.type = result.type || "text/plain"
         this.nativeResponse.set(result.header)
-        this.nativeResponse.status(result.status)
+        if (result.status)
+            this.nativeResponse.status(result.status)
+        if (result.type)
+            this.nativeResponse.type(result.type!)
         if (result.cookies) {
             result.cookies.forEach(x => {
                 this.nativeResponse.cookie(x.key, x.value, x.options!)
@@ -44,7 +45,6 @@ export class ResponseAdapter implements Core.Response {
     send(result: Core.ActionResult) {
         if (result.type == "application/json") return this.json(result)
         this.setup(result)
-        this.nativeResponse.type(result.type!)
         switch (typeof result.body) {
             case "number":
             case "boolean":

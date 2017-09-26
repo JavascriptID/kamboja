@@ -16,7 +16,7 @@ describe("ResponseAdapter", () => {
             .get("/")
             .expect((response: Supertest.Response) => {
                 Chai.expect(response.text).eq("Halo")
-                Chai.expect(response.type).eq("text/plain")
+                Chai.expect(response.type).eq("text/html")
             })
             .expect(200)
     })
@@ -29,7 +29,7 @@ describe("ResponseAdapter", () => {
             .get("/")
             .expect((response: Supertest.Response) => {
                 Chai.expect(response.text).eq("400")
-                Chai.expect(response.type).eq("text/plain")
+                Chai.expect(response.type).eq("text/html")
             })
             .expect(200)
     })
@@ -43,7 +43,7 @@ describe("ResponseAdapter", () => {
             .get("/")
             .expect((response: Supertest.Response) => {
                 Chai.expect(response.text).eq("false")
-                Chai.expect(response.type).eq("text/plain")
+                Chai.expect(response.type).eq("text/html")
             })
             .expect(200)
     })

@@ -35,9 +35,9 @@ export class ControllerInvocation extends Core.Invocation {
                 if (awaitedResult instanceof Core.ActionResult)
                     return awaitedResult
                 if (this.controllerInfo!.classMetaData!.baseClass == "ApiController") {
-                    return new Core.ActionResult(awaitedResult, 200, "application/json")
+                    return new Core.ActionResult(awaitedResult, undefined, "application/json")
                 }
-                return new Core.ActionResult(awaitedResult, 200, "text/html")
+                return new Core.ActionResult(awaitedResult)
             })
     }
 }
