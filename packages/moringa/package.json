@@ -26,11 +26,11 @@
   },
   "homepage": "http://kambojajs.com",
   "dependencies": {
-    "@types/mongoose": "^4.7.21",
+    "@types/mongoose": "^4.7.23",
     "@types/shortid": "0.0.29",
     "kamboja-foundation": "^0.4.0",
     "kecubung": "^0.4.0",
-    "mongoose": "^4.11.11",
+    "mongoose": "^4.11.13",
     "shortid": "^2.2.8",
     "tslib": "^1.7.1"
   },
@@ -49,7 +49,7 @@
     "gulp-tslint": "^8.1.2",
     "gulp-typescript": "^3.2.2",
     "mocha": "^3.5.3",
-    "run-sequence": "^2.1.0",
+    "run-sequence": "^2.2.0",
     "supertest": "^3.0.0",
     "tslint": "^5.7.0",
     "typescript": "^2.5.2"
