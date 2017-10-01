@@ -65,3 +65,7 @@ export class KambojaApplication {
         return this.kamboja.init(app);
     }
 }
+
+export function application(opt: string | Core.KambojaOption){
+    return new KambojaApplication(opt)
+}
