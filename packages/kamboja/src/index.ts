@@ -2,8 +2,19 @@ export { KambojaApplication, OptionKeys } from "./kamboja-express"
 export * from "./action-result"
 export * from "./express-middleware-adapter"
 export * from "./middleware-decorator"
+export * from "./controller"
+export * from "./api-controller"
+export * from "./middleware"
+export { Request } from "./request-adapter"
 export {
-    ApiController, authorize, Controller, Core,
-    Facility, HttpStatusError, Middleware, Resolver,
+    authorize,
+    Facility, HttpStatusError, Resolver,
     val, Validator, bind, type, route
 } from "kamboja-foundation"
+export {
+    Invocation,
+    Handshake,
+    ActionResult,
+    KambojaOption,
+    Application
+} from "kamboja-core"

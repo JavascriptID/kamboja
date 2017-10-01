@@ -1,7 +1,9 @@
 import * as Kecubung from "kecubung"
 
+/*
 import * as Core from "kamboja-core"
 export { Core }
+*/
 
 import * as Validator from "./validator"
 export { Validator }

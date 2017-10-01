@@ -1,5 +1,5 @@
-import { Core } from "kamboja"
 import { Socket } from "./socket-adapter"
+import * as Core from "kamboja-core"
 
 export class SocketResponse implements Core.Response {
 

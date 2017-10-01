@@ -28,6 +28,7 @@
   "dependencies": {
     "@types/mongoose": "^4.7.23",
     "@types/shortid": "0.0.29",
+    "kamboja-core": "^0.4.0",
     "kamboja-foundation": "^0.4.0",
     "kecubung": "^0.4.0",
     "mongoose": "^4.11.13",

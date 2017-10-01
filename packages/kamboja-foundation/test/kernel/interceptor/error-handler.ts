@@ -1,4 +1,5 @@
-import { HttpStatusError, Core } from "../../../src"
+import { HttpStatusError } from "../../../src"
+import * as Core from "kamboja-core"
 
 export class ErrorHandlerMiddleware implements Core.Middleware {
     constructor(private callback?: (i: Core.Invocation) => void) { }

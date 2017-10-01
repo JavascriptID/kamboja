@@ -1,6 +1,7 @@
-import { MiddlewareDecorator as Decorator, Core, CallbackMiddleware} from "kamboja-foundation"
+import { MiddlewareDecorator as Decorator, CallbackMiddleware} from "kamboja-foundation"
 import { RequestHandler } from "express"
 import { ExpressMiddlewareAdapter } from "./express-middleware-adapter"
+import * as Core from "kamboja-core"
 
 export class MiddlewareDecorator {
     static isExpressMiddleware(middleware: RequestHandler | Core.MiddlewaresType): middleware is RequestHandler{

@@ -1,28 +1,29 @@
-import { RequestAdapter } from "./request-adapter"
+import { convert } from "./request-adapter"
 import { ResponseAdapter } from "./response-adapter"
-import { Core, Kernel, HttpStatusError } from "kamboja-foundation"
+import { Kernel, HttpStatusError } from "kamboja-foundation"
 import * as Express from "express"
 import * as Http from "http";
 import * as Lodash from "lodash"
 import * as Fs from "fs"
 import * as Chalk from "chalk"
+import * as Core from "kamboja-core"
 
 function route(handler: Kernel.RequestHandler) {
     return (req: Express.Request, resp: Express.Response, next: Express.NextFunction) => {
-        handler.execute(new RequestAdapter(req), new ResponseAdapter(resp, next));
+        handler.execute(convert(req), new ResponseAdapter(resp, next));
     }
 }
 
 function notFound(handler: Kernel.RequestHandler) {
     return (req: Express.Request, resp: Express.Response, next: Express.NextFunction) => {
-        handler.execute(new RequestAdapter(req), new ResponseAdapter(resp, next),
+        handler.execute(convert(req), new ResponseAdapter(resp, next),
         new HttpStatusError(404, "Requested url not found"));
     }
 }
 
 function error(handler: Kernel.RequestHandler) {
     return (err: any, req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
-        handler.execute(new RequestAdapter(req), new ResponseAdapter(res, next), err);
+        handler.execute(convert(req), new ResponseAdapter(res, next), err);
     }
 }
 

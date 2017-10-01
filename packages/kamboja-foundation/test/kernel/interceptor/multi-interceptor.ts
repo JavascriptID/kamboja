@@ -1,4 +1,5 @@
-import { middleware, Core } from "../../../src"
+import { middleware } from "../../../src"
+import * as Core from "kamboja-core"
 
 @middleware.id("FirstInterceptor")
 export class FirstInterceptor implements Core.Middleware{

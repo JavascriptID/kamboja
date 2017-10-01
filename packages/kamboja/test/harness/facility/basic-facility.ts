@@ -1,7 +1,7 @@
-import {Core} from "../../../src"
+import { Facility, Application } from "../../../src"
 
-export class BasicFacility implements Core.Facility{
-    apply(app:Core.Application){
+export class BasicFacility implements Facility {
+    apply(app: Application) {
         app.set("skipAnalysis", true);
         app.set("showLog", "None");
     }

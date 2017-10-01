@@ -1,4 +1,5 @@
-import { ApiController, middleware, Core } from "../../../src"
+import { ApiController, middleware } from "../../../src"
+import * as Core from "kamboja-core"
 
 
 export class ConcatInterceptor implements Core.Middleware {

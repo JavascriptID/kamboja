@@ -1,6 +1,6 @@
-import { Core } from "kamboja-foundation"
 import * as Kecubung from "kecubung"
 import { SchemaOptions } from "mongoose"
+import * as Core from "kamboja-core"
 
 function filter(x: Kecubung.PropertyMetaData, type:string) {
     return x.decorators

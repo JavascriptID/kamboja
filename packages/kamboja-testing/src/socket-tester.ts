@@ -38,6 +38,7 @@ export class Awaitable {
     async emit(event: string, payload?: any, handler?: (result:any) => void) {
         try {
             this.client.connect();
+            await new Promise(x => setTimeout(x, 20))
             this.client.emit(event, payload, handler);
             await this.wait
         }

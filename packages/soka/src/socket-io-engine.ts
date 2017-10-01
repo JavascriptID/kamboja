@@ -1,9 +1,10 @@
-import { Core, HttpStatusError, Kernel } from "kamboja-foundation"
+import { HttpStatusError, Kernel } from "kamboja-foundation"
 import { SocketResponse } from "./socket-response"
 import { SocketIoHandshake } from "./socket-handshake"
 import { SocketAdapter } from "./socket-adapter"
 import * as SocketIo from "socket.io"
 import * as Http from "http"
+import * as Core from "kamboja-core"
 
 export class SocketIoEngine implements Core.Engine {
     constructor(private server: SocketIO.Server, private registry: Core.SocketRegistry) { }

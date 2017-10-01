@@ -1,8 +1,8 @@
-import { Controller, view, Core } from "../../../src"
+import { Controller, view, ActionResult } from "../../../src"
 
 
 export class HomeController extends Controller {
-    index():Core.ActionResult {
+    index(): ActionResult {
         return view()
     }
 }

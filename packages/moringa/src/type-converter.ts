@@ -1,6 +1,7 @@
 import { TypeChecker } from "./type-checker"
 import * as Mongoose from "mongoose"
-import { Core, Resolver } from "kamboja-foundation"
+import { Resolver } from "kamboja-foundation"
+import * as Core from "kamboja-core"
 
 export class TypeConverter {
     constructor(private pathResolver: Core.PathResolver, private classes: Core.QualifiedClassMetaData[]) { }

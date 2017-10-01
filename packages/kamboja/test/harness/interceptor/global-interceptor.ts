@@ -1,12 +1,13 @@
-import { Core } from "kamboja-foundation"
-import { middleware } from "../../../src"
+import { middleware, Middleware, Handshake, Invocation, ActionResult } from "../../../src"
+import { Request } from "express"
 
 @middleware.id("kamboja-express:global")
-export class GlobalInterceptor implements Core.Middleware {
-    async execute(request: Core.HttpRequest, next: Core.Invocation) {
-        if (request.url.pathname == "/unhandled/url") {
-            return new Core.ActionResult("HELLOW!!")
+export class GlobalInterceptor implements Middleware {
+    async execute(context: Request, next: Invocation): Promise<ActionResult> {
+        if (context.url == "/unhandled/url") {
+            return new ActionResult("HELLOW!!")
         }
         return next.proceed()
     }
+
 }

@@ -1,5 +1,6 @@
-import { Resolver, Core } from "kamboja-foundation"
+import { Resolver } from "kamboja-foundation"
 import * as H from "./helper"
+import * as Core from "kamboja-core"
 
 export class TypeChecker {
     private name: string;

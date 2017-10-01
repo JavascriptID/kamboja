@@ -1,5 +1,5 @@
-import { Core } from "kamboja-foundation"
 import {middleware, HttpStatusError} from "../../../src"
+import * as Core from "kamboja-core"
 
 export class ConcatMiddleware implements Core.Middleware{
     constructor(public order:string){}

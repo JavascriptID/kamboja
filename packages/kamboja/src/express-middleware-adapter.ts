@@ -1,8 +1,7 @@
-import { Core, Middleware } from "kamboja-foundation"
+import { Middleware } from "kamboja-foundation"
 import { MiddlewareActionResult } from "./action-result"
 import { RequestHandler } from "express"
-import { ResponseAdapter } from "./response-adapter"
-import { RequestAdapter } from "./request-adapter"
+import * as Core from "kamboja-core"
 
 export class ExpressMiddlewareAdapter implements Core.Middleware {
     constructor(private middleware: RequestHandler) { }

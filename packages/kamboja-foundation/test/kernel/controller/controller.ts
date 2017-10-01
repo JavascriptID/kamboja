@@ -1,5 +1,6 @@
-import { Controller, ApiController, val, HttpStatusError, Core } from "../../../src"
+import { Controller, ApiController, val, HttpStatusError } from "../../../src"
 import {  } from "../../../src"
+import * as Core from "kamboja-core"
 
 export function customValidation() {
     return (...args:any[]) => { }

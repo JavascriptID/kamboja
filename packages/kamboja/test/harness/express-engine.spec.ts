@@ -15,6 +15,7 @@ import * as Path from "path"
 import { ConcatMiddleware } from "./interceptor/concat-middleware"
 import { LoginUser } from "../../src/login-user"
 import { Server } from "http"
+import * as Core from "kamboja-core"
 
 describe("Integration", () => {
     describe("General", () => {
@@ -23,7 +24,7 @@ describe("Integration", () => {
                 .apply("BasicFacility, facility/basic-facility")
             Chai.expect(app.get("showLog")).eq("None")
             Chai.expect(app.get("skipAnalysis")).true;
-            Chai.expect(app.get<Kamboja.Core.Facility[]>("facilities").length).eq(1)
+            Chai.expect(app.get<Core.Facility[]>("facilities").length).eq(1)
         })
 
         it("Should be able to set kamboja option", () => {
@@ -421,7 +422,7 @@ describe("Integration", () => {
 
         it("Should be able to add callback middleware in global scope", async () => {
             let app = new KambojaApplication({ rootPath: __dirname, showLog: "None" })
-                .use(async (context: Kamboja.Core.HttpRequest, next: Kamboja.Core.Invocation) => {
+                .use(async (context: Core.HttpRequest, next: Core.Invocation) => {
                     return json({}, 501)
                 })
                 .init()

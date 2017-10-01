@@ -1,10 +1,11 @@
-import { route, Controller, Core } from "kamboja-foundation"
+import { route, Controller } from "kamboja-foundation"
 import * as Model from "../model/user-model"
 import { Request, Response, NextFunction } from "express"
 import { MiddlewareActionResult, middleware, JsonActionResult } from "../../../src"
 import { Return400Middleware } from "../interceptor/400-middleware"
 import { view } from "../../../src"
 import { authenticate } from "passport"
+import * as Core from "kamboja-core"
 
 let Middleware = (req: Request, res: Response, next: NextFunction) => {
     res.status(401)

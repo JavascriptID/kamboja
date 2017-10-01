@@ -1,6 +1,6 @@
-import { Core } from "kamboja-foundation"
 import { ObjectIdValidator } from "./validator/objectid-validator"
 import { ShortIdValidator } from "./validator/shortid-validator"
+import * as Core from "kamboja-core"
 
 export class MongooseFacility implements Core.Facility {
     apply(app: Core.Application) {

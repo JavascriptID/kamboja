@@ -1,4 +1,4 @@
-import {Core} from "kamboja"
+import * as Core from "kamboja-core"
 
 export interface Socket {
     emit(type: string, name: string, payload: any, id?: string):void;

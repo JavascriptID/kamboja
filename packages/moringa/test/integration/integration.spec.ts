@@ -2,10 +2,11 @@ import * as Chai from "chai"
 import { MongooseHelper, model, MongooseFacility } from "../../src"
 import * as H from "../helper"
 import * as Mongoose from "mongoose"
-import { Core, Kamboja, Resolver } from "kamboja-foundation"
+import { Kamboja, Resolver } from "kamboja-foundation"
 import * as Kecubung from "kecubung"
 import { UserModel, CategoryModel, ItemModel, ProductModel, ParentProductModel, ParentMultiChildModel } from "./models"
 import * as Util from "util"
+import * as Core from "kamboja-core"
 
 describe("Integration Test", () => {
     let test: MongooseHelper

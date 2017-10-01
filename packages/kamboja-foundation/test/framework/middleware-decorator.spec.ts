@@ -1,5 +1,6 @@
-import { Core, middleware, MiddlewareDecorator, Middleware } from "../../src"
+import { middleware, MiddlewareDecorator, Middleware } from "../../src"
 import * as Chai from "chai"
+import * as Core from "kamboja-core"
 
 @middleware.use("Interceptor, interceptor/path")
 @middleware.use("SecondInterceptor, interceptor/path")

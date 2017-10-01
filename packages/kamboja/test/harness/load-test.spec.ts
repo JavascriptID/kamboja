@@ -1,15 +1,15 @@
-import { Middleware, Core, KambojaApplication, json } from "../../src"
+import { Middleware, Handshake, Request, Invocation, ActionResult, KambojaApplication, json } from "../../src"
 import * as Path from "path"
 import * as Supertest from "supertest"
 
 class UselessMiddleware extends Middleware {
-    execute(context: Core.Handshake | Core.HttpRequest, next: Core.Invocation): Promise<Core.ActionResult> {
+    execute(context: Handshake | Request, next: Invocation): Promise<ActionResult> {
         return next.proceed();
     }
 }
 
 class ReturnJsonMiddleware extends Middleware {
-    async execute(context: Core.Handshake | Core.HttpRequest, next: Core.Invocation): Promise<Core.ActionResult> {
+    async execute(context: Handshake | Request, next: Invocation): Promise<ActionResult> {
         return json({})
     }
 

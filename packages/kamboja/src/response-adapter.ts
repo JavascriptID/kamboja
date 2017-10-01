@@ -1,5 +1,5 @@
-import { Core } from "kamboja-foundation"
 import * as Express from "express"
+import * as Core from "kamboja-core"
 
 export class ResponseAdapter implements Core.Response {
     constructor(public nativeResponse: Express.Response, public nativeNextFunction: Express.NextFunction) { }

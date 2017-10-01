@@ -4,7 +4,7 @@ import { ResponseAdapter } from "../src/response-adapter"
 import * as Express from "express"
 import * as Sinon from "sinon"
 import * as BodyParser from "body-parser"
-import { Core } from "kamboja-foundation"
+import * as Core from "kamboja-core"
 
 describe("ResponseAdapter", () => {
 

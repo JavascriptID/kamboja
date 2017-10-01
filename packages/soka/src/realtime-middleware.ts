@@ -1,6 +1,6 @@
-import { Core } from "kamboja"
 import { SocketResponse } from "./socket-response"
 import { ServerSocketAdapter } from "./socket-adapter"
+import * as Core from "kamboja-core"
 
 export class RealTimeMiddleware implements Core.Middleware {
     constructor(private server: SocketIO.Server, private registry: Core.SocketRegistry) { }

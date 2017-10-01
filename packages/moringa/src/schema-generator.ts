@@ -1,8 +1,8 @@
-import { Core } from "kamboja-foundation"
 import { TypeConverter } from "./type-converter"
 import { TypeChecker } from "./type-checker"
 import * as Kecubung from "kecubung"
 import * as Shortid from "shortid"
+import * as Core from "kamboja-core"
 
 export class SchemaGenerator {
     constructor(private pathResolver: Core.PathResolver, private converter: TypeConverter) { }

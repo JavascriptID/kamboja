@@ -1,9 +1,10 @@
-import { Kamboja, Core } from "kamboja-foundation"
+import { Kamboja } from "kamboja-foundation"
 import { ExpressEngine } from "./express-engine"
 import { ExpressMiddlewareAdapter } from "./express-middleware-adapter"
 import { RequestHandler } from "express"
 import { MiddlewareDecorator } from "./middleware-decorator"
 import { Server } from "http"
+import * as Core from "kamboja-core"
 
 export type KambojaOptionKeys = keyof Core.KambojaOption
 export type ExpressOptionKeys = "case sensitive routing" | "env" | "etag"

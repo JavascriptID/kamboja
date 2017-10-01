@@ -1,10 +1,11 @@
 import * as Chai from "chai"
-import { Kamboja, Validator, Core, Resolver, Router } from "../../src"
+import { Kamboja, Validator, Resolver, Router } from "../../src"
 import * as Sinon from "sinon"
 import * as Kecubung from "kecubung"
 import * as H from "../helper"
 import { BasicFacility } from "./facility/basic-facility"
 import * as Testing from "kamboja-testing"
+import * as Core from "kamboja-core"
 
 let engine = {
     init: () => { }

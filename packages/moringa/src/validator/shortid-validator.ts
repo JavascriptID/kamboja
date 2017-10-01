@@ -1,6 +1,7 @@
-import { Validator, Core } from "kamboja-foundation"
+import { Validator } from "kamboja-foundation"
 import * as ShortId from "shortid"
 import * as Kecubung from "kecubung"
+import * as Core from "kamboja-core"
 
 export class ShortIdValidator extends Validator.ValidatorBase{
     @Validator.decoratorName("shortid")

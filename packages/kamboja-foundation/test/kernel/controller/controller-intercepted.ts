@@ -1,8 +1,9 @@
 import {
-    Core, Controller,
+    Controller,
     middleware,
     Middleware
 } from "../../../src"
+import * as Core from "kamboja-core"
 
 
 @middleware.id("ChangeValueToHelloWorld")

@@ -2,7 +2,7 @@
 import * as Chai from "chai"
 import * as Kecubung from "kecubung"
 import * as H from "../../helper"
-import { Core } from "../../../src"
+import * as Core from "kamboja-core"
 import * as Util from "util"
 import { DefaultPathResolver } from "../../../src/resolver"
 import { TransformerBase, getWhen, when } from "../../../src/router/transformers/transformer-base"
