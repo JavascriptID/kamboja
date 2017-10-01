@@ -28,7 +28,7 @@ describe("Hybrid Real-time function", () => {
         app = new KambojaApplication(__dirname)
             .set("showLog", "None")
             .set("controllerPaths", ["hybrid-controller"])
-            .use(BodyParser.json())
+            .useExpress(BodyParser.json())
             .apply(new RealTimeFacility())
             .init();
 
@@ -50,7 +50,7 @@ describe("Hybrid Real-time function", () => {
         app = new KambojaApplication(__dirname)
             .set("showLog", "None")
             .set("controllerPaths", ["hybrid-controller"])
-            .use(BodyParser.json())
+            .useExpress(BodyParser.json())
             .use(new TokenAuthMiddleware())
             .apply(new RealTimeFacility())
             .init();
@@ -73,7 +73,7 @@ describe("Hybrid Real-time function", () => {
         app = new KambojaApplication(__dirname)
             .set("showLog", "None")
             .set("controllerPaths", ["hybrid-controller"])
-            .use(BodyParser.json())
+            .useExpress(BodyParser.json())
             .use(new TokenAuthMiddleware())
             .apply(new RealTimeFacility())
             .init();
@@ -97,7 +97,7 @@ describe("Hybrid Real-time function", () => {
         app = new KambojaApplication(__dirname)
             .set("showLog", "None")
             .set("controllerPaths", ["hybrid-controller"])
-            .use(BodyParser.json())
+            .useExpress(BodyParser.json())
             .use(new TokenAuthMiddleware())
             .apply(new RealTimeFacility())
             .init();
@@ -116,7 +116,7 @@ describe("Hybrid Real-time function", () => {
         app = new KambojaApplication(__dirname)
             .set("showLog", "None")
             .set("controllerPaths", ["hybrid-controller"])
-            .use(BodyParser.json())
+            .useExpress(BodyParser.json())
             .use(new TokenAuthMiddleware())
             .apply(new RealTimeFacility())
             .init();
@@ -139,7 +139,7 @@ describe("Hybrid Real-time function", () => {
         app = new KambojaApplication(__dirname)
             .set("showLog", "None")
             .set("controllerPaths", ["hybrid-controller"])
-            .use(BodyParser.json())
+            .useExpress(BodyParser.json())
             .use(new TokenAuthMiddleware())
             .apply(new RealTimeFacility())
             .init();

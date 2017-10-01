@@ -151,7 +151,7 @@ describe("Integration", () => {
     describe("ApiController", () => {
         it("Should handle `get` properly", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-                .use(BodyParser.json())
+                .useExpress(BodyParser.json())
                 .init()
             return Supertest(app)
                 .get("/categories/1")
@@ -163,7 +163,7 @@ describe("Integration", () => {
 
         it("Should handle `add` properly", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-                .use(BodyParser.json())
+                .useExpress(BodyParser.json())
                 .init()
             return Supertest(app)
                 .post("/categories")
@@ -176,7 +176,7 @@ describe("Integration", () => {
 
         it("Should handle `list` with default value properly", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-                .use(BodyParser.json())
+                .useExpress(BodyParser.json())
                 .init()
             return Supertest(app)
                 .get("/categories")
@@ -188,7 +188,7 @@ describe("Integration", () => {
 
         it("Should handle `list` with custom value properly", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-                .use(BodyParser.json())
+                .useExpress(BodyParser.json())
                 .init()
             return Supertest(app)
                 .get("/categories?iOffset=30&query=halo")
@@ -200,7 +200,7 @@ describe("Integration", () => {
 
         it("Should handle `replace` properly", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-                .use(BodyParser.json())
+                .useExpress(BodyParser.json())
                 .init()
             return Supertest(app)
                 .put("/categories/20")
@@ -213,7 +213,7 @@ describe("Integration", () => {
 
         it("Should handle `modify` properly", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-                .use(BodyParser.json())
+                .useExpress(BodyParser.json())
                 .init()
             return Supertest(app)
                 .patch("/categories/20")
@@ -226,7 +226,7 @@ describe("Integration", () => {
 
         it("Should handle `delete` properly", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-                .use(BodyParser.json())
+                .useExpress(BodyParser.json())
                 .init()
             return Supertest(app)
                 .delete("/categories/20")
@@ -241,7 +241,7 @@ describe("Integration", () => {
         let app: Server;
         beforeEach(() => {
             app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-                .use(BodyParser.json())
+                .useExpress(BodyParser.json())
                 .init()
         })
         it("Should handle `get` properly", () => {
@@ -482,7 +482,7 @@ describe("Integration", () => {
 
         it("Should be able to add middleware in global scope", async () => {
             let app = application({ rootPath: __dirname, showLog: "None" })
-                .use((req, res: Express.Response, next) => {
+                .useExpress((req, res, next) => {
                     res.status(501)
                     res.end()
                 })
@@ -527,7 +527,7 @@ describe("Integration", () => {
             let app = application({ rootPath: __dirname, showLog: "None" })
                 .set("views", Path.join(__dirname, "view"))
                 .set("view engine", "hbs")
-                .use((req, res: Express.Response, next) => {
+                .useExpress((req, res, next) => {
                     res.status(501)
                     res.end()
                 }).init()
@@ -635,7 +635,7 @@ describe("Integration", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
                 .set("views", Path.join(__dirname, "view"))
                 .set("view engine", "hbs")
-                .use(BodyParser.json())
+                .useExpress(BodyParser.json())
                 .use(new ErrorHandler())
                 .init()
             return Supertest(app)

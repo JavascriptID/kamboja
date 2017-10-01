@@ -45,7 +45,7 @@ export class UserController extends Controller {
         return result;
     }
 
-    @middleware.use((req, res, next) => {
+    @middleware.useExpress((req, res, next) => {
         res.setHeader("custom-header", "hello")
         next()
     })
@@ -53,14 +53,14 @@ export class UserController extends Controller {
         return "Hello"
     }
 
-    @middleware.use((req, res, next) => {
+    @middleware.useExpress((req, res, next) => {
         next(new Error("USER ERROR"))
     })
     expressMiddlewareSendError() {
         return "Hello"
     }
 
-    @middleware.use((req, res, next) => {
+    @middleware.useExpress((req, res, next) => {
         setTimeout(function () {
             res.setHeader("custom-header", "hello")
             next()
@@ -74,7 +74,7 @@ export class UserController extends Controller {
         })
     }
 
-    @middleware.use((req, res, next) => {
+    @middleware.useExpress((req, res, next) => {
         setTimeout(function () {
             res.setHeader("custom-header", "hello")
             res.send("Not Hello")
@@ -84,7 +84,7 @@ export class UserController extends Controller {
         return "Hello"
     }
 
-    @middleware.use((req, res, next) => {
+    @middleware.useExpress((req, res, next) => {
         res.setHeader("custom-header", "hello")
         next()
     })
@@ -98,7 +98,7 @@ export class UserController extends Controller {
         })
     }
 
-    @middleware.use((req, res, next) => {
+    @middleware.useExpress((req, res, next) => {
         req.user = { name: "Nobita" }
         next()
     })

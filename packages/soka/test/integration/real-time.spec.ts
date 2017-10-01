@@ -22,7 +22,7 @@ describe("Real time functionalities", () => {
         app = new KambojaApplication(__dirname)
             .set("showLog", "None")
             .set("controllerPaths", ["real-time-controller"])
-            .use(BodyParser.json())
+            .useExpress(BodyParser.json())
             .use(new TokenAuthMiddleware())
             .apply(new RealTimeFacility())
             .init();
