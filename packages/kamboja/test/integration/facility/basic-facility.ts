@@ -1,4 +1,5 @@
-import { Facility, Application } from "../../../src"
+import { Application, Middleware } from "../../../src"
+import { Facility } from "kamboja-core"
 
 export class BasicFacility implements Facility {
     apply(app: Application) {

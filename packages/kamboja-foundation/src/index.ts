@@ -20,8 +20,6 @@ export { Kernel }
 import * as Binder from "./binder"
 export { Binder }
 
-import * as Decorator from "./decorator"
-export { Decorator }
-
 export { Kamboja } from "./kamboja"
+export { Logger } from "./logger"
 export * from "./framework"

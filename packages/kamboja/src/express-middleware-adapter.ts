@@ -1,14 +1,19 @@
 import { Middleware } from "kamboja-foundation"
-import { MiddlewareActionResult } from "./action-result"
-import { RequestHandler } from "express"
+import { RequestHandler, Request } from "express"
 import * as Core from "kamboja-core"
 
 export class ExpressMiddlewareAdapter implements Core.Middleware {
     constructor(private middleware: RequestHandler) { }
-    async execute(request: Core.HttpRequest, next: Core.Invocation): Promise<Core.ActionResult> {
-        return new MiddlewareActionResult(this.middleware, async (req, res) => {
-            let actionResult = await next.proceed();
-            await actionResult.execute!(req, res)
+    execute(request: Request, next: Core.Invocation): Promise<Core.ActionResult> {
+        return new Promise<Core.ActionResult>((resolve, reject) => {
+            this.middleware(request, request.response, (e) => {
+                if(e) reject(e)
+                else {
+                    next.proceed()
+                        .then(resolve)
+                        .catch(reject)
+                }
+            })
         })
     }
 }

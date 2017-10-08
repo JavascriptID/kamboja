@@ -12,7 +12,7 @@ import * as Core from "kamboja-core"
 describe("ResponseAdapter", () => {
     let app: Express.Application;
     beforeEach(() => {
-        app = Express().set("views", Path.join(__dirname, "harness/view"))
+        app = Express().set("views", Path.join(__dirname, "integration/view"))
             .set("view engine", "hbs")
     })
 
@@ -21,7 +21,7 @@ describe("ResponseAdapter", () => {
             let result = new ViewActionResult({}, "user/index")
             result.cookies = [{ key: "User", value: "Nobita" }]
             result.header = { "Access-Control-Allow-Origin": "*" }
-            await result.execute(convert(req), new ResponseAdapter(resp, next), <any>undefined)
+            await result.execute(convert(req, resp), new ResponseAdapter(resp, next), <any>undefined)
         });
         return Supertest(app)
             .get("/")
@@ -36,7 +36,7 @@ describe("ResponseAdapter", () => {
     it("Should send body properly", () => {
         app.use(async (req:Express.Request, resp, next) => {
             let result = new ViewActionResult({}, "user/index")
-            await result.execute(convert(req), new ResponseAdapter(resp, next), <any>undefined)
+            await result.execute(convert(req, resp), new ResponseAdapter(resp, next), <any>undefined)
         });
         return Supertest(app)
             .get("/")
@@ -53,7 +53,7 @@ describe("ResponseAdapter", () => {
         }
         app.use(async (req:Express.Request, resp, next) => {
             let result = new ViewActionResult({})
-            await result.execute(convert(req), new ResponseAdapter(resp, next), <Core.RouteInfo>routeInfo)
+            await result.execute(convert(req, resp), new ResponseAdapter(resp, next), <Core.RouteInfo>routeInfo)
         });
         return Supertest(app)
             .get("/")
@@ -70,7 +70,7 @@ describe("ResponseAdapter", () => {
         }
         app.use(async (req:Express.Request, resp, next) => {
             let result = new ViewActionResult({})
-            await result.execute(convert(req), new ResponseAdapter(resp, next), <Core.RouteInfo>routeInfo)
+            await result.execute(convert(req, resp), new ResponseAdapter(resp, next), <Core.RouteInfo>routeInfo)
         });
         return Supertest(app)
             .get("/")
@@ -87,7 +87,7 @@ describe("ResponseAdapter", () => {
         }
         app.use(async (req:Express.Request, resp, next) => {
             let result = new ViewActionResult({}, "list")
-            await result.execute(convert(req), new ResponseAdapter(resp, next), <Core.RouteInfo>routeInfo)
+            await result.execute(convert(req, resp), new ResponseAdapter(resp, next), <Core.RouteInfo>routeInfo)
         });
         return Supertest(app)
             .get("/")
@@ -101,7 +101,7 @@ describe("ResponseAdapter", () => {
         app.use(async (req:Express.Request, resp, next) => {
             try {
                 let result = new ViewActionResult({}, "list")
-                await result.execute(convert(req), new ResponseAdapter(resp, next), <any>undefined)
+                await result.execute(convert(req, resp), new ResponseAdapter(resp, next), <any>undefined)
             } catch (e) {
                 resp.status(500).end(e.message)
             }
@@ -118,7 +118,7 @@ describe("ResponseAdapter", () => {
         app.use(async (req:Express.Request, resp, next) => {
             try {
                 let result = new ViewActionResult({})
-                await result.execute(convert(req), new ResponseAdapter(resp, next), <any>undefined)
+                await result.execute(convert(req, resp), new ResponseAdapter(resp, next), <any>undefined)
             } catch (e) {
                 resp.status(500).end(e.message)
             }

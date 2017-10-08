@@ -5,28 +5,31 @@ import { ControllerFactory } from "../factory"
 
 
 export class ControllerInvocation extends Core.Invocation {
-    private error?:Error;
 
-    constructor(public middlewares: Core.Middleware[],
-        public controllerInfo: Core.RouteInfo,
-        public facade: Core.Facade) { super() }
-
-    setError(error?:Error){
-        this.error = error;
-    }
+    constructor(public controllerInfo: Core.RouteInfo) { super() }
 
     proceed(): Promise<Core.ActionResult> {
-        if(this.error) throw this.error;
         let controller = ControllerFactory.resolve(this.controllerInfo!, this.facade.dependencyResolver!)
-        controller.context = this.context
+        if (this.context.contextType == "HttpRequest")
+            controller.request = this.context
+        else
+            controller.handshake = this.context
         controller.invocation = this
         let method = (<any>controller)[this.controllerInfo!.methodMetaData!.name]
         let result;
         if (this.facade.autoValidation && this.controllerInfo!.methodMetaData!.parameters.length > 0 && !controller.validator.isValid())
-            result = new Core.ActionResult(controller.validator.getValidationErrors(), 400, "application/json")
-        else
-            result = method.apply(controller, this.parameters);
-        return this.createResult(result)
+            return Promise.resolve(new Core.ActionResult(controller.validator.getValidationErrors(), 400, "application/json"))
+        else {
+            return new Promise<Core.ActionResult>((resolve, reject) => {
+                try{
+                    result = method.apply(controller, this.parameters);
+                    resolve(this.createResult(result))
+                }
+                catch(e){
+                    reject(e)
+                }
+            })
+        }
     }
 
     createResult(result: any) {
@@ -40,4 +43,5 @@ export class ControllerInvocation extends Core.Invocation {
                 return new Core.ActionResult(awaitedResult)
             })
     }
+
 }

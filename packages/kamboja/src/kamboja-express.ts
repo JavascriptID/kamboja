@@ -47,7 +47,7 @@ export class KambojaApplication {
     }
 
     apply(facility: Core.Facility | string) {
-        this.kamboja.apply(facility)
+        this.kamboja.apply(facility, this)
         return this;
     }
 

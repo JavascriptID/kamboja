@@ -22,7 +22,7 @@ export class Kamboja implements Core.Application {
     private log: Logger;
     private storage: MetaDataLoader;
 
-    static getFacade():Core.Facade {
+    static getFacade(): Core.Facade {
         return Kamboja.facade;
     }
 
@@ -78,12 +78,12 @@ export class Kamboja implements Core.Application {
         return this
     }
 
-    apply(facility: string | Core.Facility) {
+    apply(facility: string | Core.Facility, app?: Core.Application) {
         if (typeof facility == "string") {
             try {
                 let fac = this.options.dependencyResolver!.resolve<Core.Facility>(facility)
                 this.options.facilities!.push(fac)
-                fac.apply(this)
+                fac.apply(app || this)
             }
             catch (e) {
                 throw new Error(`Unable to instantiate ${facility} as Facility`)
@@ -91,7 +91,7 @@ export class Kamboja implements Core.Application {
         }
         else {
             this.options.facilities!.push(facility)
-            facility.apply(this)
+            facility.apply(app || this)
         }
         return this
     }
@@ -175,7 +175,7 @@ export class Kamboja implements Core.Application {
      * Initialize KambojaJS application 
      * @returns HttpServer 
      */
-    init(app?:any) {
+    init(app?: any) {
         this.log = new Logger(this.options.showLog!)
         if (!this.isFolderProvided()) throw new Error("Fatal error")
         this.storage.load(this.options.controllerPaths!, "Controller")

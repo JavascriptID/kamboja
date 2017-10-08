@@ -187,7 +187,7 @@ describe("Analyzer", () => {
             function MyClass() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            MyClass.prototype.context = function () { };
+            MyClass.prototype.request = function () { };
             MyClass.prototype.validator = function () { };
             return MyClass;
         }(core_1.Controller));
@@ -199,7 +199,7 @@ describe("Analyzer", () => {
         Chai.expect(result).deep.eq([{
             code: 1,
             type: 'Error',
-            message: '[context] must not be used as action, because it will override the Controller method, in [MyClass.context example-file.js]'
+            message: '[request] must not be used as action, because it will override the Controller method, in [MyClass.request example-file.js]'
         },
         {
             code: 1,
@@ -215,7 +215,7 @@ describe("Analyzer", () => {
             function MyClass() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            MyClass.prototype.context = function () { };
+            MyClass.prototype.request = function () { };
             MyClass.prototype.validator = function () { };
             return MyClass;
         }(core_1.ApiController));
@@ -227,7 +227,7 @@ describe("Analyzer", () => {
         Chai.expect(result).deep.eq([{
             code: 1,
             type: 'Error',
-            message: '[context] must not be used as action, because it will override the Controller method, in [MyClass.context example-file.js]'
+            message: '[request] must not be used as action, because it will override the Controller method, in [MyClass.request example-file.js]'
         },
         {
             code: 1,

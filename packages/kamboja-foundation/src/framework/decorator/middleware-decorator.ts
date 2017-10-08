@@ -1,4 +1,4 @@
-import { DecoratorHelper } from "../../decorator";
+import { DecoratorHelper } from "./decorator-helper";
 import { Middleware, MiddlewaresType } from "kamboja-core";
 
 export const MiddlewareMetadataKey = "kamboja:middleware"

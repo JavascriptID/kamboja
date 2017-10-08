@@ -71,7 +71,9 @@ gulp.task("clean-lib", function (cb) {
         "./packages/*/node_modules/@types/chai",
         "./packages/*/node_modules/@types/socket.io-client",
         "./packages/*/node_modules/@types/socket.io",
-        "./packages/*/node_modules/@types/validator"],
+        "./packages/*/node_modules/@types/validator",
+        "./packages/*/node_modules/@types/passport"
+    ],
         cb)
 })
 

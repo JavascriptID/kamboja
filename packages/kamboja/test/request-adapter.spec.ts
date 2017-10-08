@@ -1,6 +1,7 @@
 import * as Supertest from "supertest"
 import * as Chai from "chai"
-import { convert, Request } from "../src/request-adapter"
+import { convert } from "../src/request-adapter"
+import { HttpRequest } from "../src"
 import * as Express from "express"
 import * as Kamboja from "kamboja-foundation"
 import * as Core from "kamboja-core"
@@ -16,7 +17,7 @@ describe("RequestAdapter", () => {
         let app = Express();
         app.get("/", (req:Express.Request, res) => {
 
-            let custom = convert(req).getHeader("custom-header")
+            let custom = convert(req, res).getHeader("custom-header")
             Chai.expect(custom).eq("CUSTOM_VALUE")
             res.end();
         })
@@ -29,7 +30,7 @@ describe("RequestAdapter", () => {
     it("Should return param properly", () => {
         let app = Express();
         app.get("/", (req:Express.Request, res) => {
-            let custom = convert(req).getParam("custom-param")
+            let custom = convert(req, res).getParam("custom-param")
             Chai.expect(custom).eq("CUSTOM_VALUE")
             res.end()
         })
@@ -41,7 +42,7 @@ describe("RequestAdapter", () => {
     it("Should return query properly", () => {
         let app = Express();
         app.get("/:id", (req:Express.Request, res) => {
-            let custom = convert(req).getParam("id")
+            let custom = convert(req, res).getParam("id")
             Chai.expect(custom).eq("2")
             res.end()
         })
@@ -53,7 +54,7 @@ describe("RequestAdapter", () => {
     it("Should not error when cookie-parser not installed", () => {
         let app = Express();
         app.get("/", (req:Express.Request, res) => {
-            let custom = convert(req).getCookie("custom-cookie")
+            let custom = convert(req, res).getCookie("custom-cookie")
             Chai.expect(custom).undefined;
             res.end()
         })
@@ -70,7 +71,7 @@ describe("RequestAdapter", () => {
             res.end()
         })
         app.get("/", (req:Express.Request, res) => {
-            let custom = convert(req).getCookie("custom-cookie")
+            let custom = convert(req, res).getCookie("custom-cookie")
             Chai.expect(custom).eq("CUSTOM_VALUE")
             res.end()
         })

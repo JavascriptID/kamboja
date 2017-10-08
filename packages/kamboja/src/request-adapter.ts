@@ -1,8 +1,6 @@
-import { Request } from "express"
+import { Request, Response } from "express"
 import { AuthUser } from "kamboja-core"
 import * as Lodash from "lodash"
-
-export { Request }
 
 declare module "express" {
     interface Request {
@@ -11,10 +9,13 @@ declare module "express" {
         getHeader(key: string): string | undefined
         getCookie(key: string): string | undefined
         getParam(key: string): string | undefined
+        response: Response
     }
 }
 
-export function convert(req: Request) {
+export interface HttpRequest extends Request {}
+
+export function convert(req: Request, response:Response) {
     req.contextType = "HttpRequest"
     req.getHeader = function (key: string) {
         return this.get(key)
@@ -27,5 +28,6 @@ export function convert(req: Request) {
         let params = Lodash.assign(this.params, this.query)
         return params[key]
     }
+    req.response = response;
     return req;
 }

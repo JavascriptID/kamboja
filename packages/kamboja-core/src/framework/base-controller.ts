@@ -4,7 +4,8 @@ import { Validator } from "../validator";
 import {InvocationBase} from "./invocation-base"
 
 export interface BaseController {
-    context:HttpRequest | Handshake;
+    request:HttpRequest 
+    handshake: Handshake;
     invocation: InvocationBase
     validator: Validator;
 }

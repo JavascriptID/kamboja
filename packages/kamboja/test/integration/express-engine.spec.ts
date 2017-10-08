@@ -1,6 +1,6 @@
 import * as Supertest from "supertest"
 import * as Chai from "chai"
-import { ExpressMiddlewareAdapter, json, KambojaApplication, application } from "../../src"
+import { json, KambojaApplication, application, ApiFacility } from "../../src"
 import * as Express from "express"
 import * as Kamboja from "kamboja-foundation"
 import * as Lodash from "lodash"
@@ -9,12 +9,14 @@ import * as Morgan from "morgan"
 import * as CookieParser from "cookie-parser"
 import * as BodyParser from "body-parser"
 import * as Logger from "morgan"
-import { ErrorHandler } from "../harness/interceptor/error-handler"
+import { ErrorHandler } from "./interceptor/error-handler"
 import * as Path from "path"
 import { ConcatMiddleware } from "./interceptor/concat-middleware"
 import { LoginUser } from "../../src/login-user"
 import { Server, IncomingMessage } from "http"
 import * as Core from "kamboja-core"
+import * as Del from "del"
+import * as Compression from "compression"
 
 describe("Integration", () => {
     describe("General", () => {
@@ -56,7 +58,7 @@ describe("Integration", () => {
                 .set("views", Path.join(__dirname, "view"))
                 .set("view engine", "hbs")
                 .init(Express())
-            
+
             await Supertest(app)
                 .get("/user/index")
                 .expect((result: Supertest.Response) => {
@@ -112,12 +114,6 @@ describe("Integration", () => {
                 .expect(200)
         })
 
-        it("Should able return Express middleware from controller", () => {
-            return Supertest(app)
-                .get("/user/executemiddleware")
-                .expect(401)
-        })
-
         it("Should provide 404 if unhandled url requested", () => {
             return Supertest(app)
                 .get("/unhandled/url")
@@ -149,9 +145,22 @@ describe("Integration", () => {
     })
 
     describe("ApiController", () => {
+        it("Should handle error properly", () => {
+            let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
+            .apply(new ApiFacility())
+            .init()
+
+            return Supertest(app)
+            .get("/apiwitherror/1")
+            .expect((result: Supertest.Response) => {
+                Chai.expect(result.body).deep.eq({message: "This is custom error"})
+            })
+            .expect(500)
+        })
+
         it("Should handle `get` properly", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-                .useExpress(BodyParser.json())
+                .apply(new ApiFacility())
                 .init()
             return Supertest(app)
                 .get("/categories/1")
@@ -163,7 +172,7 @@ describe("Integration", () => {
 
         it("Should handle `add` properly", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-                .useExpress(BodyParser.json())
+                .apply(new ApiFacility())
                 .init()
             return Supertest(app)
                 .post("/categories")
@@ -176,7 +185,7 @@ describe("Integration", () => {
 
         it("Should handle `list` with default value properly", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-                .useExpress(BodyParser.json())
+                .apply(new ApiFacility())
                 .init()
             return Supertest(app)
                 .get("/categories")
@@ -188,7 +197,7 @@ describe("Integration", () => {
 
         it("Should handle `list` with custom value properly", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-                .useExpress(BodyParser.json())
+                .apply(new ApiFacility())
                 .init()
             return Supertest(app)
                 .get("/categories?iOffset=30&query=halo")
@@ -200,7 +209,7 @@ describe("Integration", () => {
 
         it("Should handle `replace` properly", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-                .useExpress(BodyParser.json())
+                .apply(new ApiFacility())
                 .init()
             return Supertest(app)
                 .put("/categories/20")
@@ -213,7 +222,7 @@ describe("Integration", () => {
 
         it("Should handle `modify` properly", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-                .useExpress(BodyParser.json())
+                .apply(new ApiFacility())
                 .init()
             return Supertest(app)
                 .patch("/categories/20")
@@ -226,7 +235,7 @@ describe("Integration", () => {
 
         it("Should handle `delete` properly", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-                .useExpress(BodyParser.json())
+                .apply(new ApiFacility())
                 .init()
             return Supertest(app)
                 .delete("/categories/20")
@@ -326,18 +335,6 @@ describe("Integration", () => {
                 })
         })
 
-        it("Should be able to execute express middleware form inside action", () => {
-            let app = application({ rootPath: __dirname, showLog: "None" })
-                .set("views", Path.join(__dirname, "view"))
-                .set("view engine", "hbs")
-                .init()
-
-            return Supertest(app)
-                .get("/user/executemiddleware")
-                .expect(401)
-
-        })
-
         it("Should return 404 if execute middleware inside action which call next", () => {
             let app = application({ rootPath: __dirname, showLog: "None" })
                 .set("views", Path.join(__dirname, "view"))
@@ -421,6 +418,50 @@ describe("Integration", () => {
                 .get("/user/expressmiddlewaremodifyuser")
                 .expect((result: Supertest.Response) => {
                     Chai.expect(result.body).deep.eq({ name: "Nobita" })
+                })
+                .expect(200)
+        })
+
+        it("Should be able to upload file using multer", async () => {
+            let app = application(__dirname)
+                .set("showLog", "None")
+                .init()
+            await Supertest(app)
+                .post("/home/upload")
+                .attach("thefile", Path.join(__dirname, "./file/dummy.txt"))
+                .expect((res: Supertest.Response) => {
+                    Chai.expect(res.text).eq("dummy.txt")
+                })
+                .expect(200)
+            Del(Path.join(__dirname, "./upload"))
+        })
+    
+        it("Should able to use cookie properly", async () => {
+            let app = application(__dirname)
+                .set("showLog", "None")
+                .useExpress(CookieParser())
+                .init()
+            
+            await Supertest(app)
+                .get("/home/returncookie")
+                .set("Cookie", "auth-example=SUPER_SECRET")
+                .expect((res:Supertest.Response) => {
+                    Chai.expect(res.text).eq("SUPER_SECRET")
+                })
+                .expect(200)
+        })
+    
+        it("Should able to use compression middleware properly", async () => {
+            let app = application(__dirname)
+                .set("showLog", "None")
+                .useExpress(Compression({ threshold: "0kb" }))
+                .init()
+    
+            await Supertest(app)
+                .get("/home/compression")
+                .expect((res: Supertest.Response) => {
+                    Chai.expect(res.header["content-encoding"]).eq("gzip")
+                    Chai.expect(res.text).eq("Lorem ipsum")
                 })
                 .expect(200)
         })

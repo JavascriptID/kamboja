@@ -14,7 +14,7 @@ describe("ActionResults", () => {
             let result = action.download(Path.join(__dirname, "helper.js"))
             result.cookies = [{ key: "User", value: "Nobita" }]
             result.header = { "Access-Control-Allow-Origin": "*" }
-            result.execute(convert(req), new ResponseAdapter(resp, next), <any>undefined)
+            result.execute(convert(req, resp), new ResponseAdapter(resp, next), <any>undefined)
         })
         return Supertest(app)
             .get("/")
@@ -32,7 +32,7 @@ describe("ActionResults", () => {
             let result = action.file(Path.join(__dirname, "helper.js"))
             result.cookies = [{ key: "User", value: "Nobita" }]
             result.header = { "Access-Control-Allow-Origin": "*" }
-            result.execute(convert(req), new ResponseAdapter(resp, next), <any>undefined)
+            result.execute(convert(req, resp), new ResponseAdapter(resp, next), <any>undefined)
         })
         return Supertest(app)
             .get("/")
@@ -54,7 +54,7 @@ describe("ActionResults", () => {
             let result = action.redirect("/user")
             result.cookies = [{ key: "User", value: "Nobita" }]
             result.header = { "Access-Control-Allow-Origin": "*" }
-            result.execute(convert(req), new ResponseAdapter(resp, next), <any>undefined)
+            result.execute(convert(req, resp), new ResponseAdapter(resp, next), <any>undefined)
         })
         return Supertest(app)
             .get("/")
@@ -73,7 +73,7 @@ describe("ActionResults", () => {
             let result = action.json({ message: "Hello" })
             result.cookies = [{ key: "User", value: "Nobita" }]
             result.header = { "Access-Control-Allow-Origin": "*" }
-            result.execute(convert(req), new ResponseAdapter(resp, next), <any>undefined)
+            result.execute(convert(req, resp), new ResponseAdapter(resp, next), <any>undefined)
         })
         return Supertest(app)
             .get("/")
@@ -92,7 +92,7 @@ describe("ActionResults", () => {
             let result = action.json({ message: "Hello" })
             result.status = 400
             result.header = { "Access-Control-Allow-Origin": "*" }
-            result.execute(convert(req), new ResponseAdapter(resp, next), <any>undefined)
+            result.execute(convert(req, resp), new ResponseAdapter(resp, next), <any>undefined)
         })
         return Supertest(app)
             .get("/")

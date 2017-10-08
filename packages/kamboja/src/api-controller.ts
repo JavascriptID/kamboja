@@ -1,8 +1,3 @@
-import { Controller as BaseController } from "kamboja-foundation"
-import {Request} from "./request-adapter"
-import { Handshake } from "kamboja-core"
+import {Controller} from "./controller"
 
-
-export class ApiController extends BaseController {
-    context: Request | Handshake
-}
+export class ApiController extends Controller { }

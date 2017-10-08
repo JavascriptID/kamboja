@@ -7,12 +7,10 @@ type ControllerMemberNames = keyof Controller
 type ApiControllerMemberNames = keyof ApiController
 
 const reservedWords: ControllerMemberNames[] = [
-    "context", "validator"]
+    "request", "handshake", "validator"]
 
 const apiReservedWords: ApiControllerMemberNames[] = [
-    "context", "validator"]
-
-
+    "request", "handshake", "validator"]
 
 export class ReservedWordUsedAnalyzer implements AnalyzerCommand {
     analyse(route: RouteInfo): AnalysisMessage[] | undefined {

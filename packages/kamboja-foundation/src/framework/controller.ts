@@ -4,7 +4,8 @@ import { ValidatorImpl } from "../validator"
 export class Controller implements BaseController {
     private validatorImpl: ValidatorImpl;
     invocation: InvocationBase
-    context: HttpRequest | Handshake
+    request: HttpRequest 
+    handshake: Handshake
 
     get validator(): Validator {
         if (!this.validatorImpl)

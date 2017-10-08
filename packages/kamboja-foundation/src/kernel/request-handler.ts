@@ -6,21 +6,23 @@ import { MiddlewareDecorator } from "../framework";
 import { ParameterBinder } from "../binder/index";
 
 export class RequestHandler {
-    private head: ControllerInvocation;
+    private head: Invocation;
     private tail: Invocation;
 
-    constructor(public facade: Core.Facade, public controllerInfo?: Core.RouteInfo) {
+    constructor(public facade: Core.Facade, invocation:Invocation) {
         let middlewares = <Core.Middleware[]>(facade.middlewares || []).slice().reverse()
-        if (controllerInfo) {
-            let controller = ControllerFactory.resolve(controllerInfo, facade.dependencyResolver!)
+        if (invocation instanceof ControllerInvocation) {
+            let controller = ControllerFactory.resolve(invocation.controllerInfo, facade.dependencyResolver!)
             middlewares.push(...MiddlewareFactory.resolveArray(MiddlewareDecorator
                 .getMiddlewares(controller), facade.dependencyResolver!))
             middlewares.push(...MiddlewareFactory.resolveArray(MiddlewareDecorator
-                .getMiddlewares(controller, controllerInfo.methodMetaData!.name), facade.dependencyResolver!))
+                .getMiddlewares(controller, invocation.controllerInfo.methodMetaData!.name), facade.dependencyResolver!))
         }
-        this.tail = this.head = new ControllerInvocation(middlewares, controllerInfo!, facade)
+        invocation.facade = facade;
+        invocation.middlewares = middlewares
+        this.tail = this.head = invocation
         middlewares.forEach(x => {
-            this.tail = new MiddlewareInvocation(x, this.tail, middlewares, facade, controllerInfo)
+            this.tail = new MiddlewareInvocation(x, this.tail, middlewares, facade, invocation.controllerInfo)
         })
     }
 
@@ -38,9 +40,11 @@ export class RequestHandler {
     }
 
     private prepare(context: Core.HttpRequest | Core.Handshake, err?: Error) {
-        this.head.setError(err);
-        if (context.contextType == "HttpRequest" && this.controllerInfo && this.controllerInfo.methodMetaData!.parameters.length > 0) {
-            let binder = new ParameterBinder(this.controllerInfo!, this.facade.pathResolver!);
+        if(err){
+            this.tail.parameters = [err]
+        }
+        else if (context.contextType == "HttpRequest" && this.head.controllerInfo && this.head.controllerInfo.methodMetaData!.parameters.length > 0) {
+            let binder = new ParameterBinder(this.head.controllerInfo!, this.facade.pathResolver!);
             this.tail.parameters = binder.getParameters(context);
         }
         else if (context.contextType == "Handshake") {
