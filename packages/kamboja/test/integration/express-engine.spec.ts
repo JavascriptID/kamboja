@@ -1,6 +1,6 @@
 import * as Supertest from "supertest"
 import * as Chai from "chai"
-import { json, KambojaApplication, application, ApiFacility } from "../../src"
+import { json, KambojaApplication, application, ApiFacility, Invocation } from "../../src"
 import * as Express from "express"
 import * as Kamboja from "kamboja-foundation"
 import * as Lodash from "lodash"
@@ -14,9 +14,23 @@ import * as Path from "path"
 import { ConcatMiddleware } from "./interceptor/concat-middleware"
 import { LoginUser } from "../../src/login-user"
 import { Server, IncomingMessage } from "http"
-import * as Core from "kamboja-core"
+import { DependencyResolver, Facility } from "kamboja-core"
 import * as Del from "del"
 import * as Compression from "compression"
+
+class ErrorDependencyInjection implements DependencyResolver {
+    count = 0;
+    resolver: DependencyResolver
+    constructor() {
+        let idResolver = new Kamboja.Resolver.DefaultIdentifierResolver()
+        let pathResolver = new Kamboja.Resolver.DefaultPathResolver(__dirname)
+        this.resolver = new Kamboja.Resolver.DefaultDependencyResolver(idResolver, pathResolver)
+    }
+    resolve<T>(qualifiedClassName: string): T {
+        if(this.count++ > 13) throw new Error("Dependency resolver error")
+        return this.resolver.resolve(qualifiedClassName)
+    }
+}
 
 describe("Integration", () => {
     describe("General", () => {
@@ -25,7 +39,7 @@ describe("Integration", () => {
                 .apply("BasicFacility, facility/basic-facility")
             Chai.expect(app.get("showLog")).eq("None")
             Chai.expect(app.get("skipAnalysis")).true;
-            Chai.expect(app.get<Core.Facility[]>("facilities").length).eq(1)
+            Chai.expect(app.get<Facility[]>("facilities").length).eq(1)
         })
 
         it("Should be able to set kamboja option", () => {
@@ -147,15 +161,34 @@ describe("Integration", () => {
     describe("ApiController", () => {
         it("Should handle error properly", () => {
             let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
-            .apply(new ApiFacility())
-            .init()
+                .apply(new ApiFacility())
+                .init()
 
             return Supertest(app)
-            .get("/apiwitherror/1")
-            .expect((result: Supertest.Response) => {
-                Chai.expect(result.body).deep.eq({message: "This is custom error"})
-            })
-            .expect(500)
+                .get("/apiwitherror/1")
+                .expect((result: Supertest.Response) => {
+                    Chai.expect(result.body).deep.eq({ message: "This is custom error" })
+                })
+                .expect(500)
+        })
+
+        it("Should handle error on resolving controller properly", () => {
+            /*
+            THIS TEST DEPENDS ON NUMBER OF ROUTE GENERATED
+            INCREASE NUMBER OF COUNT ON ErrorDependencyInjection (ABOVE)
+            SELF NOTE:
+                FIND OUT WAY TO FIX THIS
+            */
+            let app = application({ rootPath: __dirname, showLog: "None", controllerPaths: ["api"] })
+                .set("dependencyResolver", new ErrorDependencyInjection())
+                .apply(new ApiFacility())
+                .init()
+            return Supertest(app)
+                .get("/categories/1")
+                .expect((result: Supertest.Response) => {
+                    Chai.expect(result.body.message).contains("Can not instantiate [CategoriesController, api/api-controller] as Controller")
+                })
+                .expect(500)
         })
 
         it("Should handle `get` properly", () => {
@@ -435,28 +468,28 @@ describe("Integration", () => {
                 .expect(200)
             Del(Path.join(__dirname, "./upload"))
         })
-    
+
         it("Should able to use cookie properly", async () => {
             let app = application(__dirname)
                 .set("showLog", "None")
                 .useExpress(CookieParser())
                 .init()
-            
+
             await Supertest(app)
                 .get("/home/returncookie")
                 .set("Cookie", "auth-example=SUPER_SECRET")
-                .expect((res:Supertest.Response) => {
+                .expect((res: Supertest.Response) => {
                     Chai.expect(res.text).eq("SUPER_SECRET")
                 })
                 .expect(200)
         })
-    
+
         it("Should able to use compression middleware properly", async () => {
             let app = application(__dirname)
                 .set("showLog", "None")
                 .useExpress(Compression({ threshold: "0kb" }))
                 .init()
-    
+
             await Supertest(app)
                 .get("/home/compression")
                 .expect((res: Supertest.Response) => {
@@ -473,7 +506,7 @@ describe("Integration", () => {
             let app = application({ rootPath: __dirname, showLog: "None" })
                 .set("views", Path.join(__dirname, "view"))
                 .set("view engine", "hbs")
-                .use((req: Express.Request, inv: Core.Invocation) => {
+                .use((req: Express.Request, inv: Invocation) => {
                     if (req instanceof IncomingMessage)
                         return inv.proceed()
                     else
@@ -490,7 +523,7 @@ describe("Integration", () => {
 
         it("Should be able to add callback middleware in global scope", async () => {
             let app = application({ rootPath: __dirname, showLog: "None" })
-                .use(async (context: Express.Request, next: Core.Invocation) => {
+                .use(async (context: Express.Request, next: Invocation) => {
                     return json({}, 501)
                 })
                 .init()
