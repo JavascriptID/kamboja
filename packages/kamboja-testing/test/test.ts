@@ -37,6 +37,21 @@ describe("Testing Utility", () => {
         handshake.getParam("")
         handshake.getPacket()
     })
+
+    it("Should not convert property to mock/spy", () => {
+        let test = {
+            data:123,
+            method: () => { }
+        }
+        let error = false;
+        try{
+            let result = spy(test)
+        }
+        catch {
+            error = true;
+        }
+        Chai.expect(error).false;        
+    })
 })
 
 describe("Socket tester", () => {

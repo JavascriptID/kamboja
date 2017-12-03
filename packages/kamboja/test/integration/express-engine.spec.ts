@@ -104,6 +104,7 @@ describe("Integration", () => {
             return Supertest(app)
                 .get("/user/index")
                 .expect((result: Supertest.Response) => {
+                    console.log(result)
                     Chai.expect(result.text).contain("user/index")
                 })
                 .expect(200)

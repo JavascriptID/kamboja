@@ -1,7 +1,5 @@
 # KambojaJs
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/espadrine.svg?style=social&label=Follow&style=flat-square)](https://twitter.com/kambojajs)
-[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/KambojaJS/lobby)
 [![npm version](https://badge.fury.io/js/kamboja.svg)](https://badge.fury.io/js/kamboja)
 [![Build Status](https://travis-ci.org/kambojajs/kamboja.svg?branch=master)](https://travis-ci.org/kambojajs/kamboja)
 [![Coverage Status](https://coveralls.io/repos/github/kambojajs/kamboja/badge.svg?branch=master)](https://coveralls.io/github/kambojajs/kamboja?branch=master)

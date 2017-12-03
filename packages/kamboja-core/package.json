@@ -19,28 +19,28 @@
   },
   "homepage": "http://kambojajs.com",
   "dependencies": {
-    "@types/lodash": "^4.14.74",
-    "@types/node": "^8.0.28",
+    "@types/lodash": "^4.14.86",
+    "@types/node": "^8.0.53",
     "kecubung": "^0.4.0",
     "lodash": "^4.17.4",
     "reflect-metadata": "^0.1.10",
-    "tslib": "^1.7.1"
+    "tslib": "^1.8.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.0.4",
-    "@types/mocha": "^2.2.43",
-    "@types/sinon": "^2.3.4",
+    "@types/chai": "^4.0.6",
+    "@types/mocha": "^2.2.44",
+    "@types/sinon": "^4.0.0",
     "chai": "^4.1.2",
-    "coveralls": "^2.13.1",
+    "coveralls": "^3.0.0",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-istanbul": "^1.1.2",
     "gulp-mocha": "^3.0.1",
     "gulp-sourcemaps": "^2.6.1",
-    "gulp-typescript": "^3.2.2",
-    "mocha": "^3.5.3",
-    "run-sequence": "^2.1.0",
-    "sinon": "^3.2.1",
-    "typescript": "^2.5.2"
+    "gulp-typescript": "^3.2.3",
+    "mocha": "^4.0.1",
+    "run-sequence": "^2.2.0",
+    "sinon": "^4.1.2",
+    "typescript": "^2.6.2"
   }
 }

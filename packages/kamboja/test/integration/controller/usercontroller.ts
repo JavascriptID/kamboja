@@ -13,7 +13,7 @@ let Middleware = (req: Request, res: Response, next: NextFunction) => {
 }
 
 export class UserController extends Controller {
-    index():Core.ActionResult  {
+    index()  {
         return view()
     }
 
