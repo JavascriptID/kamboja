@@ -1,6 +1,5 @@
 export function reflect(obj: any) {
-    //dynamic
-    let dynamicProperties = Object.getOwnPropertyNames(obj)
-    let staticProperties = Object.getOwnPropertyNames(Object.getPrototypeOf(obj))
-    return dynamicProperties.concat(staticProperties.filter(x => x != "constructor"))
+    const deepProps = (x: any): string[] => <string[]>(x && x !== Object.prototype && Object.getOwnPropertyNames(x).concat(deepProps(Object.getPrototypeOf(x)) || []));
+    //const deepFunctions = (x: any) => deepProps(x).filter(name => typeof x[name] === "function");
+    return deepProps(obj).filter(name => name !== "constructor" && !~name.indexOf("__"));
 }

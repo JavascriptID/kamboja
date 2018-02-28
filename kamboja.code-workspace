@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "packages/kamboja"
+		},
+		{
+			"path": "packages/kamboja-core"
+		},
+		{
+			"path": "packages/kamboja-foundation"
+		},
+		{
+			"path": "packages/kamboja-testing"
+		},
+		{
+			"path": "packages/kecubung"
+		},
+		{
+			"path": "packages/moringa"
+		},
+		{
+			"path": "packages/seroja"
+		},
+		{
+			"path": "packages/soka"
+		}
+	]
+}

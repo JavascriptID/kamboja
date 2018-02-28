@@ -2,6 +2,43 @@ import { HttpRequest, HttpResponse, spy, stub, socketTester, SocketHandshake } f
 import * as Core from "kamboja-core"
 import * as Chai from "chai";
 import { app } from "./socket-server"
+import { reflect } from '../src/reflect';
+
+describe("reflect", () => {
+
+    class BaseClass {
+        data = 50
+        login() { }
+        walk() { }
+    }
+
+    class ChildClass extends BaseClass {
+        show() { }
+        build() { }
+    }
+
+    it("Should reflect dynamic object properly", () => {
+        const obj = {
+            data: 200,
+            login: function () { },
+            walk: function () { }
+        }
+        const result = reflect(obj)
+        Chai.expect(result).deep.eq(["data", "login", "walk"])
+    })
+
+    it("Should reflect ES6 class properly", () => {
+        const obj = new BaseClass()
+        const result = reflect(obj)
+        Chai.expect(result).deep.eq(["data", "login", "walk"])
+    })
+
+    it("Should reflect ES6 class with inherritance properly", () => {
+        const obj = new ChildClass()
+        const result = reflect(obj)
+        Chai.expect(result).deep.eq(["data", "show", "build", "login", "walk"])
+    })
+})
 
 describe("Testing Utility", () => {
     it("Should provide HttpRequest properly", () => {
@@ -40,17 +77,17 @@ describe("Testing Utility", () => {
 
     it("Should not convert property to mock/spy", () => {
         let test = {
-            data:123,
+            data: 123,
             method: () => { }
         }
         let error = false;
-        try{
+        try {
             let result = spy(test)
         }
         catch {
             error = true;
         }
-        Chai.expect(error).false;        
+        Chai.expect(error).false;
     })
 })
 
