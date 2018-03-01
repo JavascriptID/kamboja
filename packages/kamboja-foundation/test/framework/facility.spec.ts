@@ -1,4 +1,5 @@
-import { Facility, Core } from "../../src"
+import { Facility } from "../../src"
+import * as Core from "kamboja-core"
 import * as Chai from "chai"
 
 class MyFacility extends Facility {

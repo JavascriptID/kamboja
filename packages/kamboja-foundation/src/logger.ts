@@ -1,4 +1,4 @@
-import * as Chalk from "chalk"
+import Chalk from "chalk"
 import { LogType } from "kamboja-core"
 
 export class Logger {

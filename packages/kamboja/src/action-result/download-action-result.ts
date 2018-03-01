@@ -1,5 +1,5 @@
-import { Core } from "kamboja-foundation"
 import { ResponseAdapter } from "../response-adapter"
+import * as Core from "kamboja-core"
 
 export class DownloadActionResult extends Core.ActionResult {
     constructor(public path: string) {

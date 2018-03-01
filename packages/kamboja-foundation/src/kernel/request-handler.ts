@@ -1,46 +1,50 @@
 import * as Core from "kamboja-core"
-import { ErrorInvocation, ControllerInvocation, AttachableInvocation, MiddlewareInvocation } from "./invocation"
+import { ControllerInvocation, MiddlewareInvocation } from "./invocation"
 import { MiddlewareFactory, ControllerFactory } from "./factory";
 import { Invocation } from "kamboja-core";
 import { MiddlewareDecorator } from "../framework";
 import { ParameterBinder } from "../binder/index";
 
 export class RequestHandler {
-    private head: AttachableInvocation;
+    private head: Invocation;
     private tail: Invocation;
 
-    constructor(public facade: Core.Facade, public controllerInfo?: Core.RouteInfo) {
+    constructor(public facade: Core.Facade, invocation:Invocation) {
         let middlewares = <Core.Middleware[]>(facade.middlewares || []).slice().reverse()
-        if (controllerInfo) {
-            let controller = ControllerFactory.resolve(controllerInfo, facade.dependencyResolver!)
+        if (invocation instanceof ControllerInvocation) {
+            let controller = ControllerFactory.resolve(invocation.controllerInfo, facade.dependencyResolver!)
             middlewares.push(...MiddlewareFactory.resolveArray(MiddlewareDecorator
                 .getMiddlewares(controller), facade.dependencyResolver!))
             middlewares.push(...MiddlewareFactory.resolveArray(MiddlewareDecorator
-                .getMiddlewares(controller, controllerInfo.methodMetaData!.name), facade.dependencyResolver!))
+                .getMiddlewares(controller, invocation.controllerInfo.methodMetaData!.name), facade.dependencyResolver!))
         }
-        this.tail = this.head = new AttachableInvocation(middlewares, controllerInfo!, facade)
+        invocation.facade = facade;
+        invocation.middlewares = middlewares
+        this.tail = this.head = invocation
         middlewares.forEach(x => {
-            this.tail = new MiddlewareInvocation(x, this.tail, middlewares, facade, controllerInfo)
+            this.tail = new MiddlewareInvocation(x, this.tail, middlewares, facade, invocation.controllerInfo)
         })
     }
 
-    execute(context: Core.HttpRequest | Core.Handshake, response: Core.Response, invocation: Core.Invocation) {
-        return new Promise<void>(resolve => resolve(this.prepare(context, invocation)))
+    execute(context: Core.HttpRequest | Core.Handshake, response: Core.Response, err?: Error) {
+        return new Promise<void>(resolve => resolve(this.prepare(context, err)))
             .then(result => this.tail.proceed())
             .then(result => {
                 if (context.contextType == "Handshake" && result.engine != "General")
                     throw new Error(`ActionResult Error, only return value of type 'redirect' and 'emit' are allowed in real time action`)
-                return result.execute(context, response, invocation.controllerInfo)
+                return result.execute(context, response, this.tail.controllerInfo)
             })
             .catch(e => {
                 response.send(new Core.ActionResult(e.message, e.status || 500))
             })
     }
 
-    private prepare(context: Core.HttpRequest | Core.Handshake, invocation: Invocation) {
-        this.head.attach(invocation);
-        if (context.contextType == "HttpRequest" && this.controllerInfo && this.controllerInfo.methodMetaData!.parameters.length > 0) {
-            let binder = new ParameterBinder(this.controllerInfo!, this.facade.pathResolver!);
+    private prepare(context: Core.HttpRequest | Core.Handshake, err?: Error) {
+        if(err){
+            this.tail.parameters = [err]
+        }
+        else if (context.contextType == "HttpRequest" && this.head.controllerInfo && this.head.controllerInfo.methodMetaData!.parameters.length > 0) {
+            let binder = new ParameterBinder(this.head.controllerInfo!, this.facade.pathResolver!);
             this.tail.parameters = binder.getParameters(context);
         }
         else if (context.contextType == "Handshake") {

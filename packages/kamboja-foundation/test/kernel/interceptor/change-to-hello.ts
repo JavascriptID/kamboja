@@ -1,4 +1,5 @@
-import { Controller, middleware, Core } from "../../../src"
+import { Controller, middleware } from "../../../src"
+import * as Core from "kamboja-core"
 
 @middleware.id("ChangeToHello")
 export class ChangeToHello implements Core.Middleware {

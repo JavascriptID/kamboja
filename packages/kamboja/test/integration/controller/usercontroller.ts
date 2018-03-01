@@ -1,10 +1,11 @@
-import { route, Controller, Core } from "kamboja-foundation"
+import { route, Controller } from "kamboja-foundation"
 import * as Model from "../model/user-model"
 import { Request, Response, NextFunction } from "express"
-import { MiddlewareActionResult, middleware, JsonActionResult } from "../../../src"
+import { middleware, JsonActionResult } from "../../../src"
 import { Return400Middleware } from "../interceptor/400-middleware"
 import { view } from "../../../src"
 import { authenticate } from "passport"
+import * as Core from "kamboja-core"
 
 let Middleware = (req: Request, res: Response, next: NextFunction) => {
     res.status(401)
@@ -12,7 +13,7 @@ let Middleware = (req: Request, res: Response, next: NextFunction) => {
 }
 
 export class UserController extends Controller {
-    index():Core.ActionResult  {
+    index()  {
         return view()
     }
 
@@ -20,12 +21,6 @@ export class UserController extends Controller {
         throw new Error("This user error")
     }
 
-    executeMiddleware() {
-        return new MiddlewareActionResult((req: Request, res: Response, next: NextFunction) => {
-            res.status(401)
-            res.end()
-        })
-    }
 
 
     @route.get("with/:id")
@@ -44,7 +39,7 @@ export class UserController extends Controller {
         return result;
     }
 
-    @middleware.use((req, res, next) => {
+    @middleware.useExpress((req, res, next) => {
         res.setHeader("custom-header", "hello")
         next()
     })
@@ -52,14 +47,14 @@ export class UserController extends Controller {
         return "Hello"
     }
 
-    @middleware.use((req, res, next) => {
+    @middleware.useExpress((req, res, next) => {
         next(new Error("USER ERROR"))
     })
     expressMiddlewareSendError() {
         return "Hello"
     }
 
-    @middleware.use((req, res, next) => {
+    @middleware.useExpress((req, res, next) => {
         setTimeout(function () {
             res.setHeader("custom-header", "hello")
             next()
@@ -73,7 +68,7 @@ export class UserController extends Controller {
         })
     }
 
-    @middleware.use((req, res, next) => {
+    @middleware.useExpress((req, res, next) => {
         setTimeout(function () {
             res.setHeader("custom-header", "hello")
             res.send("Not Hello")
@@ -83,7 +78,7 @@ export class UserController extends Controller {
         return "Hello"
     }
 
-    @middleware.use((req, res, next) => {
+    @middleware.useExpress((req, res, next) => {
         res.setHeader("custom-header", "hello")
         next()
     })
@@ -91,18 +86,12 @@ export class UserController extends Controller {
         throw new Error("Internal Error")
     }
 
-    expressMiddlewareInsideAction() {
-        return new MiddlewareActionResult((req, res, next) => {
-            next()
-        })
-    }
-
-    @middleware.use((req, res, next) => {
+    @middleware.useExpress((req, res, next) => {
         req.user = { name: "Nobita" }
         next()
     })
     expressMiddlewareModifyUser() {
-        return new JsonActionResult(this.context.user)
+        return new JsonActionResult(this.request.user)
     }
 
     @middleware.use(async (context:Core.HttpRequest, next:Core.Invocation) => {

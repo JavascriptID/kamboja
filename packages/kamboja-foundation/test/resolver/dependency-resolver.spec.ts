@@ -32,4 +32,13 @@ describe("DependencyResolver", () => {
         let data = dummy.getData();
         Chai.expect(data).eq(200)
     })
+
+    it("Should cache last resolved class", () => {
+        let id = "ParentModule.InnerModule.Dummy, ./dummy/dummy-with-module";
+        let test = new DefaultDependencyResolver(new DefaultIdentifierResolver(), new DefaultPathResolver(__dirname))
+        let dummy = test.resolve<any>(id)
+        let cls = DefaultDependencyResolver.classes[Symbol(id)]
+        let secondDummy = test.resolve<any>(id)
+        Chai.expect(cls).not.null;
+    })
 })

@@ -3,7 +3,7 @@ import { ViewActionResult } from "./view-action-result"
 import { RedirectActionResult } from "./redirect-action-result"
 import { FileActionResult } from "./file-action-result"
 import { DownloadActionResult } from "./download-action-result"
-import { Core } from "kamboja-foundation"
+import {ActionResult} from "kamboja-core"
 
 export function download(path: string) {
     return new DownloadActionResult(path)
@@ -21,8 +21,8 @@ export function view(model?: any, viewName?: string) {
     return new ViewActionResult(model, viewName)
 }
 export function broadcast(event: string, data: any) {
-    return new Core.ActionResult(data, 200, "application/json").broadcast(event)
+    return new ActionResult(data, 200, "application/json").broadcast(event)
 }
 export function emit(event: string, id: string | string[], data: any) {
-    return new Core.ActionResult(data, 200, "application/json").emit(event, id)
+    return new ActionResult(data, 200, "application/json").emit(event, id)
 }

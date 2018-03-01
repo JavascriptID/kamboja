@@ -1,14 +1,15 @@
-import { Core } from "kamboja-foundation"
 import * as Express from "express"
+import * as Core from "kamboja-core"
 
 export class ResponseAdapter implements Core.Response {
     constructor(public nativeResponse: Express.Response, public nativeNextFunction: Express.NextFunction) { }
 
     private setup(result: Core.ActionResult) {
-        result.status = result.status || 200;
-        result.type = result.type || "text/plain"
         this.nativeResponse.set(result.header)
-        this.nativeResponse.status(result.status)
+        if (result.status)
+            this.nativeResponse.status(result.status)
+        if (result.type)
+            this.nativeResponse.type(result.type!)
         if (result.cookies) {
             result.cookies.forEach(x => {
                 this.nativeResponse.cookie(x.key, x.value, x.options!)
@@ -18,7 +19,7 @@ export class ResponseAdapter implements Core.Response {
 
     json(result: Core.ActionResult) {
         this.setup(result)
-        this.nativeResponse.status(result.status!).json(result.body)
+        this.nativeResponse.json(result.body)
     }
 
     redirect(result: Core.ActionResult, path: string) {
@@ -44,7 +45,6 @@ export class ResponseAdapter implements Core.Response {
     send(result: Core.ActionResult) {
         if (result.type == "application/json") return this.json(result)
         this.setup(result)
-        this.nativeResponse.type(result.type!)
         switch (typeof result.body) {
             case "number":
             case "boolean":

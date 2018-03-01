@@ -1,5 +1,5 @@
-import { Core } from "kamboja-foundation"
 import { ResponseAdapter } from "../response-adapter"
+import * as Core from "kamboja-core"
 
 const ViewOutsideControllerError = "Relative view path can not be use inside middlewares"
 

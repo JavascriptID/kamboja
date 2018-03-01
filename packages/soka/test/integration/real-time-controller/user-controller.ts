@@ -4,12 +4,12 @@ import { DataModel } from "../model/data-model"
 export class UserController extends Controller {
   @route.on("connection")
   onConnect() {
-    return broadcast("join", this.context.user);
+    return broadcast("join", this.handshake.user);
   }
 
   @route.on("disconnect")
   onDisconnect() {
-    return broadcast("leave", this.context.user);
+    return broadcast("leave", this.handshake.user);
   }
 
   @route.on("send")

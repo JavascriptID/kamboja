@@ -1,10 +1,11 @@
-import { Core, Kamboja } from "kamboja-foundation"
+import {  Kamboja } from "kamboja-foundation"
 import * as Mongoose from "mongoose"
 import { SchemaGenerator } from "./schema-generator"
 import * as H from "./helper"
 import * as Kecubung from "kecubung"
 import { OptionBuilder } from "./option-builder"
 import { TypeConverter } from "./type-converter"
+import * as Core from "kamboja-core"
 
 export class MongooseHelper {
     private static instance: MongooseHelper

@@ -3,37 +3,36 @@ import { ParameterBinder } from "../../binder"
 import { ValidatorImpl } from "../../validator"
 import { ControllerFactory } from "../factory"
 
-function createController(option: Core.Facade, controllerInfo: Core.ControllerInfo, parameters: any[]) {
-    let validator = new ValidatorImpl(option.metaDataStorage!, <Core.ValidatorCommand[]>option.validators!)
-    validator.setValue(parameters, controllerInfo.classMetaData!, controllerInfo.methodMetaData!.name)
-    let controller = ControllerFactory.resolve(controllerInfo, option.dependencyResolver!)
-    controller.validator = validator;
-    return controller;
-}
 
 export class ControllerInvocation extends Core.Invocation {
 
-    proceed(): Promise<Core.ActionResult> {
-        let controller = createController(this.facade, this.controllerInfo!, this.parameters)
-        controller.context = this.context
-        let method = (<any>controller)[this.controllerInfo!.methodMetaData!.name]
-        let result;
-        if (this.facade.autoValidation && this.controllerInfo!.methodMetaData!.parameters.length > 0 && !controller.validator.isValid())
-            result = new Core.ActionResult(controller.validator.getValidationErrors(), 400, "application/json")
-        else
-            result = method.apply(controller, this.parameters);
-        return this.createResult(result)
-    }
+    constructor(public controllerInfo: Core.RouteInfo) { super() }
 
-    createResult(result: any) {
-        return Promise.resolve(result)
-            .then(awaitedResult => { 
-                if (awaitedResult instanceof Core.ActionResult)
-                    return awaitedResult
-                if (this.controllerInfo!.classMetaData!.baseClass == "ApiController") {
-                    return new Core.ActionResult(awaitedResult, 200, "application/json")
-                }
-                return new Core.ActionResult(awaitedResult, 200, "text/html")
-            })
+    proceed(): Promise<Core.ActionResult> {
+        return new Promise<Core.ActionResult>((resolve, reject) => {
+            let controller = ControllerFactory.resolve(this.controllerInfo!, this.facade.dependencyResolver!)
+            if (this.context.contextType == "HttpRequest")
+                controller.request = this.context
+            else
+                controller.handshake = this.context
+            controller.invocation = this
+            let method: Function = (<any>controller)[this.controllerInfo!.methodMetaData!.name]
+            if (this.facade.autoValidation && this.controllerInfo!.methodMetaData!.parameters.length > 0 && !controller.validator.isValid())
+                resolve(new Core.ActionResult(controller.validator.getValidationErrors(), 400, "application/json"))
+            else {
+                let result = method.apply(controller, this.parameters);
+                Promise.resolve(result)
+                    .then(x => {
+                        if (x instanceof Core.ActionResult)
+                            return x
+                        if (this.controllerInfo!.classMetaData!.baseClass == "ApiController") {
+                            return new Core.ActionResult(x, undefined, "application/json")
+                        }
+                        return new Core.ActionResult(x)
+                    })
+                    .then(resolve)
+                    .catch(reject)
+            }
+        })
     }
 }

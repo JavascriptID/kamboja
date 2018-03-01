@@ -1,81 +1,33 @@
-import { Core } from "kamboja-foundation"
 import * as Express from "express"
+import { AuthUser } from "kamboja-core"
 import * as Lodash from "lodash"
-import * as Passport from "passport"
-import { LoginUser } from "./login-user"
-import * as Url from "url"
 
-
-export class RequestAdapter implements Core.HttpRequest {
-    contextType: "HttpRequest" = "HttpRequest"
-    httpVersion: string
-    httpMethod: Core.HttpMethod
-    headers: { [key: string]: string }
-    cookies: { [key: string]: string }
-    params: { [key: string]: string }
-    body: any
-    referrer: string
-    url: Url.Url
-    user: LoginUser
-    route:string
-
-    constructor(public request: Express.Request) {
-        this.headers = <{ [key: string]: string }>request.headers
-        this.cookies = request.cookies
-        this.params = Lodash.assign(request.params, request.query) 
-        this.body = request.body;
-        this.httpVersion = request.httpVersion;
-        this.httpMethod = <Core.HttpMethod>request.method;
-        if (request && request.originalUrl)
-            this.url = Url.parse(request.originalUrl);
-        this.referrer = <any>request.header("referrer");
-        this.user = request.user;
-        this.route = request.route;
+declare module "express" {
+    interface Request {
+        contextType: "HttpRequest"
+        user: AuthUser
+        getHeader(key: string): string | undefined
+        getCookie(key: string): string | undefined
+        getParam(key: string): string | undefined
+        response: Express.Response
     }
+}
 
-    update(request:Express.Request){
-        this.headers = Lodash.assign(this.headers, request.headers)
-        this.cookies = Lodash.assign(this.cookies, request.cookies)
-        this.user = request.user
-        this.request = request;
-    }
+export interface HttpRequest extends Express.Request {}
 
-    private findCaseInsensitive(obj:any, key:string) {
-        if(!obj) return
-        let keys = Object.keys(obj);
-        for (let item of keys) {
-            if (item.toLowerCase() == key.toLowerCase())
-                return obj[item]
-        }
+export function convert(req: Express.Request, response:Express.Response) {
+    req.contextType = "HttpRequest"
+    req.getHeader = function (key: string) {
+        return this.get(key)
     }
-
-    getHeader(key: string): string {
-        return this.findCaseInsensitive(this.headers, key)
+    req.getCookie = function (key: string) {
+        if (this.cookies)
+            return this.cookies[key]
     }
-
-    getCookie(key: string): string {
-        return this.findCaseInsensitive(this.cookies, key)
+    req.getParam = function (key: string) {
+        let params = Lodash.assign(this.params, this.query)
+        return params[key]
     }
-
-    getParam(key: string): string {
-        return this.findCaseInsensitive(this.params, key)
-    }
-
-    getAccepts(key: string|string[]): string | boolean {
-        if(Array.isArray(key))
-            return this.request.accepts(key) 
-        else 
-            return this.request.accepts(key)
-    }
-
-    isAuthenticated(): boolean {
-        return this.request.isAuthenticated()
-    }
-
-    getUserRole(): string {
-        if (this.user)
-            return this.user.role
-        else
-            return <any>undefined
-    }
+    req.response = response;
+    return req;
 }

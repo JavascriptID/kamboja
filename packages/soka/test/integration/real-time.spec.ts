@@ -1,10 +1,11 @@
 import * as Chai from "chai"
 import * as Supertest from "supertest"
-import { KambojaApplication, Core } from "kamboja"
+import { KambojaApplication } from "kamboja"
 import { socketTester as SocketClient } from "kamboja-testing"
 import { RealTimeFacility } from "../../src/"
 import * as BodyParser from "body-parser"
 import * as Http from "http"
+import * as Core from "kamboja-core"
 
 class TokenAuthMiddleware implements Core.Middleware {
     execute(context: Core.Handshake | Core.HttpRequest, next: Core.Invocation): Promise<Core.ActionResult> {
@@ -21,7 +22,7 @@ describe("Real time functionalities", () => {
         app = new KambojaApplication(__dirname)
             .set("showLog", "None")
             .set("controllerPaths", ["real-time-controller"])
-            .use(BodyParser.json())
+            .useExpress(BodyParser.json())
             .use(new TokenAuthMiddleware())
             .apply(new RealTimeFacility())
             .init();
@@ -122,7 +123,7 @@ describe("Real time functionalities", () => {
             .emit("get-data", undefined, msg => {
                 feedback = msg;
             })
-        Chai.expect(feedback).deep.eq({ body: { message: "Success!" }, status: 200 })
+        Chai.expect(feedback).deep.eq({ body: { message: "Success!" } })
     })
 
     it("Should throw error when access controller returned json", async () => {

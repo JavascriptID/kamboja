@@ -1,9 +1,9 @@
 import * as Core from "kamboja-core"
 
 export class ErrorInvocation extends Core.Invocation {
-    constructor(private error: any) { super() }
+    constructor() { super() }
 
     proceed(): Promise<Core.ActionResult> {
-        throw this.error
+        throw this.parameters[0]
     }
 }

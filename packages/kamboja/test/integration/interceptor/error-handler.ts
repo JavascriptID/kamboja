@@ -1,5 +1,6 @@
-import { Core, Middleware } from "kamboja-foundation"
+import { Middleware } from "kamboja-foundation"
 import {middleware, view} from "../../../src"
+import * as Core from "kamboja-core"
 
 export class ErrorHandler extends Middleware{
     constructor(private callback?:(i:Core.Invocation) => void){ super()}

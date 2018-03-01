@@ -1,6 +1,7 @@
-import { Validator, Core } from "kamboja-foundation"
+import { Validator } from "kamboja-foundation"
 import { Types } from "mongoose"
 import * as Kecubung from "kecubung"
+import * as Core from "kamboja-core"
 
 export class ObjectIdValidator extends Validator.ValidatorBase {
     @Validator.decoratorName("objectid")

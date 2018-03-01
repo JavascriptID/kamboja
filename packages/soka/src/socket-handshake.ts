@@ -1,4 +1,4 @@
-import { Core } from "kamboja"
+import * as Core from "kamboja-core"
 
 export class SocketIoHandshake implements Core.Handshake {
     contextType: "Handshake" = "Handshake"

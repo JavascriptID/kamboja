@@ -22,6 +22,8 @@ export class HttpRequest implements Core.HttpRequest {
     controllerInfo?: Core.ControllerInfo
     middlewares?: Core.Middleware[]
     route: string
+    response:any
+    get
 }
 
 export class HttpResponse implements Core.Response {

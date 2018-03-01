@@ -1,5 +1,6 @@
 import { Controller, ApiController, } from "../../../src"
-import { val, HttpStatusError, Core } from "../../../src"
+import { val, HttpStatusError } from "../../../src"
+import * as Core from "kamboja-core"
 
 export class DummyApi extends ApiController {
     returnTheParam(par1:any) {

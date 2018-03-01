@@ -1,9 +1,10 @@
-import { Kamboja, Core } from "kamboja-foundation"
+import { Kamboja } from "kamboja-foundation"
 import { ExpressEngine } from "./express-engine"
 import { ExpressMiddlewareAdapter } from "./express-middleware-adapter"
 import { RequestHandler } from "express"
-import { MiddlewareDecorator } from "./middleware-decorator"
+import { MiddlewareDecorator, MiddlewareCallback } from "./middleware-decorator"
 import { Server } from "http"
+import * as Core from "kamboja-core"
 
 export type KambojaOptionKeys = keyof Core.KambojaOption
 export type ExpressOptionKeys = "case sensitive routing" | "env" | "etag"
@@ -46,21 +47,25 @@ export class KambojaApplication {
     }
 
     apply(facility: Core.Facility | string) {
-        this.kamboja.apply(facility)
+        this.kamboja.apply(facility, this)
         return this;
     }
 
-    use(middleware: RequestHandler | Core.MiddlewaresType) {
-        if (MiddlewareDecorator.isExpressMiddleware(middleware)) {
-            this.expressEngine.addMiddleware(middleware)
-        }
-        else {
-            this.kamboja.use(middleware)
-        }
-        return this;
+    useExpress(middleware: RequestHandler) {
+        this.expressEngine.addMiddleware(middleware)
+        return this
     }
 
-    init(app?:any): Server {
+    use(middleware: MiddlewareCallback | string | Core.Middleware) {
+        this.kamboja.use(middleware)
+        return this
+    }
+
+    init(app?: any): Server {
         return this.kamboja.init(app);
     }
+}
+
+export function application(opt: string | Core.KambojaOption) {
+    return new KambojaApplication(opt)
 }
